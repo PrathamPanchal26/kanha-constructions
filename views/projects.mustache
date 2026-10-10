@@ -1,0 +1,55 @@
+{{> partials/header}}
+
+  <!-- Page Banner -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="page-hero-subtitle">Our Completed Work</span>
+      <h1 class="page-hero-title">Featured Projects Showcase</h1>
+      <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+        Explore our architectural, industrial, residential villa, hospital, and interior project portfolio.
+      </p>
+    </div>
+  </section>
+
+  <!-- Projects Gallery Section -->
+  <section class="portfolio-section" style="padding: 60px 0 100px;">
+    <div class="container">
+
+      <!-- Project Name Search & Filter Controls -->
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-light); padding: 20px 24px; border-radius: var(--radius-lg); margin-bottom: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center;">
+        
+        <div>
+          <label style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <i class="fa-solid fa-list-check"></i> Filter by Project Name
+          </label>
+          <select id="projectNameSelect" class="form-control" style="background: var(--bg-dark); color: #fff;">
+            <option value="all">-- All Project Names --</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <i class="fa-solid fa-magnifying-glass"></i> Search Project Name or Keyword
+          </label>
+          <input type="text" id="projectSearchInput" class="form-control" placeholder="e.g. Raghuveer Gears, Rajdeep Villa, Naroda, Bopal...">
+        </div>
+
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="industrial">Industrial</button>
+        <button class="filter-btn" data-filter="residential">Residential</button>
+        <button class="filter-btn" data-filter="hospital">Hospital</button>
+        <button class="filter-btn" data-filter="interior">Interior</button>
+      </div>
+
+      <!-- Projects Grid -->
+      <div class="projects-grid" id="projectsGrid">
+        <!-- Dynamically rendered via app.js -->
+      </div>
+    </div>
+  </section>
+
+{{> partials/footer}}

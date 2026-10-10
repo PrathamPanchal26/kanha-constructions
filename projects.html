@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects Showcase | Kanha Construction & Interior</title>
+  <meta name="description" content="Browse completed industrial, residential, hospital, and interior projects by Kanha Construction & Interior across Vatva, Kuha, Bopal, Chiloda, Naroda, and Ahmedabad.">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo-brand">
+        <div class="logo-icon">K</div>
+        <div class="logo-text">
+          <span class="logo-name">KANHA</span>
+          <span class="logo-sub">CONSTRUCTION & INTERIOR</span>
+        </div>
+      </a>
+
+      <!-- Mobile Hamburger Menu Button -->
+      <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Toggle Navigation Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <nav>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About Us</a></li>
+          <li><a href="services.html" class="nav-link">Services</a></li>
+          <li><a href="projects.html" class="nav-link active">Our Projects</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Banner -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="page-hero-subtitle">Our Completed Work</span>
+      <h1 class="page-hero-title">Featured Projects Showcase</h1>
+      <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+        Explore our architectural, industrial, residential villa, hospital, and interior project portfolio.
+      </p>
+    </div>
+  </section>
+
+  <!-- Projects Gallery Section -->
+  <section class="portfolio-section" style="padding: 60px 0 100px;">
+    <div class="container">
+
+      <!-- Project Name Search & Filter Controls -->
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-light); padding: 20px 24px; border-radius: var(--radius-lg); margin-bottom: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center;">
+        
+        <div>
+          <label style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <i class="fa-solid fa-list-check"></i> Filter by Project Name
+          </label>
+          <select id="projectNameSelect" class="form-control" style="background: var(--bg-dark); color: #fff;">
+            <option value="all">-- All Project Names --</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <i class="fa-solid fa-magnifying-glass"></i> Search Project Name or Keyword
+          </label>
+          <input type="text" id="projectSearchInput" class="form-control" placeholder="e.g. Raghuveer Gears, Rajdeep Villa, Naroda, Bopal...">
+        </div>
+
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="industrial">Industrial</button>
+        <button class="filter-btn" data-filter="residential">Residential</button>
+        <button class="filter-btn" data-filter="hospital">Hospital</button>
+        <button class="filter-btn" data-filter="interior">Interior</button>
+      </div>
+
+      <!-- Projects Grid -->
+      <div class="projects-grid" id="projectsGrid">
+        <!-- Dynamically rendered via app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Dynamic Categorized Project Gallery & Detail Modal -->
+  <div class="modal-backdrop" id="projectModal">
+    <div class="modal-container modal-gallery-layout">
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close Modal"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="modal-header-section">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap;">
+          <div>
+            <span class="badge-cat-tag" id="modalCategoryBadge">RESIDENTIAL</span>
+            <h2 class="modal-project-title" id="modalTitle">Project Title</h2>
+            <p class="modal-desc-text" id="modalDesc">Project Description</p>
+          </div>
+          <a href="contact.html" class="btn-primary" style="padding: 10px 20px; font-size: 0.85rem; flex-shrink: 0;">
+            Inquire Similar Project <i class="fa-solid fa-phone"></i>
+          </a>
+        </div>
+
+        <div class="modal-meta-bar">
+          <div class="meta-item"><i class="fa-solid fa-location-dot" style="color:var(--accent-cyan);"></i> Location: <strong id="modalLocation">AHMEDABAD</strong></div>
+          <div class="meta-item"><i class="fa-solid fa-ruler-combined" style="color:var(--accent-cyan);"></i> Area: <strong id="modalArea">5000 SQ. FT.</strong></div>
+          <div class="meta-item"><i class="fa-solid fa-layer-group" style="color:var(--accent-cyan);"></i> Type: <strong id="modalType">Turnkey Project</strong></div>
+        </div>
+
+        <!-- Project Gallery Category Filter Tabs -->
+        <div class="modal-gallery-tabs">
+          <button class="modal-tab-btn active" data-gallery-tab="all">
+            <i class="fa-solid fa-border-all"></i> All Gallery Photos
+          </button>
+          <button class="modal-tab-btn" data-gallery-tab="interior">
+            <i class="fa-solid fa-couch"></i> Interior Section
+          </button>
+          <button class="modal-tab-btn" data-gallery-tab="construction">
+            <i class="fa-solid fa-helmet-safety"></i> Construction & Structure
+          </button>
+          <button class="modal-tab-btn" data-gallery-tab="elevation">
+            <i class="fa-solid fa-building"></i> Facade & Elevation
+          </button>
+        </div>
+      </div>
+
+      <!-- Gallery Grid View -->
+      <div class="modal-gallery-body">
+        <div class="modal-gallery-grid" id="modalGalleryGrid">
+          <!-- Populated dynamically via app.js -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen Lightbox Image Viewer Overlay -->
+  <div class="lightbox-overlay" id="lightboxOverlay">
+    <button class="lightbox-close-btn" id="lightboxCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+    <button class="lightbox-nav-btn prev" id="lightboxPrevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="lightbox-nav-btn next" id="lightboxNextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+    
+    <div class="lightbox-content">
+      <img id="lightboxImg" src="" alt="Full Resolution View">
+      <div class="lightbox-caption">
+        <span id="lightboxTag" class="lightbox-tag">INTERIOR</span>
+        <h4 id="lightboxTitle">Photo Caption</h4>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="logo-brand">
+          <div class="logo-icon">K</div>
+          <div class="logo-text" style="text-align: left;">
+            <span class="logo-name">KANHA</span>
+            <span class="logo-sub">CONSTRUCTION & INTERIOR</span>
+          </div>
+        </div>
+
+        <p class="footer-copy">
+          &copy; 2026 KANHA Construction & Interior. All rights reserved. • Nikol, Ahmedabad <a href="admin.html" title="Admin Access" style="color: var(--text-dim); opacity: 0.3; text-decoration: none; margin-left: 6px;"><i class="fa-solid fa-lock"></i></a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile Quick Action Floating Call & WhatsApp Buttons -->
+  <div class="mobile-floating-actions">
+    <a href="https://wa.me/919898749575?text=Hello%20Kanha%20Team,%20I%20want%20to%20inquire%20about%20a%20project." target="_blank" rel="noopener" class="float-btn whatsapp" aria-label="WhatsApp Inquiry">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+    <a href="tel:+919898749575" class="float-btn call" aria-label="Call Now">
+      <i class="fa-solid fa-phone"></i>
+    </a>
+  </div>
+
+  <!-- Mobile App Bottom Navigation Dock -->
+  <div class="mobile-app-dock" id="mobileAppDock">
+    <a href="index.html" class="dock-item" data-page="home">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="about.html" class="dock-item" data-page="about">
+      <i class="fa-solid fa-user-group"></i>
+      <span>About</span>
+    </a>
+    <a href="projects.html" class="dock-item" data-page="projects">
+      <i class="fa-solid fa-briefcase"></i>
+      <span>Projects</span>
+    </a>
+    <a href="services.html" class="dock-item" data-page="services">
+      <i class="fa-solid fa-compass-drafting"></i>
+      <span>Services</span>
+    </a>
+    <a href="contact.html" class="dock-item" data-page="contact">
+      <i class="fa-solid fa-paper-plane"></i>
+      <span>Contact</span>
+    </a>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

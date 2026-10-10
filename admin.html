@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kanha Construction - Live Site Dynamic Admin Dashboard</title>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .admin-tab-nav {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 12px;
+    }
+    .admin-tab-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      color: var(--text-muted);
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition-smooth);
+    }
+    .admin-tab-btn:hover, .admin-tab-btn.active {
+      background: var(--accent-cyan);
+      color: var(--bg-dark);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+    }
+    .admin-tab-panel {
+      display: none;
+    }
+    .admin-tab-panel.active {
+      display: block;
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <!-- Admin Header -->
+  <header class="admin-header">
+    <div class="container admin-header-container">
+      <div class="admin-title-badge">
+        <a href="index.html" class="logo-brand">
+          <div class="logo-icon">K</div>
+          <div class="logo-text">
+            <span class="logo-name">KANHA</span>
+            <span class="logo-sub">LIVE SITE DYNAMIC ADMIN</span>
+          </div>
+        </a>
+        <span class="admin-tag"><i class="fa-solid fa-sliders"></i> Full Site CMS</span>
+      </div>
+
+      <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+        <button id="btnMasterReset" class="btn-secondary" style="padding: 10px 16px; font-size: 0.85rem; border-color: rgba(239, 68, 68, 0.4); color: #f87171;">
+          <i class="fa-solid fa-rotate-left"></i> Reset All Data to PDF Defaults
+        </button>
+        <a href="index.html" class="btn-secondary" style="padding: 10px 18px; font-size: 0.85rem;">
+          <i class="fa-solid fa-globe"></i> View Live Site
+        </a>
+        <button id="adminLogoutBtn" class="btn-sm-danger" style="padding: 10px 16px;">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- PIN Authentication Screen -->
+  <div class="admin-pin-screen" id="adminPinScreen">
+    <div class="pin-card">
+      <div class="pin-icon">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h2 style="font-size: 1.8rem; color: #fff; margin-bottom: 8px;">Admin Control Access</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">Enter PIN code to manage the entire live portfolio website.</p>
+
+      <form id="pinForm">
+        <div class="form-group">
+          <input type="password" id="pinInput" class="form-control" placeholder="Enter PIN (Default: 1234)" style="text-align: center; font-size: 1.4rem; letter-spacing: 6px;" required autofocus>
+        </div>
+
+        <p id="pinError" style="color: #ef4444; font-size: 0.85rem; display: none; margin-bottom: 16px; font-weight: 600;">
+          <i class="fa-solid fa-circle-exclamation"></i> Incorrect PIN code. Default PIN is 1234.
+        </p>
+
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+          Unlock Live CMS <i class="fa-solid fa-key"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main Admin Dashboard (Hidden until PIN verified) -->
+  <main class="container" id="adminDashboard" style="display: none; padding-top: 30px; padding-bottom: 80px;">
+
+    <!-- Admin Section Tabs -->
+    <div class="admin-tab-nav">
+      <button class="admin-tab-btn active" data-tab="tab-projects">
+        <i class="fa-solid fa-images"></i> Projects & Categorized Gallery
+      </button>
+      <button class="admin-tab-btn" data-tab="tab-company">
+        <i class="fa-solid fa-building"></i> Company & Contact Details
+      </button>
+      <button class="admin-tab-btn" data-tab="tab-hero">
+        <i class="fa-solid fa-rocket"></i> Hero Banner Section
+      </button>
+      <button class="admin-tab-btn" data-tab="tab-about">
+        <i class="fa-solid fa-circle-info"></i> About Us Story & Principles
+      </button>
+      <button class="admin-tab-btn" data-tab="tab-services">
+        <i class="fa-solid fa-cubes"></i> Services & Offerings
+      </button>
+      <button class="admin-tab-btn" data-tab="tab-stats">
+        <i class="fa-solid fa-chart-line"></i> Dynamic Counter Stats
+      </button>
+    </div>
+
+    <!-- TAB 1: Projects & Categorized Gallery Manager -->
+    <div class="admin-tab-panel active" id="tab-projects">
+      <div class="admin-layout" style="padding: 0;">
+        
+        <!-- Left: Form -->
+        <div class="admin-panel-card">
+          <h3 class="panel-title" id="formCardTitle">
+            <span><i class="fa-solid fa-plus-circle" style="color: var(--accent-cyan);"></i> Add / Edit Project</span>
+          </h3>
+
+          <form id="addProjectForm">
+            <div class="form-group">
+              <label for="projectTitle">Project Title *</label>
+              <input type="text" id="projectTitle" class="form-control" placeholder="e.g. Modern Residential Villa Elevation" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <div class="form-group">
+                <label for="projectCategory">Category *</label>
+                <select id="projectCategory" class="form-control" style="background: var(--bg-dark); color: #fff;">
+                  <option value="industrial">Industrial</option>
+                  <option value="residential">Residential</option>
+                  <option value="hospital">Hospital</option>
+                  <option value="interior">Interior</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="projectLocation">Location</label>
+                <input type="text" id="projectLocation" class="form-control" placeholder="e.g. Vatva, Kuha, Bopal">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <div class="form-group">
+                <label for="projectArea">Area (sq. ft.)</label>
+                <input type="text" id="projectArea" class="form-control" placeholder="e.g. 5,000 SQ. FT.">
+              </div>
+
+              <div class="form-group">
+                <label for="projectType">Type / Badge</label>
+                <input type="text" id="projectType" class="form-control" placeholder="Turnkey / Interior Project">
+              </div>
+            </div>
+
+            <!-- Image Upload or URL -->
+            <div class="form-group">
+              <label><i class="fa-solid fa-image" style="color: var(--accent-cyan);"></i> Main Cover Photo</label>
+              <div class="dropzone-upload" id="imageDropzone">
+                <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2rem; color: var(--accent-cyan); margin-bottom: 8px;"></i>
+                <p style="font-size: 0.85rem; color: var(--text-main); font-weight: 600;">Drag & drop photo here or click to browse</p>
+                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+              </div>
+              <input type="url" id="imageUrlInput" class="form-control" placeholder="OR enter photo URL: https://example.com/photo.jpg">
+              
+              <div class="preview-img-holder" id="previewHolder">
+                <img id="previewImg" src="" alt="Selected Photo Preview">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="projectDesc">Project Description</label>
+              <textarea id="projectDesc" class="form-control" placeholder="Enter architectural specs, client info, or design highlights..." style="min-height: 80px;"></textarea>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+              <button type="submit" class="btn-primary" id="btnSubmitForm" style="flex-grow: 1; justify-content: center;">
+                <i class="fa-solid fa-plus"></i> Save Project to Portfolio
+              </button>
+              <button type="button" class="btn-secondary" id="btnCancelEdit" onclick="cancelEdit()" style="display: none;">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right: Table -->
+        <div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+            <div style="background: var(--bg-surface); padding: 20px; border-radius: 12px; border: 1px solid var(--border-light); display: flex; align-items: center; gap: 16px;">
+              <div style="width: 48px; height: 48px; background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+                <i class="fa-solid fa-building"></i>
+              </div>
+              <div>
+                <h4 id="statTotalProjects" style="font-size: 1.6rem; color: #fff;">0</h4>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Total Portfolio Projects</p>
+              </div>
+            </div>
+
+            <div style="background: var(--bg-surface); padding: 20px; border-radius: 12px; border: 1px solid var(--border-light); display: flex; align-items: center; gap: 16px;">
+              <div style="width: 48px; height: 48px; background: rgba(20, 184, 166, 0.15); color: var(--accent-teal); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+                <i class="fa-solid fa-images"></i>
+              </div>
+              <div>
+                <h4 id="statTotalGalleryPhotos" style="font-size: 1.6rem; color: #fff;">0</h4>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Categorized Gallery Photos</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); overflow: hidden;">
+            <div style="overflow-x: auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Cover Photo</th>
+                    <th>Project Details</th>
+                    <th>Category</th>
+                    <th>Gallery Count</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminTableBody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 2: Company & Contact Info Manager -->
+    <div class="admin-tab-panel" id="tab-company">
+      <div class="admin-panel-card" style="max-width: 800px; margin: 0 auto;">
+        <h3 class="panel-title"><i class="fa-solid fa-building" style="color: var(--accent-cyan);"></i> Manage Company Branding & Contact Info</h3>
+        
+        <form id="companyForm">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="cmpName">Brand Name (Short)</label>
+              <input type="text" id="cmpName" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="cmpSubtitle">Brand Subtitle</label>
+              <input type="text" id="cmpSubtitle" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="cmpFullName">Full Registered Company Name</label>
+            <input type="text" id="cmpFullName" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label for="cmpTagline">Company Tagline</label>
+            <input type="text" id="cmpTagline" class="form-control" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="cmpPhone">Direct Phone Number</label>
+              <input type="text" id="cmpPhone" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="cmpEmail">Inbox Email Address (For Inquiry Notifications)</label>
+              <input type="email" id="cmpEmail" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="cmpAddress">Headquarters Address</label>
+            <input type="text" id="cmpAddress" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label for="cmpHours">Office Working Hours</label>
+            <input type="text" id="cmpHours" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label for="cmpInstagram">Instagram Profile URL</label>
+            <input type="url" id="cmpInstagram" class="form-control" required>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;">
+            <i class="fa-solid fa-floppy-disk"></i> Save Company Info & Branding
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- TAB 3: Hero Banner Manager -->
+    <div class="admin-tab-panel" id="tab-hero">
+      <div class="admin-panel-card" style="max-width: 800px; margin: 0 auto;">
+        <h3 class="panel-title"><i class="fa-solid fa-rocket" style="color: var(--accent-cyan);"></i> Manage Homepage Hero Banner</h3>
+
+        <form id="heroForm">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="heroTitle">Title Main (Word 1)</label>
+              <input type="text" id="heroTitle" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="heroTitleHighlight">Title Highlight (Word 2)</label>
+              <input type="text" id="heroTitleHighlight" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="heroEstBadge">Badge Text (Top Pill)</label>
+            <input type="text" id="heroEstBadge" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label for="heroTagline">Tagline</label>
+            <input type="text" id="heroTagline" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label for="heroDesc">Hero Description Paragraph</label>
+            <textarea id="heroDesc" class="form-control" style="min-height: 90px;" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="heroImg">Hero Cover Image URL</label>
+            <input type="url" id="heroImg" class="form-control" required>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;">
+            <i class="fa-solid fa-floppy-disk"></i> Update Hero Banner
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- TAB 4: About Us Content Manager -->
+    <div class="admin-tab-panel" id="tab-about">
+      <div class="admin-panel-card" style="max-width: 800px; margin: 0 auto;">
+        <h3 class="panel-title"><i class="fa-solid fa-circle-info" style="color: var(--accent-cyan);"></i> Manage About Us Content & Story</h3>
+
+        <form id="aboutForm">
+          <div class="form-group">
+            <label for="aboutTitle">Main Title</label>
+            <input type="text" id="aboutTitle" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label for="aboutSubtitle">Subtitle / Headline</label>
+            <input type="text" id="aboutSubtitle" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label for="aboutStory1">Story Paragraph 1</label>
+            <textarea id="aboutStory1" class="form-control" style="min-height: 90px;" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="aboutStory2">Story Paragraph 2</label>
+            <textarea id="aboutStory2" class="form-control" style="min-height: 90px;" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="aboutImg">About Us Section Cover Image URL</label>
+            <input type="url" id="aboutImg" class="form-control" required>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;">
+            <i class="fa-solid fa-floppy-disk"></i> Save About Us Content
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- TAB 5: Services & Offerings Manager -->
+    <div class="admin-tab-panel" id="tab-services">
+      <div class="admin-panel-card" style="max-width: 850px; margin: 0 auto;">
+        <h3 class="panel-title" id="srvFormCardTitle"><i class="fa-solid fa-cubes" style="color: var(--accent-cyan);"></i> Manage Specialized Services</h3>
+
+        <form id="serviceForm" style="margin-bottom: 30px; background: rgba(7, 25, 34, 0.5); padding: 24px; border-radius: 12px; border: 1px solid var(--border-light);">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="srvTitle">Service Title *</label>
+              <input type="text" id="srvTitle" class="form-control" placeholder="e.g. Architectural Design" required>
+            </div>
+
+            <div class="form-group">
+              <label for="srvIcon">FontAwesome Icon Class *</label>
+              <input type="text" id="srvIcon" class="form-control" placeholder="e.g. fa-solid fa-city" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="srvShortDesc">Short Summary (For Homepage Preview)</label>
+            <input type="text" id="srvShortDesc" class="form-control" placeholder="Brief 1-line overview..." required>
+          </div>
+
+          <div class="form-group">
+            <label for="srvFullDesc">Detailed Description (For Services Page)</label>
+            <textarea id="srvFullDesc" class="form-control" placeholder="Full service details..." style="min-height: 80px;" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="srvHighlights">Service Highlights (Comma Separated)</label>
+            <input type="text" id="srvHighlights" class="form-control" placeholder="e.g. 3D Elevation Renders, Villa Layouts, Sanction Plans">
+          </div>
+
+          <div class="form-group">
+            <label for="srvImage">Service Feature Image URL</label>
+            <input type="url" id="srvImage" class="form-control" placeholder="https://example.com/service.jpg">
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <button type="submit" class="btn-primary" id="btnSaveService" style="flex-grow: 1; justify-content: center;">
+              <i class="fa-solid fa-plus"></i> Save Service
+            </button>
+            <button type="button" class="btn-secondary" id="btnCancelSrv" onclick="cancelServiceEdit()" style="display: none;">
+              Cancel
+            </button>
+          </div>
+        </form>
+
+        <h4 style="color: #fff; margin-bottom: 14px;">Existing Services List</h4>
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Icon</th>
+                <th>Service Title</th>
+                <th>Short Summary</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="servicesAdminTable">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: Dynamic Counter Stats Manager -->
+    <div class="admin-tab-panel" id="tab-stats">
+      <div class="admin-panel-card" style="max-width: 800px; margin: 0 auto;">
+        <h3 class="panel-title"><i class="fa-solid fa-chart-line" style="color: var(--accent-cyan);"></i> Dynamic Stat Ribbon Numbers</h3>
+
+        <form id="statsConfigForm" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+          <div class="form-group">
+            <label>Delivered Projects Counter</label>
+            <input type="text" id="cfgProjects" class="form-control" placeholder="Auto (e.g. 50+)">
+          </div>
+          <div class="form-group">
+            <label>Largest Facility Sq. Ft.</label>
+            <input type="text" id="cfgSqFt" class="form-control" placeholder="Auto (e.g. 15K+)">
+          </div>
+          <div class="form-group">
+            <label>On-Time Execution Rate</label>
+            <input type="text" id="cfgOnTime" class="form-control" placeholder="100%">
+          </div>
+          <div class="form-group">
+            <label>Specializations Count</label>
+            <input type="text" id="cfgSpecs" class="form-control" placeholder="Auto (e.g. 5)">
+          </div>
+          <div style="grid-column: 1 / -1; text-align: right; margin-top: 10px;">
+            <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+              <i class="fa-solid fa-floppy-disk"></i> Update Stat Ribbon Numbers
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

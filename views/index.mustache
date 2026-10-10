@@ -1,0 +1,172 @@
+{{> partials/header}}
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="geo-accent-1"></div>
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="badge-est">
+            <i class="fa-solid fa-award"></i> Established Since {{establishedYear}} • {{location}}
+          </div>
+          <h1 class="hero-title">
+            KANHA <span>CONSTRUCTION</span> & INTERIOR
+          </h1>
+          <div class="hero-tagline">
+            <i class="fa-solid fa-sparkles"></i> {{tagline}}
+          </div>
+          <p class="hero-desc">
+            {{companyIntro}}
+          </p>
+
+          <div class="hero-actions">
+            <a href="/projects" class="btn-primary">
+              Explore Portfolio <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <a href="/contact" class="btn-secondary">
+              Get In Touch <i class="fa-solid fa-paper-plane"></i>
+            </a>
+            <a href="https://www.instagram.com/kanha_construction_interiors?igsh=aGZ2YzN1anE4Z3N3" target="_blank" rel="noopener" class="btn-secondary" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; border: none;">
+              <i class="fa-brands fa-instagram" style="font-size: 1.1rem;"></i> Instagram
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-img-frame">
+            <img src="/assets/images/kanha_hero_facade_1791296928268.jpg" alt="Kanha Architecture Facade" onerror="this.src='https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80'">
+          </div>
+          <div class="hero-floating-card">
+            <div class="card-icon">
+              <i class="fa-solid fa-building-circle-check"></i>
+            </div>
+            <div class="card-info">
+              <h4>Turnkey Excellence</h4>
+              <p>End-to-End Execution</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{> partials/stats}}
+
+  <!-- About Company Preview -->
+  <section style="padding: 80px 0; background: var(--bg-dark);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">Who We Are</span>
+        <h2 class="section-title">About Our Company</h2>
+        <p class="section-desc">
+          Kanha Construction and Interior is a trusted name in the field of construction and interior solutions.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; background: var(--bg-surface); padding: 40px; border-radius: var(--radius-lg); border: 1px solid var(--border-light);">
+        <div>
+          <h3 style="font-size: 1.8rem; color: #fff; margin-bottom: 16px;">Combining Functionality, Aesthetics, and Durability</h3>
+          <p style="color: var(--text-muted); margin-bottom: 20px; line-height: 1.8;">
+            We specialize in residential, commercial, and interior works, offering end-to-end turnkey solutions that bring visionary architecture into reality. Our team combines structural safety with bespoke aesthetic detailing.
+          </p>
+          <ul style="list-style: none; color: var(--text-main); display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+            <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-circle-check" style="color: var(--accent-cyan);"></i> Quality-Driven Project Engineering</li>
+            <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-circle-check" style="color: var(--accent-cyan);"></i> Turnkey Architectural & Interior Execution</li>
+            <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-circle-check" style="color: var(--accent-cyan);"></i> Transparent Timeline & Safety Compliance</li>
+          </ul>
+
+          <a href="/about" class="btn-primary">Read Full Company Profile <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div>
+          <img src="/assets/images/rajdeep_villa_residential_1791296998090.jpg" alt="Kanha Villa Project" style="width: 100%; border-radius: 12px; border: 1px solid var(--border-light);" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Preview Section -->
+  <section class="services-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">What We Offer</span>
+        <h2 class="section-title">Our Specialized Services</h2>
+        <p class="section-desc">Comprehensive architectural, structural, and interior design expertise</p>
+      </div>
+
+      <div class="services-grid">
+        {{#services}}
+        <div class="service-card">
+          <div class="service-icon"><i class="{{icon}}"></i></div>
+          <h3 class="service-title">{{title}}</h3>
+          <p class="service-desc">{{description}}</p>
+        </div>
+        {{/services}}
+      </div>
+
+      <div style="text-align: center; margin-top: 40px;">
+        <a href="/services" class="btn-secondary">Explore All 5 Specializations <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Projects Preview Section -->
+  <section class="portfolio-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">Our Work</span>
+        <h2 class="section-title">Featured Projects</h2>
+        <p class="section-desc">Preview our recent industrial, residential, and interior project handovers.</p>
+      </div>
+
+      <!-- Projects Grid rendered dynamically via Mustache & JS -->
+      <div class="projects-grid" id="projectsGrid">
+        {{#featuredProjects}}
+        <div class="project-card" data-id="{{id}}">
+          <div class="project-img-wrapper" onclick="handleProjectClick('{{id}}')" style="cursor: pointer;">
+            <img src="{{image}}" alt="{{title}}" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
+            <span class="project-badge-cat">{{category}}</span>
+          </div>
+          
+          <div class="project-content">
+            <div class="project-meta">
+              <span class="project-meta-item"><i class="fa-solid fa-location-dot" style="color:var(--accent-cyan)"></i> {{location}}</span>
+              <span>•</span>
+              <span class="project-meta-item"><i class="fa-solid fa-ruler-combined" style="color:var(--accent-cyan)"></i> {{area}}</span>
+            </div>
+
+            <h3 class="project-title" onclick="handleProjectClick('{{id}}')" style="cursor: pointer;">{{title}}</h3>
+            <p class="project-desc">{{description}}</p>
+
+            <div class="project-footer">
+              <span class="project-type-tag"><i class="fa-solid fa-images"></i> Project Gallery</span>
+              
+              <button class="btn-project-link" onclick="handleProjectClick('{{id}}')">
+                View Gallery <i class="fa-solid fa-images"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        {{/featuredProjects}}
+      </div>
+
+      <div style="text-align: center; margin-top: 50px;">
+        <a href="/projects" class="btn-primary" style="padding: 16px 36px;">
+          View All Projects & Filter by Category <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner to Contact -->
+  <section style="background: var(--bg-surface); padding: 80px 0; border-t: 1px solid var(--border-light); text-align: center;">
+    <div class="container">
+      <h2 style="font-size: 2.4rem; color: #fff; margin-bottom: 16px;">Have a Project in Mind?</h2>
+      <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 1.1rem;">Talk to our lead architects & structural engineers today.</p>
+      <a href="/contact" class="btn-primary" style="font-size: 1rem; padding: 16px 32px;">
+        Get A Free Consultation <i class="fa-solid fa-phone"></i>
+      </a>
+    </div>
+  </section>
+
+{{> partials/footer}}

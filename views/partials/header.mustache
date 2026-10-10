@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{pageTitle}} | {{companyName}}</title>
+  <meta name="description" content="{{metaDescription}}">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="logo-brand">
+        <div class="logo-icon">K</div>
+        <div class="logo-text">
+          <span class="logo-name">KANHA</span>
+          <span class="logo-sub">CONSTRUCTION & INTERIOR</span>
+        </div>
+      </a>
+
+      <!-- Mobile Hamburger Menu Button -->
+      <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Toggle Navigation Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <nav>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="/" class="nav-link {{#isHome}}active{{/isHome}}">Home</a></li>
+          <li><a href="/about" class="nav-link {{#isAbout}}active{{/isAbout}}">About Us</a></li>
+          <li><a href="/services" class="nav-link {{#isServices}}active{{/isServices}}">Services</a></li>
+          <li><a href="/projects" class="nav-link {{#isProjects}}active{{/isProjects}}">Our Projects</a></li>
+          <li><a href="/contact" class="nav-link {{#isContact}}active{{/isContact}}">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{pageTitle}} | {{companyName}}</title>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="admin-body">
+
+  <!-- Admin Header -->
+  <header class="admin-header">
+    <div class="container admin-header-container">
+      <div class="admin-title-badge">
+        <a href="/" class="logo-brand">
+          <div class="logo-icon">K</div>
+          <div class="logo-text">
+            <span class="logo-name">KANHA</span>
+            <span class="logo-sub">ADMIN DASHBOARD</span>
+          </div>
+        </a>
+        <span class="admin-tag"><i class="fa-solid fa-user-shield"></i> Admin Panel</span>
+      </div>
+
+      <div style="display: flex; gap: 16px; align-items: center;">
+        <a href="/" class="btn-secondary" style="padding: 10px 20px; font-size: 0.9rem;">
+          <i class="fa-solid fa-globe"></i> View Live Portfolio
+        </a>
+        <button id="adminLogoutBtn" class="btn-sm-danger" style="padding: 10px 18px;">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- PIN Authentication Screen -->
+  <div class="admin-pin-screen" id="adminPinScreen">
+    <div class="pin-card">
+      <div class="pin-icon">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h2 style="font-size: 1.8rem; color: #fff; margin-bottom: 8px;">Admin Access</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">Enter security PIN code to access project photo management.</p>
+
+      <form id="pinForm">
+        <div class="form-group">
+          <input type="password" id="pinInput" class="form-control" placeholder="Enter PIN (Default: 1234)" style="text-align: center; font-size: 1.4rem; letter-spacing: 6px;" required autofocus>
+        </div>
+
+        <p id="pinError" style="color: #ef4444; font-size: 0.85rem; display: none; margin-bottom: 16px; font-weight: 600;">
+          <i class="fa-solid fa-circle-exclamation"></i> Incorrect PIN code. Default PIN is 1234.
+        </p>
+
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+          Unlock Dashboard <i class="fa-solid fa-key"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main Admin Dashboard (Hidden until PIN verified) -->
+  <main class="container admin-layout" id="adminDashboard" style="display: none;">
+
+    <!-- Left Column: Add / Edit Form -->
+    <div class="admin-panel-card">
+      <h3 class="panel-title" id="formCardTitle">
+        <span><i class="fa-solid fa-plus-circle" style="color: var(--accent-cyan);"></i> Add New Photo / Project</span>
+      </h3>
+
+      <form id="addProjectForm">
+        <div class="form-group">
+          <label for="projectTitle">Project / Photo Title *</label>
+          <input type="text" id="projectTitle" class="form-control" placeholder="e.g. Modern Residential Villa Elevation" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group">
+            <label for="projectCategory">Category *</label>
+            <select id="projectCategory" class="form-control" style="background: var(--bg-dark); color: #fff;">
+              <option value="industrial">Industrial</option>
+              <option value="residential">Residential</option>
+              <option value="hospital">Hospital</option>
+              <option value="interior">Interior</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="projectLocation">Location</label>
+            <input type="text" id="projectLocation" class="form-control" placeholder="e.g. Vatva, Kuha, Bopal">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group">
+            <label for="projectArea">Area (sq. ft.)</label>
+            <input type="text" id="projectArea" class="form-control" placeholder="e.g. 5,000 SQ. FT.">
+          </div>
+
+          <div class="form-group">
+            <label for="projectType">Type / Badge</label>
+            <input type="text" id="projectType" class="form-control" placeholder="Turnkey / Interior Project">
+          </div>
+        </div>
+
+        <!-- Image Upload or URL Input -->
+        <div class="form-group">
+          <label><i class="fa-solid fa-image" style="color: var(--accent-cyan);"></i> Upload Photo or Image File</label>
+          <div class="dropzone-upload" id="imageDropzone">
+            <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2rem; color: var(--accent-cyan); margin-bottom: 8px;"></i>
+            <p style="font-size: 0.85rem; color: var(--text-main); font-weight: 600;">Drag & drop photo here or click to browse</p>
+            <p style="font-size: 0.75rem; color: var(--text-dim);">Supports JPG, PNG, WEBP</p>
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+          </div>
+
+          <p style="text-align: center; color: var(--text-dim); font-size: 0.8rem; margin: 8px 0;">— OR ENTER IMAGE URL —</p>
+
+          <input type="url" id="imageUrlInput" class="form-control" placeholder="https://example.com/photo.jpg">
+          
+          <div class="preview-img-holder" id="previewHolder">
+            <img id="previewImg" src="" alt="Selected Photo Preview">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="projectDesc">Project Description</label>
+          <textarea id="projectDesc" class="form-control" placeholder="Enter architectural specs, client info, or design highlights..." style="min-height: 80px;"></textarea>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button type="submit" class="btn-primary" id="btnSubmitForm" style="flex-grow: 1; justify-content: center;">
+            <i class="fa-solid fa-plus"></i> Save Project & Gallery
+          </button>
+          <button type="button" class="btn-secondary" id="btnCancelEdit" onclick="cancelEdit()" style="display: none;">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Right Column: Projects & Photo Management Table -->
+    <div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="font-size: 1.4rem; color: #fff;">Manage Portfolio Projects & Gallery</h3>
+        <button id="btnResetDefaults" class="btn-secondary" style="font-size: 0.8rem; padding: 8px 14px;">
+          <i class="fa-solid fa-rotate-left"></i> Reset to PDF Defaults
+        </button>
+      </div>
+
+      <!-- Quick Summary Cards -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+        <div style="background: var(--bg-surface); padding: 20px; border-radius: 12px; border: 1px solid var(--border-light); display: flex; align-items: center; gap: 16px;">
+          <div style="width: 48px; height: 48px; background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+            <i class="fa-solid fa-building"></i>
+          </div>
+          <div>
+            <h4 id="statTotalProjects" style="font-size: 1.6rem; color: #fff;">0</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">Total Portfolio Projects</p>
+          </div>
+        </div>
+
+        <div style="background: var(--bg-surface); padding: 20px; border-radius: 12px; border: 1px solid var(--border-light); display: flex; align-items: center; gap: 16px;">
+          <div style="width: 48px; height: 48px; background: rgba(20, 184, 166, 0.15); color: var(--accent-teal); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+            <i class="fa-solid fa-images"></i>
+          </div>
+          <div>
+            <h4 id="statTotalGalleryPhotos" style="font-size: 1.6rem; color: #fff;">0</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">Categorized Gallery Photos</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dynamic Counter Stats Manager -->
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-glow); padding: 20px; border-radius: var(--radius-lg); margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <h4 style="color: var(--accent-cyan); font-size: 1.05rem; font-weight: 700;">
+            <i class="fa-solid fa-chart-line"></i> Dynamic Stat Ribbon Numbers
+          </h4>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Auto-calculated live from portfolio database or custom text</span>
+        </div>
+
+        <form id="statsConfigForm" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+          <div>
+            <label style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">Delivered Projects</label>
+            <input type="text" id="cfgProjects" class="form-control" placeholder="Auto (e.g. 50+)" style="padding: 8px 12px; font-size: 0.85rem;">
+          </div>
+          <div>
+            <label style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">Largest Facility</label>
+            <input type="text" id="cfgSqFt" class="form-control" placeholder="Auto (e.g. 15K+)" style="padding: 8px 12px; font-size: 0.85rem;">
+          </div>
+          <div>
+            <label style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">On-Time %</label>
+            <input type="text" id="cfgOnTime" class="form-control" placeholder="100%" style="padding: 8px 12px; font-size: 0.85rem;">
+          </div>
+          <div>
+            <label style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">Specializations</label>
+            <input type="text" id="cfgSpecs" class="form-control" placeholder="Auto (e.g. 5)" style="padding: 8px 12px; font-size: 0.85rem;">
+          </div>
+          <div style="grid-column: 1 / -1; text-align: right; margin-top: 4px;">
+            <button type="submit" class="btn-primary" style="padding: 8px 18px; font-size: 0.85rem;">
+              <i class="fa-solid fa-floppy-disk"></i> Update Counter Stats
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Table Card -->
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); overflow: hidden;">
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Cover Photo</th>
+                <th>Project Details</th>
+                <th>Category</th>
+                <th>Gallery Count</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody">
+              <!-- Dynamically populated via admin.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="/js/data.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

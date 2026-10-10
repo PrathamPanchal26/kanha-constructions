@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | Kanha Construction & Interior</title>
+  <meta name="description" content="Get in touch with Kanha Construction & Interior in Nikol, Ahmedabad, Gujarat. Call +91 9898749575 or email kanha.consinterio@gmail.com for turnkey inquiries.">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo-brand">
+        <div class="logo-icon">K</div>
+        <div class="logo-text">
+          <span class="logo-name">KANHA</span>
+          <span class="logo-sub">CONSTRUCTION & INTERIOR</span>
+        </div>
+      </a>
+
+      <!-- Mobile Hamburger Menu Button -->
+      <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Toggle Navigation Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <nav>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About Us</a></li>
+          <li><a href="services.html" class="nav-link">Services</a></li>
+          <li><a href="projects.html" class="nav-link">Our Projects</a></li>
+          <li><a href="contact.html" class="nav-link active">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Banner -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="page-hero-subtitle">Get In Touch</span>
+      <h1 class="page-hero-title">Contact Kanha Construction</h1>
+      <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+        Have a project idea or structural requirement? Contact our engineering team today for a free consultation.
+      </p>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section" style="padding: 80px 0;">
+    <div class="container">
+      <div class="contact-grid">
+        
+        <!-- Contact Cards -->
+        <div class="contact-card-info">
+          <h3 style="font-size: 1.5rem; color: #fff;">Direct Contact Information</h3>
+
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
+            <div class="contact-details">
+              <h4>Phone Number</h4>
+              <a href="tel:+919898749575">+91 9898749575</a>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+            <div class="contact-details">
+              <h4>Email Address</h4>
+              <a href="mailto:kanha.consinterio@gmail.com">kanha.consinterio@gmail.com</a>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="contact-details">
+              <h4>Headquarters Location</h4>
+              <p>Nikol, Ahmedabad, Gujarat, India</p>
+            </div>
+          </div>
+
+          <div style="background: rgba(7, 25, 34, 0.6); padding: 20px; border-radius: 12px; border: 1px solid var(--border-light); margin-top: 10px;">
+            <h4 style="color: #fff; font-size: 1rem; margin-bottom: 6px;"><i class="fa-solid fa-business-time" style="color: var(--accent-cyan);"></i> Office Working Hours</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Monday - Saturday: 9:00 AM - 7:00 PM IST</p>
+          </div>
+        </div>
+
+        <!-- Inquiry Form -->
+        <form id="contactForm" style="background: var(--bg-card); padding: 40px; border-radius: var(--radius-lg); border: 1px solid var(--border-light);">
+          <h3 style="font-size: 1.5rem; color: #fff; margin-bottom: 24px;">Send Project Inquiry</h3>
+          
+          <div class="form-group">
+            <label for="contactName">Your Full Name *</label>
+            <input type="text" id="contactName" class="form-control" placeholder="e.g. Rajesh Patel" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="contactPhone">Phone Number *</label>
+              <input type="tel" id="contactPhone" class="form-control" placeholder="+91 98987XXXXX" required>
+            </div>
+
+            <div class="form-group">
+              <label for="contactCategory">Requirement Type</label>
+              <select id="contactCategory" class="form-control" style="color:#fff; background: var(--bg-dark);">
+                <option value="turnkey">Turnkey Project</option>
+                <option value="residential">Residential Villa / Bungalow</option>
+                <option value="industrial">Industrial Facility</option>
+                <option value="interior">Interior Design</option>
+                <option value="hospital">Hospital Project</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="contactMessage">Project Details / Specifications *</label>
+            <textarea id="contactMessage" class="form-control" placeholder="Describe your site location, plot area, or design ideas..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+            Submit Inquiry <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+
+      </div>
+
+      <!-- Interactive Google Maps Location Section -->
+      <div style="margin-top: 60px; background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); overflow: hidden; padding: 28px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <span style="color: var(--accent-cyan); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 4px;">
+              <i class="fa-solid fa-map-location-dot"></i> Live Map Location
+            </span>
+            <h3 style="font-size: 1.6rem; color: #fff; margin: 0;">Kanha Construction and Interior</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Nikol, Ahmedabad, Gujarat, India (Near Shreenath Party Plot)</p>
+          </div>
+
+          <a href="https://www.google.com/maps/search/?api=1&query=Kanha+Construction+and+Interior+Nikol+Ahmedabad" target="_blank" rel="noopener" class="btn-primary" style="padding: 10px 22px; font-size: 0.85rem;">
+            Open in Google Maps <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+        </div>
+
+        <div style="width: 100%; height: 440px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-light);">
+          <iframe 
+            src="https://maps.google.com/maps?q=Kanha%20Construction%20and%20Interior%20Nikol%20Ahmedabad&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="logo-brand">
+          <div class="logo-icon">K</div>
+          <div class="logo-text" style="text-align: left;">
+            <span class="logo-name">KANHA</span>
+            <span class="logo-sub">CONSTRUCTION & INTERIOR</span>
+          </div>
+        </div>
+
+        <p class="footer-copy">
+          &copy; 2026 KANHA Construction & Interior. All rights reserved. • Nikol, Ahmedabad <a href="admin.html" title="Admin Access" style="color: var(--text-dim); opacity: 0.3; text-decoration: none; margin-left: 6px;"><i class="fa-solid fa-lock"></i></a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile Quick Action Floating Call & WhatsApp Buttons -->
+  <div class="mobile-floating-actions">
+    <a href="https://wa.me/919898749575?text=Hello%20Kanha%20Team,%20I%20want%20to%20inquire%20about%20a%20project." target="_blank" rel="noopener" class="float-btn whatsapp" aria-label="WhatsApp Inquiry">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+    <a href="tel:+919898749575" class="float-btn call" aria-label="Call Now">
+      <i class="fa-solid fa-phone"></i>
+    </a>
+  </div>
+
+  <!-- Mobile App Bottom Navigation Dock -->
+  <div class="mobile-app-dock" id="mobileAppDock">
+    <a href="index.html" class="dock-item" data-page="home">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="about.html" class="dock-item" data-page="about">
+      <i class="fa-solid fa-user-group"></i>
+      <span>About</span>
+    </a>
+    <a href="projects.html" class="dock-item" data-page="projects">
+      <i class="fa-solid fa-briefcase"></i>
+      <span>Projects</span>
+    </a>
+    <a href="services.html" class="dock-item" data-page="services">
+      <i class="fa-solid fa-compass-drafting"></i>
+      <span>Services</span>
+    </a>
+    <a href="contact.html" class="dock-item" data-page="contact">
+      <i class="fa-solid fa-paper-plane"></i>
+      <span>Contact</span>
+    </a>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
