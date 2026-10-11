@@ -2927,19 +2927,401 @@ footer {
   .modal-container {
     margin-bottom: 20px;
   }
+}
 
-  /* Admin Toolbar Responsive */
-  .admin-toolbar-left {
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
-    max-width: 100%;
+/* ==========================================================================
+   PROFESSIONAL PHONE & TABLET RESPONSIVE SYSTEM (Admin & Portfolio)
+   ========================================================================== */
+
+/* Desktop defaults: Hide mobile-only elements */
+.admin-mobile-toggle-btn,
+.admin-sidebar-backdrop,
+.admin-mobile-tab-strip {
+  display: none;
+}
+
+/* Detail Hero Grid Desktop default */
+.project-detail-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 40px;
+  align-items: center;
+}
+
+/* Tablet & Mobile Breakpoint (≤ 992px) */
+@media (max-width: 992px) {
+  /* Admin Shell switches to full-width mobile viewport */
+  .admin-shell {
+    flex-direction: column !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    position: relative;
   }
 
-  .admin-filter-select {
-    width: 100%;
+  /* Admin Sidebar transforms into Off-Canvas Mobile Drawer */
+  .admin-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: -320px !important;
+    width: 290px !important;
+    max-width: 85vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    z-index: 2500 !important;
+    background: #071922 !important;
+    box-shadow: none;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  .admin-sidebar.mobile-open {
+    left: 0 !important;
+    box-shadow: 12px 0 50px rgba(0, 0, 0, 0.85) !important;
+  }
+
+  /* Backdrop Overlay */
+  .admin-sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 2490;
+    transition: opacity 0.3s ease;
+  }
+
+  .admin-sidebar-backdrop.active {
+    display: block !important;
+  }
+
+  /* Admin Topbar Mobile Layout */
+  .admin-topbar {
+    height: 60px !important;
+    padding: 0 16px !important;
+    top: 0;
+    z-index: 95;
+    background: rgba(7, 25, 34, 0.95) !important;
+  }
+
+  .admin-mobile-toggle-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    color: var(--accent-cyan);
+    font-size: 1.1rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: var(--transition-smooth);
+  }
+
+  .admin-mobile-toggle-btn:active {
+    transform: scale(0.92);
+  }
+
+  .admin-topbar-title h2 {
+    font-size: 1.05rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 170px;
+  }
+
+  .admin-topbar-title p {
+    display: none !important;
+  }
+
+  /* Horizontal Swipeable App Tab Strip for Mobile Admin */
+  .admin-mobile-tab-strip {
+    display: flex !important;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 10px 14px;
+    background: #06161f;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    position: sticky;
+    top: 60px;
+    z-index: 90;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .admin-mobile-tab-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .admin-mobile-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 50px;
+    background: #09202b;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    white-space: nowrap;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: var(--transition-smooth);
+  }
+
+  .admin-mobile-pill i {
+    font-size: 0.85rem;
+  }
+
+  .admin-mobile-pill.active {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(20, 184, 166, 0.22));
+    color: #fff;
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+  }
+
+  .admin-content-area {
+    padding: 16px 14px 60px !important;
+    width: 100% !important;
+    overflow-x: hidden;
   }
 }
 
+/* Smartphone View (≤ 768px) */
+@media (max-width: 768px) {
+  /* Public site body has spacing for bottom dock; Admin does not */
+  body:not(.admin-body) {
+    padding-bottom: 74px !important;
+  }
 
+  body.admin-body {
+    padding-bottom: 0 !important;
+  }
 
+  /* Admin Metric Stats Cards Mobile Grid */
+  .admin-stats-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .admin-stat-card {
+    padding: 12px 14px !important;
+    gap: 10px !important;
+    border-radius: 12px !important;
+  }
+
+  .admin-stat-icon {
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 16px !important;
+    border-radius: 10px !important;
+  }
+
+  .admin-stat-info h3 {
+    font-size: 1.25rem !important;
+  }
+
+  .admin-stat-info p {
+    font-size: 0.7rem !important;
+  }
+
+  /* Admin Toolbar Mobile */
+  .admin-toolbar {
+    padding: 12px !important;
+    gap: 10px !important;
+    border-radius: 12px !important;
+  }
+
+  .admin-toolbar-left {
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 10px !important;
+  }
+
+  .admin-search-box {
+    width: 100% !important;
+  }
+
+  .admin-search-box input {
+    height: 46px !important;
+    min-height: 46px !important;
+    font-size: 0.88rem !important;
+    padding: 10px 18px 10px 46px !important;
+  }
+
+  .admin-filter-select {
+    width: 100% !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    font-size: 0.88rem !important;
+  }
+
+  .admin-toolbar-right {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  /* Admin Projects Showcase Cards Mobile Grid */
+  .admin-projects-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .admin-proj-card {
+    border-radius: 14px !important;
+  }
+
+  /* Photo Studio Mobile Grid: Professional 2-Column Pinterest-Style */
+  .photo-studio-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .photo-studio-card,
+  .gallery-card-item {
+    border-radius: 10px !important;
+  }
+
+  .photo-studio-body,
+  .gallery-card-body {
+    padding: 8px 10px !important;
+    gap: 4px !important;
+  }
+
+  .photo-studio-title,
+  .gallery-card-title {
+    font-size: 0.72rem !important;
+  }
+
+  /* Gallery Section Block on Mobile */
+  .gallery-section-block {
+    padding: 14px !important;
+    border-radius: 14px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .gallery-section-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    padding-bottom: 12px !important;
+  }
+
+  .gallery-sec-icon-circle {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 1rem !important;
+  }
+
+  .gallery-sec-info h3 {
+    font-size: 1rem !important;
+  }
+
+  /* Admin Form Settings Cards on Mobile */
+  .admin-settings-card {
+    padding: 18px 14px !important;
+    border-radius: 14px !important;
+  }
+
+  .settings-card-head {
+    margin-bottom: 16px !important;
+    padding-bottom: 12px !important;
+  }
+
+  .settings-card-head h3 {
+    font-size: 1.1rem !important;
+  }
+
+  .admin-form-grid-2,
+  .admin-form-grid-3 {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Modals on Mobile Phones */
+  .admin-modal-overlay {
+    padding: 8px !important;
+  }
+
+  .admin-modal-dialog {
+    width: 96% !important;
+    max-width: 96% !important;
+    max-height: 94vh !important;
+    max-height: 94dvh !important;
+    border-radius: 14px !important;
+    margin: auto !important;
+  }
+
+  .admin-modal-head {
+    padding: 14px 18px !important;
+  }
+
+  .admin-modal-head h3 {
+    font-size: 1.05rem !important;
+  }
+
+  .admin-modal-content {
+    padding: 16px 14px !important;
+  }
+
+  /* Public Portfolio Project Detail Mobile */
+  .project-detail-grid {
+    grid-template-columns: 1fr !important;
+    gap: 22px !important;
+  }
+
+  #detailCoverImg {
+    height: 240px !important;
+    border-radius: 14px !important;
+  }
+
+  .detail-hero-title {
+    font-size: 1.65rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .detail-meta-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Contact Page Mobile */
+  .contact-section form#contactForm {
+    padding: 22px 16px !important;
+    border-radius: 14px !important;
+  }
+
+  .contact-card-info {
+    padding: 22px 16px !important;
+    border-radius: 14px !important;
+  }
+
+  /* Hide long button text on small mobile screens */
+  .hide-mobile-sm {
+    display: none;
+  }
+}
+
+/* Small Smart Phones (≤ 420px) */
+@media (max-width: 420px) {
+  .admin-stats-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .gallery-card-controls {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .gallery-card-controls button {
+    width: 100% !important;
+  }
+}

@@ -112,6 +112,36 @@ function highlightMobileDockActiveItem() {
   });
 }
 
+// Setup Mobile Navigation Menu Drawer & Hamburger
+function setupMobileMenu() {
+  const menuBtn = document.getElementById('mobileMenuBtn');
+  const navLinks = document.getElementById('navLinks');
+  if (!menuBtn || !navLinks) return;
+
+  menuBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = navLinks.classList.toggle('mobile-open');
+    menuBtn.innerHTML = isOpen ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
+    menuBtn.setAttribute('aria-expanded', isOpen);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
+      navLinks.classList.remove('mobile-open');
+      menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+      menuBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('mobile-open');
+      menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
+
 // 2. Hydrate Hero Section (Homepage)
 function hydrateHeroSection() {
   const heroTitleElem = document.querySelector('.hero-title');

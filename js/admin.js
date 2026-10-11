@@ -127,28 +127,69 @@ const TAB_TITLES = {
 
 function setupTabNavigation() {
   const tabBtns = document.querySelectorAll('.admin-tab-btn');
+  const mobilePills = document.querySelectorAll('.admin-mobile-pill');
   const tabPanels = document.querySelectorAll('.admin-tab-panel');
   const topTitle = document.getElementById('topbarSectionTitle');
   const topDesc = document.getElementById('topbarSectionDesc');
+  const sidebar = document.querySelector('.admin-sidebar');
+  const sidebarToggle = document.getElementById('adminSidebarToggle');
+  const backdrop = document.getElementById('adminSidebarBackdrop');
 
+  function activateTab(panelId) {
+    tabBtns.forEach(b => {
+      b.classList.toggle('active', b.getAttribute('data-tab') === panelId);
+    });
+    mobilePills.forEach(p => {
+      p.classList.toggle('active', p.getAttribute('data-tab') === panelId);
+    });
+    tabPanels.forEach(p => {
+      p.classList.toggle('active', p.id === panelId);
+    });
+
+    if (TAB_TITLES[panelId]) {
+      if (topTitle) topTitle.textContent = TAB_TITLES[panelId].title;
+      if (topDesc) topDesc.textContent = TAB_TITLES[panelId].desc;
+    }
+
+    // Auto-close mobile sidebar drawer upon selecting a tab
+    if (sidebar && sidebar.classList.contains('mobile-open')) {
+      sidebar.classList.remove('mobile-open');
+      if (backdrop) backdrop.classList.remove('active');
+    }
+  }
+
+  // Sidebar Desktop & Drawer Tabs
   tabBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
-      tabBtns.forEach(b => b.classList.remove('active'));
-      tabPanels.forEach(p => p.classList.remove('active'));
-
-      const targetTab = e.currentTarget;
-      targetTab.classList.add('active');
-      
-      const panelId = targetTab.getAttribute('data-tab');
-      const targetPanel = document.getElementById(panelId);
-      if (targetPanel) targetPanel.classList.add('active');
-
-      if (TAB_TITLES[panelId]) {
-        if (topTitle) topTitle.textContent = TAB_TITLES[panelId].title;
-        if (topDesc) topDesc.textContent = TAB_TITLES[panelId].desc;
-      }
+      const panelId = e.currentTarget.getAttribute('data-tab');
+      activateTab(panelId);
     });
   });
+
+  // Mobile App Swipeable Tabs
+  mobilePills.forEach(pill => {
+    pill.addEventListener('click', (e) => {
+      const panelId = e.currentTarget.getAttribute('data-tab');
+      activateTab(panelId);
+    });
+  });
+
+  // Mobile Drawer Toggle
+  if (sidebarToggle && sidebar) {
+    sidebarToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = sidebar.classList.toggle('mobile-open');
+      if (backdrop) backdrop.classList.toggle('active', isOpen);
+    });
+  }
+
+  // Close Drawer on Backdrop Tap
+  if (backdrop && sidebar) {
+    backdrop.addEventListener('click', () => {
+      sidebar.classList.remove('mobile-open');
+      backdrop.classList.remove('active');
+    });
+  }
 }
 
 // TAB 1: Projects & Gallery Studio

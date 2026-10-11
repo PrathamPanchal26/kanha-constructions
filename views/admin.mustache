@@ -104,22 +104,55 @@
       </div>
     </aside>
 
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div class="admin-sidebar-backdrop" id="adminSidebarBackdrop"></div>
+
     <!-- Main Viewport -->
     <div class="admin-viewport">
       
       <!-- Top Bar -->
       <header class="admin-topbar">
-        <div class="admin-topbar-title">
-          <h2 id="topbarSectionTitle">Projects & Gallery Studio</h2>
-          <p id="topbarSectionDesc">Add, edit, and delete portfolio projects and photos with 1 click.</p>
+        <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+          <button type="button" class="admin-mobile-toggle-btn" id="adminSidebarToggle" aria-label="Toggle navigation drawer">
+            <i class="fa-solid fa-bars-staggered"></i>
+          </button>
+          <div class="admin-topbar-title">
+            <h2 id="topbarSectionTitle">Projects & Gallery Studio</h2>
+            <p id="topbarSectionDesc">Add, edit, and delete portfolio projects and photos with 1 click.</p>
+          </div>
         </div>
 
         <div class="admin-topbar-actions">
-          <button type="button" class="btn-primary" id="btnOpenAddProjectModal" style="padding: 10px 20px; font-size: 0.85rem;">
-            <i class="fa-solid fa-plus"></i> Add New Project
+          <button type="button" class="btn-primary" id="btnOpenAddProjectModal" style="padding: 10px 18px; font-size: 0.85rem; white-space: nowrap;">
+            <i class="fa-solid fa-plus"></i> <span class="hide-mobile-sm">Add Project</span>
           </button>
         </div>
       </header>
+
+      <!-- Mobile Native App Tab Strip (Horizontal Touch Scrollable) -->
+      <nav class="admin-mobile-tab-strip" id="adminMobileTabStrip">
+        <button class="admin-mobile-pill active" data-tab="tab-projects">
+          <i class="fa-solid fa-shapes"></i> Projects
+        </button>
+        <button class="admin-mobile-pill" data-tab="tab-gallery">
+          <i class="fa-solid fa-photo-film"></i> Gallery
+        </button>
+        <button class="admin-mobile-pill" data-tab="tab-company">
+          <i class="fa-solid fa-building"></i> Profile
+        </button>
+        <button class="admin-mobile-pill" data-tab="tab-hero">
+          <i class="fa-solid fa-rocket"></i> Hero
+        </button>
+        <button class="admin-mobile-pill" data-tab="tab-about">
+          <i class="fa-solid fa-circle-info"></i> About
+        </button>
+        <button class="admin-mobile-pill" data-tab="tab-services">
+          <i class="fa-solid fa-cubes"></i> Services
+        </button>
+        <button class="admin-mobile-pill" data-tab="tab-stats">
+          <i class="fa-solid fa-chart-line"></i> Stats
+        </button>
+      </nav>
 
       <!-- Main Content Canvas -->
       <main class="admin-content-area">
