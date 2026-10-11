@@ -53,7 +53,7 @@
   {{> partials/stats}}
 
   <!-- About Company Preview -->
-  <section style="padding: 80px 0; background: var(--bg-dark);">
+  <section class="about-section about-section-home">
     <div class="container">
       <div class="section-header">
         <span class="section-subtitle">Who We Are</span>
@@ -63,23 +63,25 @@
         </p>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; background: var(--bg-surface); padding: 40px; border-radius: var(--radius-lg); border: 1px solid var(--border-light);">
-        <div>
-          <h3 style="font-size: 1.8rem; color: #fff; margin-bottom: 16px;">Combining Functionality, Aesthetics, and Durability</h3>
-          <p style="color: var(--text-muted); margin-bottom: 20px; line-height: 1.8;">
+      <div class="about-card about-card-home">
+        <div class="about-content">
+          <h3 class="dyn-about-subtitle about-heading">Combining Functionality, Aesthetics, and Durability</h3>
+          <p class="dyn-about-story1 about-text">
             We specialize in residential, commercial, and interior works, offering end-to-end turnkey solutions that bring visionary architecture into reality. Our team combines structural safety with bespoke aesthetic detailing.
           </p>
-          <ul style="list-style: none; color: var(--text-main); display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
-            <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-circle-check" style="color: var(--accent-cyan);"></i> Quality-Driven Project Engineering</li>
-            <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-circle-check" style="color: var(--accent-cyan);"></i> Turnkey Architectural & Interior Execution</li>
-            <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-circle-check" style="color: var(--accent-cyan);"></i> Transparent Timeline & Safety Compliance</li>
+          <ul class="about-bullets-list">
+            <li><i class="fa-solid fa-circle-check"></i> <span>Quality-Driven Project Engineering</span></li>
+            <li><i class="fa-solid fa-circle-check"></i> <span>Turnkey Architectural & Interior Execution</span></li>
+            <li><i class="fa-solid fa-circle-check"></i> <span>Transparent Timeline & Safety Compliance</span></li>
           </ul>
 
-          <a href="/about" class="btn-primary">Read Full Company Profile <i class="fa-solid fa-arrow-right"></i></a>
+          <div class="about-actions">
+            <a href="/about" class="btn-primary">Read Full Company Profile <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
         </div>
 
-        <div>
-          <img src="/assets/images/rajdeep_villa_residential_1791296998090.jpg" alt="Kanha Villa Project" style="width: 100%; border-radius: 12px; border: 1px solid var(--border-light);" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
+        <div class="about-image-wrapper">
+          <img src="/assets/images/rajdeep_villa_residential_1791296998090.jpg" alt="Kanha Villa Project" class="dyn-about-img about-img" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
         </div>
       </div>
     </div>
