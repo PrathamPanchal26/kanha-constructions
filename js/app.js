@@ -118,27 +118,44 @@ function setupMobileMenu() {
   const navLinks = document.getElementById('navLinks');
   if (!menuBtn || !navLinks) return;
 
+  function closeMenu() {
+    navLinks.classList.remove('mobile-open');
+    menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+    menuBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  function openMenu() {
+    navLinks.classList.add('mobile-open');
+    menuBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+    menuBtn.setAttribute('aria-expanded', 'true');
+  }
+
   menuBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    const isOpen = navLinks.classList.toggle('mobile-open');
-    menuBtn.innerHTML = isOpen ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
-    menuBtn.setAttribute('aria-expanded', isOpen);
+    const isOpen = navLinks.classList.contains('mobile-open');
+    if (isOpen) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
   });
 
   document.addEventListener('click', (e) => {
     if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
-      navLinks.classList.remove('mobile-open');
-      menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
-      menuBtn.setAttribute('aria-expanded', 'false');
+      closeMenu();
     }
   });
 
   navLinks.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
-      navLinks.classList.remove('mobile-open');
-      menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
-      menuBtn.setAttribute('aria-expanded', 'false');
+      closeMenu();
     });
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 860) {
+      closeMenu();
+    }
   });
 }
 
@@ -243,19 +260,6 @@ function renderDynamicServices() {
         </div>
       `;
     }).join('');
-  }
-}
-
-// Mobile Hamburger Menu Toggle
-function setupMobileMenu() {
-  const btn = document.getElementById('mobileMenuBtn');
-  const navLinks = document.getElementById('navLinks');
-  if (btn && navLinks) {
-    btn.addEventListener('click', () => {
-      navLinks.classList.toggle('mobile-open');
-      const isOpen = navLinks.classList.contains('mobile-open');
-      btn.innerHTML = isOpen ? `<i class="fa-solid fa-xmark"></i>` : `<i class="fa-solid fa-bars"></i>`;
-    });
   }
 }
 

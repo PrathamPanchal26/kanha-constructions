@@ -183,7 +183,15 @@ function setupTabNavigation() {
     });
   }
 
-  // Close Drawer on Backdrop Tap
+  // Close Drawer on Close Button or Backdrop Tap
+  const sidebarCloseBtn = document.getElementById('adminSidebarCloseBtn');
+  if (sidebarCloseBtn && sidebar) {
+    sidebarCloseBtn.addEventListener('click', () => {
+      sidebar.classList.remove('mobile-open');
+      if (backdrop) backdrop.classList.remove('active');
+    });
+  }
+
   if (backdrop && sidebar) {
     backdrop.addEventListener('click', () => {
       sidebar.classList.remove('mobile-open');
