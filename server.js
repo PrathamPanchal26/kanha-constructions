@@ -60,11 +60,6 @@ app.get('/google48b2a719bbcfc04a.html', (req, res) => {
   res.sendFile(require('path').join(__dirname, 'google48b2a719bbcfc04a.html'));
 });
 
-app.get('/google*.html', (req, res) => {
-  res.type('text/html');
-  res.sendFile(require('path').join(__dirname, 'google48b2a719bbcfc04a.html'));
-});
-
 // Serve Static Assets (CSS, JS, Images)
 app.use('/css', express.static(path.join(__dirname, 'css')));
 app.use('/js', express.static(path.join(__dirname, 'js')));
