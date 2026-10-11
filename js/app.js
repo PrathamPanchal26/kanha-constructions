@@ -57,7 +57,7 @@ function hydrateGlobalElements() {
   // Footer Copyright & Contact Details
   const footerCopies = document.querySelectorAll('.footer-copy');
   footerCopies.forEach(el => {
-    el.innerHTML = `&copy; ${new Date().getFullYear()} ${companyData.fullName || 'KANHA Construction & Interior'}. All rights reserved. • ${companyData.address || 'Nikol, Ahmedabad'} <a href="admin.html" title="Admin Access" style="color: var(--text-dim); opacity: 0.3; text-decoration: none; margin-left: 6px;"><i class="fa-solid fa-lock"></i></a>`;
+    el.innerHTML = `&copy; ${new Date().getFullYear()} ${companyData.fullName || 'KANHA Construction & Interior'}. All rights reserved. • ${companyData.address || 'Nikol, Ahmedabad'}`;
   });
 
   // Phone Numbers

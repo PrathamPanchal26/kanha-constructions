@@ -13,224 +13,864 @@
 </head>
 <body class="admin-body">
 
-  <!-- Admin Header -->
-  <header class="admin-header">
-    <div class="container admin-header-container">
-      <div class="admin-title-badge">
-        <a href="/" class="logo-brand">
-          <div class="logo-icon">K</div>
-          <div class="logo-text">
-            <span class="logo-name">KANHA</span>
-            <span class="logo-sub">ADMIN DASHBOARD</span>
+  <!-- Modern Admin Dashboard App Shell (Authenticated Admin Only) -->
+  <div class="admin-shell" id="adminDashboard" style="display: flex;">
+
+    <!-- Left Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-brand">
+        <div class="logo-icon" style="width: 38px; height: 38px; font-size: 18px; border-radius: 10px;">K</div>
+        <div>
+          <span style="font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 800; color: #fff; display: block; line-height: 1.1;">KANHA</span>
+          <span style="font-size: 0.65rem; color: var(--accent-cyan); font-weight: 700; letter-spacing: 1px;">STUDIO CMS</span>
+        </div>
+      </div>
+
+      <nav class="admin-sidebar-nav">
+        <button class="admin-nav-item admin-tab-btn active" data-tab="tab-projects">
+          <div class="nav-left">
+            <i class="fa-solid fa-shapes" style="color: var(--accent-cyan); width: 18px;"></i>
+            <span>Projects & Showcase</span>
+          </div>
+          <span class="admin-nav-badge" id="statTotalProjectsBadge">0</span>
+        </button>
+
+        <button class="admin-nav-item admin-tab-btn" data-tab="tab-gallery">
+          <div class="nav-left">
+            <i class="fa-solid fa-photo-film" style="color: #14b8a6; width: 18px;"></i>
+            <span>Gallery Studio</span>
+          </div>
+          <span class="admin-nav-badge" id="statGalleryTotalBadge">0</span>
+        </button>
+
+        <button class="admin-nav-item admin-tab-btn" data-tab="tab-company">
+          <div class="nav-left">
+            <i class="fa-solid fa-building" style="color: #38bdf8; width: 18px;"></i>
+            <span>Company Profile</span>
+          </div>
+        </button>
+
+        <button class="admin-nav-item admin-tab-btn" data-tab="tab-hero">
+          <div class="nav-left">
+            <i class="fa-solid fa-rocket" style="color: #f59e0b; width: 18px;"></i>
+            <span>Hero Banner</span>
+          </div>
+        </button>
+
+        <button class="admin-nav-item admin-tab-btn" data-tab="tab-about">
+          <div class="nav-left">
+            <i class="fa-solid fa-circle-info" style="color: #10b981; width: 18px;"></i>
+            <span>About Us Story</span>
+          </div>
+        </button>
+
+        <button class="admin-nav-item admin-tab-btn" data-tab="tab-services">
+          <div class="nav-left">
+            <i class="fa-solid fa-cubes" style="color: #a855f7; width: 18px;"></i>
+            <span>Services List</span>
+          </div>
+          <span class="admin-nav-badge" id="statServicesCountBadge">4</span>
+        </button>
+
+        <button class="admin-nav-item admin-tab-btn" data-tab="tab-stats">
+          <div class="nav-left">
+            <i class="fa-solid fa-chart-line" style="color: #ec4899; width: 18px;"></i>
+            <span>Stats Ribbon</span>
+          </div>
+        </button>
+      </nav>
+
+      <div class="admin-sidebar-footer">
+        <a href="/" target="_blank" class="admin-nav-item" style="color: var(--text-muted);">
+          <div class="nav-left">
+            <i class="fa-solid fa-arrow-up-right-from-square" style="width: 18px;"></i>
+            <span>View Live Website</span>
           </div>
         </a>
-        <span class="admin-tag"><i class="fa-solid fa-user-shield"></i> Admin Panel</span>
-      </div>
 
-      <div style="display: flex; gap: 16px; align-items: center;">
-        <a href="/" class="btn-secondary" style="padding: 10px 20px; font-size: 0.9rem;">
-          <i class="fa-solid fa-globe"></i> View Live Portfolio
-        </a>
-        <button id="adminLogoutBtn" class="btn-sm-danger" style="padding: 10px 18px;">
-          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        <button id="btnMasterReset" class="admin-nav-item" style="color: #f87171;">
+          <div class="nav-left">
+            <i class="fa-solid fa-rotate-left" style="width: 18px;"></i>
+            <span>Reset All Defaults</span>
+          </div>
+        </button>
+
+        <button id="adminLogoutBtn" class="admin-nav-item" style="color: #ef4444;">
+          <div class="nav-left">
+            <i class="fa-solid fa-right-from-bracket" style="width: 18px;"></i>
+            <span>Logout</span>
+          </div>
         </button>
       </div>
-    </div>
-  </header>
+    </aside>
 
-  <!-- PIN Authentication Screen -->
-  <div class="admin-pin-screen" id="adminPinScreen">
-    <div class="pin-card">
-      <div class="pin-icon">
-        <i class="fa-solid fa-lock"></i>
-      </div>
-      <h2 style="font-size: 1.8rem; color: #fff; margin-bottom: 8px;">Admin Access</h2>
-      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">Enter security PIN code to access project photo management.</p>
-
-      <form id="pinForm">
-        <div class="form-group">
-          <input type="password" id="pinInput" class="form-control" placeholder="Enter PIN (Default: 1234)" style="text-align: center; font-size: 1.4rem; letter-spacing: 6px;" required autofocus>
+    <!-- Main Viewport -->
+    <div class="admin-viewport">
+      
+      <!-- Top Bar -->
+      <header class="admin-topbar">
+        <div class="admin-topbar-title">
+          <h2 id="topbarSectionTitle">Projects & Gallery Studio</h2>
+          <p id="topbarSectionDesc">Add, edit, and delete portfolio projects and photos with 1 click.</p>
         </div>
 
-        <p id="pinError" style="color: #ef4444; font-size: 0.85rem; display: none; margin-bottom: 16px; font-weight: 600;">
-          <i class="fa-solid fa-circle-exclamation"></i> Incorrect PIN code. Default PIN is 1234.
-        </p>
+        <div class="admin-topbar-actions">
+          <button type="button" class="btn-primary" id="btnOpenAddProjectModal" style="padding: 10px 20px; font-size: 0.85rem;">
+            <i class="fa-solid fa-plus"></i> Add New Project
+          </button>
+        </div>
+      </header>
 
-        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
-          Unlock Dashboard <i class="fa-solid fa-key"></i>
-        </button>
-      </form>
+      <!-- Main Content Canvas -->
+      <main class="admin-content-area">
+
+        <!-- TAB 1: Projects & Gallery Studio -->
+        <section class="admin-tab-panel active" id="tab-projects">
+          
+          <!-- Quick Metric Stats Cards -->
+          <div class="admin-stats-row">
+            <div class="admin-stat-card">
+              <div class="admin-stat-icon" style="background: rgba(56, 189, 248, 0.12); color: var(--accent-cyan);">
+                <i class="fa-solid fa-folder-open"></i>
+              </div>
+              <div class="admin-stat-info">
+                <h3 id="statTotalProjects">0</h3>
+                <p>Total Projects</p>
+              </div>
+            </div>
+
+            <div class="admin-stat-card">
+              <div class="admin-stat-icon" style="background: rgba(20, 184, 166, 0.12); color: var(--accent-teal);">
+                <i class="fa-solid fa-images"></i>
+              </div>
+              <div class="admin-stat-info">
+                <h3 id="statTotalGalleryPhotos">0</h3>
+                <p>Gallery Photos</p>
+              </div>
+            </div>
+
+            <div class="admin-stat-card">
+              <div class="admin-stat-icon" style="background: rgba(245, 158, 11, 0.12); color: #f59e0b;">
+                <i class="fa-solid fa-award"></i>
+              </div>
+              <div class="admin-stat-info">
+                <h3>50+</h3>
+                <p>Delivered Projects</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filter & Search Toolbar -->
+          <div class="admin-toolbar">
+            <div class="admin-toolbar-left">
+              <div class="admin-search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="adminSearchInput" placeholder="Search project title, location, category...">
+              </div>
+              <select id="adminFilterCategory" class="admin-filter-select">
+                <option value="all">All Categories</option>
+                <option value="residential">Residential</option>
+                <option value="industrial">Industrial</option>
+                <option value="hospital">Hospital</option>
+                <option value="interior">Interior</option>
+              </select>
+            </div>
+
+            <div class="admin-toolbar-right">
+              <span style="font-size: 0.8rem; color: var(--text-dim);" id="projectFilterStatusText">Showing all projects</span>
+            </div>
+          </div>
+
+          <!-- Projects Showcase Studio (Grid of Cards) -->
+          <div class="admin-projects-grid" id="adminProjectsGrid">
+            <!-- Rendered dynamically via js/admin.js -->
+          </div>
+
+          <!-- Fallback Table View Container (hidden by default) -->
+          <table style="display: none;"><tbody id="adminTableBody"></tbody></table>
+
+        </section>
+
+        <!-- TAB: Categorized Media Gallery Studio -->
+        <section class="admin-tab-panel" id="tab-gallery">
+          
+          <!-- Quick Metric Stats Ribbon for Gallery -->
+          <div class="admin-stats-row">
+            <div class="admin-stat-card">
+              <div class="admin-stat-icon" style="background: rgba(20, 184, 166, 0.12); color: var(--accent-teal);">
+                <i class="fa-solid fa-images"></i>
+              </div>
+              <div class="admin-stat-info">
+                <h3 id="statGalleryTotalPhotos">0</h3>
+                <p>Total Gallery Photos</p>
+              </div>
+            </div>
+
+            <div class="admin-stat-card">
+              <div class="admin-stat-icon" style="background: rgba(245, 158, 11, 0.12); color: #f59e0b;">
+                <i class="fa-solid fa-layer-group"></i>
+              </div>
+              <div class="admin-stat-info">
+                <h3>6 Sectors</h3>
+                <p>Construction, Interior, etc.</p>
+              </div>
+            </div>
+
+            <div class="admin-stat-card">
+              <div class="admin-stat-icon" style="background: rgba(56, 189, 248, 0.12); color: var(--accent-cyan);">
+                <i class="fa-solid fa-shapes"></i>
+              </div>
+              <div class="admin-stat-info">
+                <h3 id="statGalleryProjectCount">0</h3>
+                <p>Linked Projects</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Filter Tabs Navigation -->
+          <div class="gallery-sections-nav" id="gallerySectionsNav">
+            <button class="gallery-sec-pill active" data-section="all">
+              <i class="fa-solid fa-border-all"></i>
+              <span>All Sections</span>
+              <span class="sec-pill-badge" id="pillBadgeAll">0</span>
+            </button>
+            <button class="gallery-sec-pill" data-section="construction">
+              <i class="fa-solid fa-trowel-bricks" style="color: #f59e0b;"></i>
+              <span>Construction & Civil</span>
+              <span class="sec-pill-badge" id="pillBadgeConstruction">0</span>
+            </button>
+            <button class="gallery-sec-pill" data-section="interior">
+              <i class="fa-solid fa-couch" style="color: #10b981;"></i>
+              <span>Interior Design</span>
+              <span class="sec-pill-badge" id="pillBadgeInterior">0</span>
+            </button>
+            <button class="gallery-sec-pill" data-section="elevation">
+              <i class="fa-solid fa-building" style="color: #38bdf8;"></i>
+              <span>Elevation & Facades</span>
+              <span class="sec-pill-badge" id="pillBadgeElevation">0</span>
+            </button>
+            <button class="gallery-sec-pill" data-section="industrial">
+              <i class="fa-solid fa-industry" style="color: #818cf8;"></i>
+              <span>Industrial & PEB</span>
+              <span class="sec-pill-badge" id="pillBadgeIndustrial">0</span>
+            </button>
+            <button class="gallery-sec-pill" data-section="hospital">
+              <i class="fa-solid fa-hospital" style="color: #f43f5e;"></i>
+              <span>Hospital & Healthcare</span>
+              <span class="sec-pill-badge" id="pillBadgeHospital">0</span>
+            </button>
+            <button class="gallery-sec-pill" data-section="planning">
+              <i class="fa-solid fa-compass-drafting" style="color: #0284c7;"></i>
+              <span>3D Planning & Architecture</span>
+              <span class="sec-pill-badge" id="pillBadgePlanning">0</span>
+            </button>
+          </div>
+
+          <!-- Gallery Control Toolbar -->
+          <div class="admin-toolbar" style="margin-top: 10px;">
+            <div class="admin-toolbar-left" style="max-width: 820px;">
+              <div class="admin-search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="gallerySearchInput" placeholder="Search photos by title, caption, section, or project...">
+              </div>
+              <select id="galleryFilterProjectSelect" class="admin-filter-select" style="min-width: 210px;">
+                <option value="all">All Projects</option>
+                <!-- Rendered dynamically -->
+              </select>
+            </div>
+
+            <div class="admin-toolbar-right">
+              <button type="button" class="btn-primary" id="btnToggleGalleryUploadPanel" style="padding: 11px 22px; font-size: 0.88rem;">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Upload Photo
+              </button>
+            </div>
+          </div>
+
+          <!-- Upload / Add Photo to Gallery Panel (Collapsible) -->
+          <div id="galleryUploadPanel" class="admin-settings-card" style="display: none; margin-bottom: 24px; border: 1.5px dashed var(--accent-cyan); background: #071e2b;">
+            <div class="settings-card-head" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px;">
+              <div>
+                <h3 style="color: var(--accent-cyan); font-size: 1.1rem;"><i class="fa-solid fa-cloud-arrow-up"></i> Upload / Add Photo to Categorized Gallery</h3>
+                <p>Assign photos to specific construction, interior, elevation, industrial, or healthcare sections.</p>
+              </div>
+              <button type="button" class="btn-sm-edit" id="btnCloseGalleryUploadPanel" style="padding: 6px 14px; font-size: 0.8rem;">
+                <i class="fa-solid fa-xmark"></i> Close Panel
+              </button>
+            </div>
+
+            <div class="admin-form-grid-3" style="margin-top: 16px;">
+              <div class="form-group">
+                <label for="galUploadProjectSelect">Assign to Project *</label>
+                <select id="galUploadProjectSelect" class="form-control" style="background: #06161f; color: #fff;">
+                  <!-- Dynamically populated -->
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="galUploadSectionSelect">Gallery Section *</label>
+                <select id="galUploadSectionSelect" class="form-control" style="background: #06161f; color: #fff;">
+                  <option value="construction">🏗️ Construction & Civil Works</option>
+                  <option value="interior">🛋️ Interior Design & Decor</option>
+                  <option value="elevation">🏢 Elevation & Modern Facades</option>
+                  <option value="industrial">🏭 Industrial & PEB Sheds</option>
+                  <option value="hospital">🏥 Hospital & Healthcare</option>
+                  <option value="planning">📐 3D Planning & Architecture</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="galUploadTitleInput">Photo Caption / Title *</label>
+                <input type="text" id="galUploadTitleInput" class="form-control" placeholder="e.g. RCC Foundation & Column Casting">
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 12px;">
+              <input type="url" id="galUploadUrlInput" class="form-control" placeholder="Paste image URL (https://...) OR choose file from device" style="flex-grow: 1;">
+              <label class="btn-secondary" style="margin: 0; padding: 10px 18px; font-size: 0.85rem; cursor: pointer;">
+                <i class="fa-solid fa-folder-open"></i> Browse Device Image
+                <input type="file" id="galUploadFileInput" accept="image/*" style="display: none;">
+              </label>
+              <button type="button" id="btnSubmitGalleryPhoto" class="btn-primary" style="padding: 10px 24px;">
+                <i class="fa-solid fa-plus"></i> Save Photo to Section
+              </button>
+            </div>
+
+            <div id="galUploadPreviewHolder" class="preview-box" style="height: 140px; margin-top: 14px; display: none;">
+              <img id="galUploadPreviewImg" src="" alt="Preview" style="height: 140px;">
+            </div>
+          </div>
+
+          <!-- Categorized Gallery Showcase Container -->
+          <div id="adminGlobalGalleryContainer">
+            <!-- Rendered dynamically by js/admin.js -->
+          </div>
+
+        </section>
+
+        <!-- TAB 2: Company Details -->
+        <section class="admin-tab-panel" id="tab-company">
+          <div class="admin-settings-card">
+            <div class="settings-card-head">
+              <h3><i class="fa-solid fa-building" style="color: var(--accent-cyan);"></i> Company Branding & Contact Details</h3>
+              <p>Update phone number, email address, physical location, and Instagram links shown across the website.</p>
+            </div>
+
+            <form id="companyForm">
+              <div class="admin-form-grid-2">
+                <div class="form-group">
+                  <label for="cmpName">Brand Name (Short)</label>
+                  <input type="text" id="cmpName" class="form-control" placeholder="KANHA" required>
+                </div>
+                <div class="form-group">
+                  <label for="cmpSubtitle">Brand Subtitle</label>
+                  <input type="text" id="cmpSubtitle" class="form-control" placeholder="CONSTRUCTION & INTERIOR" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="cmpFullName">Full Registered Company Name</label>
+                <input type="text" id="cmpFullName" class="form-control" placeholder="KANHA Construction & Interior" required>
+              </div>
+
+              <div class="form-group">
+                <label for="cmpTagline">Company Tagline</label>
+                <input type="text" id="cmpTagline" class="form-control" placeholder="Realising Your Dreams" required>
+              </div>
+
+              <div class="admin-form-grid-2">
+                <div class="form-group">
+                  <label for="cmpPhone">Direct Phone Number</label>
+                  <input type="text" id="cmpPhone" class="form-control" placeholder="+91 9898749575" required>
+                </div>
+                <div class="form-group">
+                  <label for="cmpEmail">Notification Email Address</label>
+                  <input type="email" id="cmpEmail" class="form-control" placeholder="kanha.consinterio@gmail.com" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="cmpAddress">Office Address</label>
+                <input type="text" id="cmpAddress" class="form-control" placeholder="Nikol, Ahmedabad, Gujarat, India" required>
+              </div>
+
+              <div class="form-group">
+                <label for="cmpHours">Working Hours</label>
+                <input type="text" id="cmpHours" class="form-control" placeholder="Monday - Saturday: 9:00 AM - 7:00 PM" required>
+              </div>
+
+              <div class="form-group">
+                <label for="cmpInstagram">Instagram Profile URL</label>
+                <input type="url" id="cmpInstagram" class="form-control" placeholder="https://instagram.com/..." required>
+              </div>
+
+              <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 12px; margin-top: 10px;">
+                <i class="fa-solid fa-floppy-disk"></i> Save Company Profile
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- TAB 3: Hero Banner -->
+        <section class="admin-tab-panel" id="tab-hero">
+          <div class="admin-settings-card">
+            <div class="settings-card-head">
+              <h3><i class="fa-solid fa-rocket" style="color: #f59e0b;"></i> Homepage Hero Banner</h3>
+              <p>Customize the high-impact visual banner on the homepage, including background cover photo and titles.</p>
+            </div>
+
+            <form id="heroForm">
+              <div class="admin-form-grid-2">
+                <div class="form-group">
+                  <label for="heroTitle">Title (Word 1)</label>
+                  <input type="text" id="heroTitle" class="form-control" placeholder="KANHA" required>
+                </div>
+                <div class="form-group">
+                  <label for="heroTitleHighlight">Title Highlight (Word 2)</label>
+                  <input type="text" id="heroTitleHighlight" class="form-control" placeholder="CONSTRUCTION" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="heroEstBadge">Badge Pill</label>
+                <input type="text" id="heroEstBadge" class="form-control" placeholder="Established Since 2021 • Ahmedabad" required>
+              </div>
+
+              <div class="form-group">
+                <label for="heroTagline">Hero Tagline</label>
+                <input type="text" id="heroTagline" class="form-control" placeholder="Realising Your Dreams" required>
+              </div>
+
+              <div class="form-group">
+                <label for="heroDesc">Hero Description</label>
+                <textarea id="heroDesc" class="form-control" style="min-height: 90px;" required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label><i class="fa-solid fa-image" style="color: var(--accent-cyan);"></i> Hero Background Photo</label>
+                <div class="dropzone-upload" id="heroDropzone">
+                  <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2rem; color: var(--accent-cyan); margin-bottom: 6px;"></i>
+                  <p style="font-size: 0.85rem; font-weight: 600; color: #fff;">Click to upload hero cover photo</p>
+                  <input type="file" id="heroFileInput" accept="image/*" style="display: none;">
+                </div>
+                <input type="url" id="heroImg" class="form-control" placeholder="OR enter photo URL">
+                
+                <div class="preview-box" id="heroPreviewHolder">
+                  <img id="heroPreviewImg" src="" alt="Hero Preview">
+                  <div class="preview-bar">
+                    <span style="font-size: 0.75rem; color: var(--accent-cyan); font-weight: 600;"><i class="fa-solid fa-check"></i> Hero Cover Active</span>
+                    <button type="button" id="btnDeleteHeroPhoto" class="btn-delete-photo">
+                      <i class="fa-solid fa-trash-can"></i> Delete Photo
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 12px; margin-top: 10px;">
+                <i class="fa-solid fa-floppy-disk"></i> Update Hero Banner
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- TAB 4: About Us -->
+        <section class="admin-tab-panel" id="tab-about">
+          <div class="admin-settings-card">
+            <div class="settings-card-head">
+              <h3><i class="fa-solid fa-circle-info" style="color: #10b981;"></i> About Us Story & Principles</h3>
+              <p>Configure company narrative, safety standards, and team philosophy.</p>
+            </div>
+
+            <form id="aboutForm">
+              <div class="form-group">
+                <label for="aboutTitle">Main Title</label>
+                <input type="text" id="aboutTitle" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label for="aboutSubtitle">Subtitle / Headline</label>
+                <input type="text" id="aboutSubtitle" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label for="aboutStory1">Story Paragraph 1</label>
+                <textarea id="aboutStory1" class="form-control" style="min-height: 90px;" required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="aboutStory2">Story Paragraph 2</label>
+                <textarea id="aboutStory2" class="form-control" style="min-height: 90px;" required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label><i class="fa-solid fa-image" style="color: var(--accent-cyan);"></i> About Us Feature Photo</label>
+                <div class="dropzone-upload" id="aboutDropzone">
+                  <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2rem; color: var(--accent-cyan); margin-bottom: 6px;"></i>
+                  <p style="font-size: 0.85rem; font-weight: 600; color: #fff;">Click to upload about us photo</p>
+                  <input type="file" id="aboutFileInput" accept="image/*" style="display: none;">
+                </div>
+                <input type="url" id="aboutImg" class="form-control" placeholder="OR enter photo URL">
+                
+                <div class="preview-box" id="aboutPreviewHolder">
+                  <img id="aboutPreviewImg" src="" alt="About Preview">
+                  <div class="preview-bar">
+                    <span style="font-size: 0.75rem; color: var(--accent-cyan); font-weight: 600;"><i class="fa-solid fa-check"></i> Photo Ready</span>
+                    <button type="button" id="btnDeleteAboutPhoto" class="btn-delete-photo">
+                      <i class="fa-solid fa-trash-can"></i> Delete Photo
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 12px; margin-top: 10px;">
+                <i class="fa-solid fa-floppy-disk"></i> Save About Us Content
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- TAB 5: Services -->
+        <section class="admin-tab-panel" id="tab-services">
+          <div class="admin-settings-card">
+            <div class="settings-card-head">
+              <h3><i class="fa-solid fa-cubes" style="color: #a855f7;"></i> Specialized Services</h3>
+              <p>Add, edit, or customize architectural design, structural engineering, interior, and turnkey services.</p>
+            </div>
+
+            <form id="serviceForm" style="background: #06161f; border: 1px solid rgba(255, 255, 255, 0.08); padding: 22px; border-radius: 14px; margin-bottom: 24px;">
+              <h4 id="srvFormCardTitle" style="color: #fff; margin-bottom: 14px; font-size: 1.05rem;">
+                <i class="fa-solid fa-plus-circle" style="color: var(--accent-cyan);"></i> Add / Edit Service
+              </h4>
+
+              <div class="admin-form-grid-2">
+                <div class="form-group">
+                  <label for="srvTitle">Service Title *</label>
+                  <input type="text" id="srvTitle" class="form-control" placeholder="e.g. Architectural Design" required>
+                </div>
+                <div class="form-group">
+                  <label for="srvIcon">FontAwesome Icon Class *</label>
+                  <input type="text" id="srvIcon" class="form-control" placeholder="fa-solid fa-city" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="srvShortDesc">Short Summary</label>
+                <input type="text" id="srvShortDesc" class="form-control" placeholder="Brief 1-line overview" required>
+              </div>
+
+              <div class="form-group">
+                <label for="srvFullDesc">Detailed Description</label>
+                <textarea id="srvFullDesc" class="form-control" style="min-height: 80px;" required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="srvHighlights">Highlights (Comma Separated)</label>
+                <input type="text" id="srvHighlights" class="form-control" placeholder="3D Elevation Modeling, Floor Layouts, Municipal Sanction">
+              </div>
+
+              <div class="form-group">
+                <label for="srvImage">Feature Image URL</label>
+                <input type="url" id="srvImage" class="form-control" placeholder="https://example.com/photo.jpg">
+                <div class="preview-box" id="srvPreviewHolder">
+                  <img id="srvPreviewImg" src="" alt="Service Preview">
+                  <div class="preview-bar">
+                    <span style="font-size: 0.75rem; color: var(--accent-cyan); font-weight: 600;">Service Photo</span>
+                    <button type="button" id="btnDeleteSrvPhoto" class="btn-delete-photo">
+                      <i class="fa-solid fa-trash-can"></i> Delete Photo
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 10px;">
+                <button type="submit" class="btn-primary" id="btnSaveService" style="flex-grow: 1; justify-content: center;">
+                  <i class="fa-solid fa-plus"></i> Save Service
+                </button>
+                <button type="button" class="btn-secondary" id="btnCancelSrv" onclick="cancelServiceEdit()" style="display: none;">
+                  Cancel
+                </button>
+              </div>
+            </form>
+
+            <h4 style="color: #fff; margin-bottom: 12px; font-size: 1.05rem;">Existing Services</h4>
+            <div style="background: #06161f; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Icon</th>
+                    <th>Service</th>
+                    <th>Summary</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="servicesAdminTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 6: Dynamic Counters -->
+        <section class="admin-tab-panel" id="tab-stats">
+          <div class="admin-settings-card">
+            <div class="settings-card-head">
+              <h3><i class="fa-solid fa-chart-line" style="color: #ec4899;"></i> Dynamic Stats Ribbon</h3>
+              <p>Configure the animated metrics numbers displayed on the homepage counter strip.</p>
+            </div>
+
+            <form id="statsConfigForm">
+              <div class="admin-form-grid-2">
+                <div class="form-group">
+                  <label for="cfgProjects">Delivered Projects Counter</label>
+                  <input type="text" id="cfgProjects" class="form-control" placeholder="50+">
+                </div>
+                <div class="form-group">
+                  <label for="cfgSqFt">Largest Facility Area</label>
+                  <input type="text" id="cfgSqFt" class="form-control" placeholder="15K+">
+                </div>
+              </div>
+
+              <div class="admin-form-grid-2">
+                <div class="form-group">
+                  <label for="cfgOnTime">On-Time Execution Rate</label>
+                  <input type="text" id="cfgOnTime" class="form-control" placeholder="100%">
+                </div>
+                <div class="form-group">
+                  <label for="cfgSpecs">Specializations Count</label>
+                  <input type="text" id="cfgSpecs" class="form-control" placeholder="5">
+                </div>
+              </div>
+
+              <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 12px; margin-top: 10px;">
+                <i class="fa-solid fa-floppy-disk"></i> Update Metric Counters
+              </button>
+            </form>
+          </div>
+        </section>
+
+      </main>
     </div>
   </div>
 
-  <!-- Main Admin Dashboard (Hidden until PIN verified) -->
-  <main class="container admin-layout" id="adminDashboard" style="display: none;">
-
-    <!-- Left Column: Add / Edit Form -->
-    <div class="admin-panel-card">
-      <h3 class="panel-title" id="formCardTitle">
-        <span><i class="fa-solid fa-plus-circle" style="color: var(--accent-cyan);"></i> Add New Photo / Project</span>
-      </h3>
-
-      <form id="addProjectForm">
-        <div class="form-group">
-          <label for="projectTitle">Project / Photo Title *</label>
-          <input type="text" id="projectTitle" class="form-control" placeholder="e.g. Modern Residential Villa Elevation" required>
+  <!-- MODERN PROJECT ADD / EDIT MODAL (Spacious, Clean, No Cramping) -->
+  <div class="admin-modal-overlay" id="projectEditModal">
+    <div class="admin-modal-dialog">
+      <div class="admin-modal-head">
+        <div>
+          <h3 id="formCardTitle">Add New Project</h3>
+          <p>Fill in the project details and attach photos below.</p>
         </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-          <div class="form-group">
-            <label for="projectCategory">Category *</label>
-            <select id="projectCategory" class="form-control" style="background: var(--bg-dark); color: #fff;">
-              <option value="industrial">Industrial</option>
-              <option value="residential">Residential</option>
-              <option value="hospital">Hospital</option>
-              <option value="interior">Interior</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="projectLocation">Location</label>
-            <input type="text" id="projectLocation" class="form-control" placeholder="e.g. Vatva, Kuha, Bopal">
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-          <div class="form-group">
-            <label for="projectArea">Area (sq. ft.)</label>
-            <input type="text" id="projectArea" class="form-control" placeholder="e.g. 5,000 SQ. FT.">
-          </div>
-
-          <div class="form-group">
-            <label for="projectType">Type / Badge</label>
-            <input type="text" id="projectType" class="form-control" placeholder="Turnkey / Interior Project">
-          </div>
-        </div>
-
-        <!-- Image Upload or URL Input -->
-        <div class="form-group">
-          <label><i class="fa-solid fa-image" style="color: var(--accent-cyan);"></i> Upload Photo or Image File</label>
-          <div class="dropzone-upload" id="imageDropzone">
-            <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2rem; color: var(--accent-cyan); margin-bottom: 8px;"></i>
-            <p style="font-size: 0.85rem; color: var(--text-main); font-weight: 600;">Drag & drop photo here or click to browse</p>
-            <p style="font-size: 0.75rem; color: var(--text-dim);">Supports JPG, PNG, WEBP</p>
-            <input type="file" id="fileInput" accept="image/*" style="display: none;">
-          </div>
-
-          <p style="text-align: center; color: var(--text-dim); font-size: 0.8rem; margin: 8px 0;">— OR ENTER IMAGE URL —</p>
-
-          <input type="url" id="imageUrlInput" class="form-control" placeholder="https://example.com/photo.jpg">
-          
-          <div class="preview-img-holder" id="previewHolder">
-            <img id="previewImg" src="" alt="Selected Photo Preview">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="projectDesc">Project Description</label>
-          <textarea id="projectDesc" class="form-control" placeholder="Enter architectural specs, client info, or design highlights..." style="min-height: 80px;"></textarea>
-        </div>
-
-        <div style="display: flex; gap: 10px;">
-          <button type="submit" class="btn-primary" id="btnSubmitForm" style="flex-grow: 1; justify-content: center;">
-            <i class="fa-solid fa-plus"></i> Save Project & Gallery
-          </button>
-          <button type="button" class="btn-secondary" id="btnCancelEdit" onclick="cancelEdit()" style="display: none;">
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
-
-    <!-- Right Column: Projects & Photo Management Table -->
-    <div>
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 style="font-size: 1.4rem; color: #fff;">Manage Portfolio Projects & Gallery</h3>
-        <button id="btnResetDefaults" class="btn-secondary" style="font-size: 0.8rem; padding: 8px 14px;">
-          <i class="fa-solid fa-rotate-left"></i> Reset to PDF Defaults
+        <button type="button" class="admin-modal-close-btn" id="modalProjectFormClose" aria-label="Close dialog">
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <!-- Quick Summary Cards -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
-        <div style="background: var(--bg-surface); padding: 20px; border-radius: 12px; border: 1px solid var(--border-light); display: flex; align-items: center; gap: 16px;">
-          <div style="width: 48px; height: 48px; background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px;">
-            <i class="fa-solid fa-building"></i>
-          </div>
-          <div>
-            <h4 id="statTotalProjects" style="font-size: 1.6rem; color: #fff;">0</h4>
-            <p style="font-size: 0.8rem; color: var(--text-muted);">Total Portfolio Projects</p>
-          </div>
-        </div>
+      <div class="admin-modal-content">
+        <form id="addProjectForm">
+          <div class="admin-form-grid-2">
+            <!-- Left: Info -->
+            <div>
+              <div class="form-group">
+                <label for="projectTitle">Project Title *</label>
+                <input type="text" id="projectTitle" class="form-control" placeholder="e.g. Rajdeep Villa Luxury Residence" required>
+              </div>
 
-        <div style="background: var(--bg-surface); padding: 20px; border-radius: 12px; border: 1px solid var(--border-light); display: flex; align-items: center; gap: 16px;">
-          <div style="width: 48px; height: 48px; background: rgba(20, 184, 166, 0.15); color: var(--accent-teal); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px;">
-            <i class="fa-solid fa-images"></i>
-          </div>
-          <div>
-            <h4 id="statTotalGalleryPhotos" style="font-size: 1.6rem; color: #fff;">0</h4>
-            <p style="font-size: 0.8rem; color: var(--text-muted);">Categorized Gallery Photos</p>
-          </div>
-        </div>
-      </div>
+              <div class="admin-form-grid-2">
+                <div class="form-group">
+                  <label for="projectCategory">Category *</label>
+                  <select id="projectCategory" class="form-control" style="background: #06161f; color: #fff;">
+                    <option value="residential">Residential</option>
+                    <option value="industrial">Industrial</option>
+                    <option value="hospital">Hospital</option>
+                    <option value="interior">Interior</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="projectLocation">Location</label>
+                  <input type="text" id="projectLocation" class="form-control" placeholder="e.g. Bopal, Ahmedabad">
+                </div>
+              </div>
 
-      <!-- Dynamic Counter Stats Manager -->
-      <div style="background: var(--bg-surface); border: 1px solid var(--border-glow); padding: 20px; border-radius: var(--radius-lg); margin-bottom: 24px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-          <h4 style="color: var(--accent-cyan); font-size: 1.05rem; font-weight: 700;">
-            <i class="fa-solid fa-chart-line"></i> Dynamic Stat Ribbon Numbers
-          </h4>
-          <span style="font-size: 0.75rem; color: var(--text-muted);">Auto-calculated live from portfolio database or custom text</span>
-        </div>
+              <div class="admin-form-grid-2">
+                <div class="form-group">
+                  <label for="projectArea">Area (sq. ft.)</label>
+                  <input type="text" id="projectArea" class="form-control" placeholder="e.g. 5,000 SQ. FT.">
+                </div>
+                <div class="form-group">
+                  <label for="projectType">Type Badge</label>
+                  <input type="text" id="projectType" class="form-control" placeholder="Turnkey Project">
+                </div>
+              </div>
 
-        <form id="statsConfigForm" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
-          <div>
-            <label style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">Delivered Projects</label>
-            <input type="text" id="cfgProjects" class="form-control" placeholder="Auto (e.g. 50+)" style="padding: 8px 12px; font-size: 0.85rem;">
+              <div class="form-group">
+                <label for="projectDesc">Project Description</label>
+                <textarea id="projectDesc" class="form-control" placeholder="Enter key architectural specs, layout, and client goals..." style="min-height: 100px;"></textarea>
+              </div>
+            </div>
+
+            <!-- Right: Photo Upload & Visual Deletion -->
+            <div>
+              <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <label style="margin: 0;"><i class="fa-solid fa-image" style="color: var(--accent-cyan);"></i> Main Cover Photo</label>
+                  <span id="photoStatusBadge" style="font-size: 0.75rem; color: var(--text-dim);">No photo uploaded</span>
+                </div>
+
+                <div class="dropzone-upload" id="imageDropzone" style="padding: 20px;">
+                  <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2rem; color: var(--accent-cyan); margin-bottom: 6px;"></i>
+                  <p style="font-size: 0.85rem; font-weight: 600; color: #fff;">Drag & drop photo or click to browse</p>
+                  <p style="font-size: 0.72rem; color: var(--text-dim);">Auto-cropped to 16:9 widescreen</p>
+                  <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                </div>
+
+                <input type="url" id="imageUrlInput" class="form-control" placeholder="OR paste photo URL: https://...">
+
+                <!-- Cover Photo Preview Box with Big Red Delete Button -->
+                <div class="preview-box" id="previewHolder">
+                  <img id="previewImg" src="" alt="Selected Photo Preview">
+                  <div class="preview-bar">
+                    <span style="font-size: 0.75rem; color: var(--accent-cyan); font-weight: 600;"><i class="fa-solid fa-check"></i> Cover Photo Active</span>
+                    <button type="button" id="btnDeletePhoto" class="btn-delete-photo" title="Delete or remove this photo">
+                      <i class="fa-solid fa-trash-can"></i> Delete Photo
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick Gallery Strip inside Edit Modal -->
+              <div id="formGallerySection" style="display: none; background: #06161f; padding: 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); margin-top: 14px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                  <span style="font-size: 0.82rem; font-weight: 700; color: #fff;">
+                    <i class="fa-solid fa-images" style="color: var(--accent-teal);"></i> Gallery Photos (<span id="formGalleryCount">0</span>)
+                  </span>
+                  <button type="button" id="btnToggleAddPhoto" class="btn-sm-edit" style="font-size: 0.72rem; padding: 3px 8px;">
+                    <i class="fa-solid fa-plus"></i> Add Photo
+                  </button>
+                </div>
+
+                <!-- Inline Add Photo Panel -->
+                <div id="formAddPhotoPanel" style="display: none; background: #09202b; padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px dashed var(--border-glow);">
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+                    <input type="text" id="newGalleryTitle" class="form-control" placeholder="Photo Title" style="font-size: 0.8rem; padding: 6px;">
+                    <select id="newGallerySection" class="form-control" style="font-size: 0.8rem; padding: 6px; background: #06161f; color: #fff;">
+                      <option value="construction">🏗️ Construction</option>
+                      <option value="interior">🛋️ Interior</option>
+                      <option value="elevation">🏢 Elevation</option>
+                      <option value="industrial">🏭 Industrial</option>
+                      <option value="hospital">🏥 Hospital</option>
+                      <option value="planning">📐 3D Planning</option>
+                    </select>
+                  </div>
+                  <div style="display: flex; gap: 6px;">
+                    <input type="url" id="newGalleryUrl" class="form-control" placeholder="Photo URL" style="font-size: 0.8rem; padding: 6px; flex-grow: 1;">
+                    <label class="btn-secondary" style="margin: 0; padding: 6px 10px; font-size: 0.75rem; cursor: pointer;">
+                      <i class="fa-solid fa-folder"></i>
+                      <input type="file" id="newGalleryFileInput" accept="image/*" style="display: none;">
+                    </label>
+                    <button type="button" id="btnConfirmAddPhoto" class="btn-primary" style="padding: 6px 12px; font-size: 0.75rem;">Add</button>
+                  </div>
+                </div>
+
+                <!-- Gallery Photos Grid -->
+                <div class="photo-studio-grid" id="formGalleryGrid" style="grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px;">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+            </div>
           </div>
-          <div>
-            <label style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">Largest Facility</label>
-            <input type="text" id="cfgSqFt" class="form-control" placeholder="Auto (e.g. 15K+)" style="padding: 8px 12px; font-size: 0.85rem;">
-          </div>
-          <div>
-            <label style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">On-Time %</label>
-            <input type="text" id="cfgOnTime" class="form-control" placeholder="100%" style="padding: 8px 12px; font-size: 0.85rem;">
-          </div>
-          <div>
-            <label style="font-size: 0.75rem; color: var(--text-dim); font-weight: 600;">Specializations</label>
-            <input type="text" id="cfgSpecs" class="form-control" placeholder="Auto (e.g. 5)" style="padding: 8px 12px; font-size: 0.85rem;">
-          </div>
-          <div style="grid-column: 1 / -1; text-align: right; margin-top: 4px;">
-            <button type="submit" class="btn-primary" style="padding: 8px 18px; font-size: 0.85rem;">
-              <i class="fa-solid fa-floppy-disk"></i> Update Counter Stats
+
+          <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 18px;">
+            <button type="button" class="btn-secondary" id="btnCancelEdit" onclick="cancelEdit()" style="padding: 10px 20px;">
+              Cancel
+            </button>
+            <button type="submit" class="btn-primary" id="btnSubmitForm" style="padding: 10px 28px;">
+              <i class="fa-solid fa-floppy-disk"></i> Save Project to Portfolio
             </button>
           </div>
         </form>
       </div>
+    </div>
+  </div>
 
-      <!-- Table Card -->
-      <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); overflow: hidden;">
-        <div style="overflow-x: auto;">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Cover Photo</th>
-                <th>Project Details</th>
-                <th>Category</th>
-                <th>Gallery Count</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="adminTableBody">
-              <!-- Dynamically populated via admin.js -->
-            </tbody>
-          </table>
+  <!-- DEDICATED VISUAL PHOTO STUDIO MODAL (Direct 1-Click Photo Deletion & Upload) -->
+  <div class="admin-modal-overlay" id="adminGalleryModal">
+    <div class="admin-modal-dialog" style="max-width: 960px;">
+      <div class="admin-modal-head">
+        <div>
+          <h3 id="modalProjectTitle">Photo Gallery Studio</h3>
+          <p id="modalProjectSubtitle">Upload new high-resolution photos or delete existing photos.</p>
         </div>
+        <button type="button" class="admin-modal-close-btn" id="modalCloseBtn" aria-label="Close dialog">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="admin-modal-content">
+        
+        <!-- Big Friendly Upload Area -->
+        <div style="background: #06161f; border: 1px dashed var(--border-glow); padding: 18px; border-radius: 14px; margin-bottom: 24px;">
+          <h4 style="color: var(--accent-cyan); font-size: 0.95rem; margin-bottom: 12px; font-weight: 700;">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Upload / Add New Photo to this Project
+          </h4>
+
+          <div class="admin-form-grid-2" style="margin-bottom: 12px;">
+            <div>
+              <label style="font-size: 0.78rem; color: var(--text-dim);">Photo Caption / Title *</label>
+              <input type="text" id="modalAddPhotoTitle" class="form-control" placeholder="e.g. Italian Marble Living Hall">
+            </div>
+            <div>
+              <label style="font-size: 0.78rem; color: var(--text-dim);">Gallery Section *</label>
+              <select id="modalAddPhotoSection" class="form-control" style="background: #09202b; color: #fff;">
+                <option value="construction">🏗️ Construction & Civil Works</option>
+                <option value="interior">🛋️ Interior Design & Decor</option>
+                <option value="elevation">🏢 Elevation & Modern Facades</option>
+                <option value="industrial">🏭 Industrial & PEB Sheds</option>
+                <option value="hospital">🏥 Hospital & Healthcare</option>
+                <option value="planning">📐 3D Planning & Architecture</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <input type="url" id="modalAddPhotoUrl" class="form-control" placeholder="Enter photo URL or choose a file from device" style="flex-grow: 1;">
+            <label class="btn-secondary" style="margin: 0; padding: 10px 18px; font-size: 0.85rem; cursor: pointer;">
+              <i class="fa-solid fa-folder-open"></i> Browse Image File
+              <input type="file" id="modalAddPhotoFileInput" accept="image/*" style="display: none;">
+            </label>
+            <button type="button" id="modalBtnAddPhoto" class="btn-primary" style="padding: 10px 22px;">
+              <i class="fa-solid fa-plus"></i> Add Photo to Gallery
+            </button>
+          </div>
+
+          <div id="modalAddPhotoPreviewHolder" class="preview-box" style="height: 120px; margin-top: 10px; display: none;">
+            <img id="modalAddPhotoPreviewImg" src="" alt="New Photo Preview" style="height: 120px;">
+          </div>
+        </div>
+
+        <!-- Photo Gallery Wall with Big Red Delete Buttons -->
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+            <h4 style="color: #fff; font-size: 1.05rem; font-weight: 700;">
+              <i class="fa-solid fa-images" style="color: var(--accent-teal);"></i> Project Photos (<span id="modalPhotoCountBadge">0</span>)
+            </h4>
+            <span style="font-size: 0.75rem; color: var(--text-dim);">Click Delete Photo to immediately remove any photo</span>
+          </div>
+
+          <!-- Modal Gallery Section Filter Pills -->
+          <div class="gallery-sections-nav" id="modalSectionFilterNav" style="margin-bottom: 14px;">
+            <button type="button" class="gallery-sec-pill active" data-modalsection="all">All Sections</button>
+            <button type="button" class="gallery-sec-pill" data-modalsection="construction">🏗️ Construction</button>
+            <button type="button" class="gallery-sec-pill" data-modalsection="interior">🛋️ Interior</button>
+            <button type="button" class="gallery-sec-pill" data-modalsection="elevation">🏢 Elevation</button>
+            <button type="button" class="gallery-sec-pill" data-modalsection="industrial">🏭 Industrial</button>
+            <button type="button" class="gallery-sec-pill" data-modalsection="hospital">🏥 Hospital</button>
+            <button type="button" class="gallery-sec-pill" data-modalsection="planning">📐 Planning</button>
+          </div>
+
+          <div class="photo-studio-grid" id="modalGalleryGrid">
+            <!-- Rendered dynamically via js/admin.js -->
+          </div>
+        </div>
+
       </div>
     </div>
-
-  </main>
+  </div>
 
   <!-- Scripts -->
   <script src="/js/data.js"></script>

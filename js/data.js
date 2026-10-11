@@ -106,7 +106,7 @@ const DEFAULT_PROJECTS = [
     createdAt: "2024-01-15",
     gallery: [
       {
-        section: "construction",
+        section: "industrial",
         title: "Heavy Structural Steel Truss Fabrication",
         image: "assets/images/raghuveer_gears_industrial_179129660519.jpg"
       },
@@ -121,14 +121,14 @@ const DEFAULT_PROJECTS = [
         image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80"
       },
       {
-        section: "interior",
-        title: "Reception Lounge & Modern Overhead Lighting",
-        image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1200&q=80"
-      },
-      {
         section: "elevation",
         title: "Industrial Complex Front Facade",
         image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        section: "planning",
+        title: "GIDC Industrial Master Zoning & 3D Blueprint",
+        image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80"
       }
     ]
   },
@@ -145,7 +145,7 @@ const DEFAULT_PROJECTS = [
     createdAt: "2024-02-10",
     gallery: [
       {
-        section: "construction",
+        section: "industrial",
         title: "Steel Beam Framework & Roofing Structure",
         image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80"
       },
@@ -234,9 +234,9 @@ const DEFAULT_PROJECTS = [
         image: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80"
       },
       {
-        section: "interior",
-        title: "Master Suite & Ambient Wooden Wall Paneling",
-        image: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80"
+        section: "planning",
+        title: "3D Villa Architectural Layout & Floor Zoning",
+        image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
       }
     ]
   },
@@ -351,17 +351,17 @@ const DEFAULT_PROJECTS = [
     createdAt: "2024-08-14",
     gallery: [
       {
-        section: "interior",
+        section: "hospital",
         title: "Medical Reception & Patient Waiting Lounge",
         image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80"
       },
       {
-        section: "construction",
+        section: "hospital",
         title: "Cleanroom Partition & Modular Ceiling Installation",
         image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1200&q=80"
       },
       {
-        section: "interior",
+        section: "hospital",
         title: "Consultation Chamber & Anti-Bacterial Flooring",
         image: "https://images.unsplash.com/photo-1504813184591-01572f98c85f?auto=format&fit=crop&w=1200&q=80"
       }
@@ -537,6 +537,14 @@ function getStoredProjects() {
           { section: "construction", title: p.title + " - Construction", image: p.image || p.fallbackImage },
           { section: "interior", title: p.title + " - Interior", image: p.image || p.fallbackImage }
         ];
+      } else {
+        p.gallery.forEach(photo => {
+          if (!photo.section) {
+            if (p.category === 'industrial') photo.section = 'industrial';
+            else if (p.category === 'hospital') photo.section = 'hospital';
+            else photo.section = 'construction';
+          }
+        });
       }
       delete p.redirectUrl;
       return p;

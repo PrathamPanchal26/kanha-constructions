@@ -2,24 +2,53 @@ const express = require('express');
 const mustacheExpress = require('mustache-express');
 const path = require('path');
 const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// In-Memory Server-Side Admin Sessions Store (Restricts admin site to admin only)
+const activeAdminSessions = new Set();
+
+// Helper to parse HTTP Cookie Header securely
+const parseCookies = (req) => {
+  const list = {};
+  const cookieHeader = req.headers.cookie;
+  if (!cookieHeader) return list;
+  cookieHeader.split(';').forEach(cookie => {
+    let [name, ...rest] = cookie.split('=');
+    name = name?.trim();
+    if (name) list[name] = decodeURIComponent(rest.join('=').trim());
+  });
+  return list;
+};
+
+// Check if incoming request is from authenticated Admin
+const isAuthenticatedAdmin = (req) => {
+  const cookies = parseCookies(req);
+  const token = cookies['kanha_admin_token'];
+  return Boolean(token && activeAdminSessions.has(token));
+};
 
 // Register .mustache extension with Mustache Express Engine
 app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', path.join(__dirname, 'views'));
 
-// Serve Static Assets (CSS, JS, Images)
-app.use(express.static(path.join(__dirname, '/')));
-app.use('/css', express.static(path.join(__dirname, 'css')));
-app.use('/js', express.static(path.join(__dirname, 'js')));
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-
 // Body Parser Middleware
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+// Intercept /admin.html to prevent static bypass
+app.get('/admin.html', (req, res) => {
+  res.redirect('/admin');
+});
+
+// Serve Static Assets (CSS, JS, Images)
+app.use('/css', express.static(path.join(__dirname, 'css')));
+app.use('/js', express.static(path.join(__dirname, 'js')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use(express.static(path.join(__dirname, '/')));
 
 // Shared Global View Context Data
 const getGlobalContext = () => ({
@@ -147,14 +176,69 @@ app.get(['/contact', '/contact.html'], (req, res) => {
   res.render('contact', context);
 });
 
-// Admin Route
-app.get(['/admin', '/admin.html'], (req, res) => {
+// Admin Route - Strictly Protected: Only Authenticated Admin Can View Dashboard
+app.get('/admin', (req, res) => {
+  if (!isAuthenticatedAdmin(req)) {
+    // Unauthenticated visitors (customers) ONLY receive the secure login gate
+    // No admin dashboard HTML or CMS controls are delivered
+    return res.render('admin-login', {
+      ...getGlobalContext(),
+      pageTitle: "Admin Restricted Access Gate",
+      isAdminLogin: true
+    });
+  }
+
+  // Authenticated Admin receives the full Admin Studio
   const context = {
     ...getGlobalContext(),
-    pageTitle: "Admin Dashboard",
+    pageTitle: "Admin Studio Dashboard",
     isAdmin: true
   };
   res.render('admin', context);
+});
+
+// Admin Authentication API - Validates Credentials Server-Side
+app.post('/api/admin/login', (req, res) => {
+  const { username, password, pin } = req.body;
+  const adminUser = (username || '').trim().toLowerCase();
+  const adminPass = (password || pin || '').trim();
+
+  // Valid administrator credentials:
+  // Username: 'admin' (or case-insensitive)
+  // Password / PIN: 'kanha@admin2026' or '1234' (or process.env.ADMIN_PASSWORD)
+  const isUserValid = adminUser === 'admin' || !username;
+  const isPassValid = adminPass === '1234' || adminPass === 'kanha@admin2026' || (process.env.ADMIN_PASSWORD && adminPass === process.env.ADMIN_PASSWORD);
+
+  if (isUserValid && isPassValid) {
+    const sessionToken = crypto.randomBytes(32).toString('hex');
+    activeAdminSessions.add(sessionToken);
+
+    res.setHeader('Set-Cookie', `kanha_admin_token=${sessionToken}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400`);
+    return res.json({
+      success: true,
+      message: "Admin authentication successful!"
+    });
+  }
+
+  console.warn(`[Security Alert] Unauthorized admin login attempt with user: "${username}"`);
+  return res.status(401).json({
+    success: false,
+    message: "Invalid credentials. Access Denied."
+  });
+});
+
+// Admin Logout API - Clears Server Session and Cookie
+app.all(['/api/admin/logout', '/admin/logout'], (req, res) => {
+  const cookies = parseCookies(req);
+  const token = cookies['kanha_admin_token'];
+  if (token) {
+    activeAdminSessions.delete(token);
+  }
+  res.setHeader('Set-Cookie', `kanha_admin_token=; Path=/; HttpOnly; SameSite=Strict; Expires=Thu, 01 Jan 1970 00:00:00 GMT`);
+  if (req.method === 'GET') {
+    return res.redirect('/admin');
+  }
+  return res.json({ success: true, message: "Logged out successfully" });
 });
 
 // API Endpoint for Contact Form Submission (Sends FREE Email to kanha.consinterio@gmail.com)
