@@ -2290,20 +2290,8 @@ footer {
   font-size: 0.9rem;
 }
 
-/* Responsive */
+/* Admin Responsive Content Area */
 @media (max-width: 992px) {
-  .admin-sidebar {
-    width: 72px;
-  }
-  .admin-sidebar .admin-sidebar-brand span,
-  .admin-nav-item span,
-  .admin-sidebar-footer span {
-    display: none;
-  }
-  .admin-nav-item {
-    justify-content: center;
-    padding: 14px 0;
-  }
   .admin-content-area {
     padding: 20px 16px;
   }
@@ -3129,6 +3117,10 @@ footer {
     border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
   }
 
+  .admin-sidebar-brand span {
+    display: block !important;
+  }
+
   .admin-sidebar-close-btn {
     display: flex !important;
     align-items: center !important;
@@ -3149,6 +3141,96 @@ footer {
     background: rgba(239, 68, 68, 0.25) !important;
     color: #ef4444 !important;
     border-color: rgba(239, 68, 68, 0.45) !important;
+  }
+
+  /* Admin Mobile Drawer Items & Typography */
+  .admin-sidebar-nav {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    padding: 16px 14px !important;
+    overflow-y: auto !important;
+    flex-grow: 1 !important;
+  }
+
+  .admin-nav-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    padding: 12px 14px !important;
+    border-radius: 10px !important;
+    color: var(--text-muted) !important;
+    font-weight: 600 !important;
+    font-size: 0.92rem !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    cursor: pointer !important;
+    text-align: left !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .admin-nav-item:hover {
+    background: rgba(56, 189, 248, 0.08) !important;
+    color: #fff !important;
+  }
+
+  .admin-nav-item.active {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(20, 184, 166, 0.12)) !important;
+    color: var(--accent-cyan) !important;
+    border-color: rgba(56, 189, 248, 0.35) !important;
+    box-shadow: 0 4px 15px rgba(56, 189, 248, 0.12) !important;
+  }
+
+  .admin-nav-item .nav-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  .admin-nav-item span,
+  .admin-nav-item .nav-left span,
+  .admin-sidebar-footer .admin-nav-item span {
+    display: inline-block !important;
+    font-size: 0.92rem !important;
+    font-weight: 600 !important;
+    color: #cbd5e1 !important;
+    white-space: nowrap !important;
+  }
+
+  .admin-nav-item.active .nav-left span {
+    color: var(--accent-cyan) !important;
+  }
+
+  .admin-nav-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(56, 189, 248, 0.15) !important;
+    color: var(--accent-cyan) !important;
+    padding: 2px 7px !important;
+    border-radius: 12px !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    min-width: 22px !important;
+    height: 22px !important;
+  }
+
+  .admin-sidebar-footer {
+    padding: 14px 14px 24px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    margin-top: auto !important;
+  }
+
+  .admin-sidebar-footer .admin-nav-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    padding: 11px 14px !important;
   }
 
   /* Backdrop Overlay */
