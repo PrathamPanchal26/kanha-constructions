@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Allow: /about
+Allow: /services
+Allow: /projects
+Allow: /project-detail
+Allow: /contact
+
+# Restrict admin portal and backend APIs from search engine indexing
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /api/
