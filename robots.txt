@@ -1,4 +1,4 @@
-User-agent: *
+﻿User-agent: *
 Allow: /
 Allow: /about
 Allow: /services
@@ -10,3 +10,5 @@ Allow: /contact
 Disallow: /admin
 Disallow: /admin.html
 Disallow: /api/
+
+Sitemap: https://kanha-portfolio-eta.vercel.app/sitemap.xml
