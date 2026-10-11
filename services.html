@@ -108,107 +108,115 @@
   </section>
 
   <!-- Detailed Services Grid -->
-  <section style="padding: 80px 0;">
+  <section class="services-detail-section">
     <div class="container">
-      <div id="detailedServicesGrid" style="display: flex; flex-direction: column; gap: 40px;">
+      <div id="detailedServicesGrid" class="services-detail-list">
 
         <!-- Service 1: Architectural Design -->
-        <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
-          <div>
-            <div style="width: 54px; height: 54px; background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 20px;">
+        <div class="service-detail-card">
+          <div class="service-detail-content">
+            <div class="service-detail-icon-wrap">
               <i class="fa-solid fa-city"></i>
             </div>
-            <h2 style="font-size: 2rem; color: #fff; margin-bottom: 14px;">Architectural Design</h2>
-            <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">
+            <h2 class="service-detail-title">Architectural Design</h2>
+            <p class="service-detail-desc">
               We conceptualize modern, functional, and visually captivating elevations and 2D/3D floor layouts tailored to contemporary living. Our architectural team focuses on optimizing spatial flow, natural daylighting, and passive energy efficiency.
             </p>
 
-            <ul style="list-style: none; color: var(--text-main); display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;">
-              <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-check" style="color: var(--accent-cyan);"></i> 3D Elevation Modeling & Photorealistic Renders</li>
-              <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-check" style="color: var(--accent-cyan);"></i> Residential Villa & Commercial Building Layouts</li>
-              <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-check" style="color: var(--accent-cyan);"></i> Municipal & Sanction Floor Plan Preparation</li>
+            <ul class="service-detail-highlights">
+              <li><i class="fa-solid fa-check"></i> <span>3D Elevation Modeling & Photorealistic Renders</span></li>
+              <li><i class="fa-solid fa-check"></i> <span>Residential Villa & Commercial Building Layouts</span></li>
+              <li><i class="fa-solid fa-check"></i> <span>Municipal & Sanction Floor Plan Preparation</span></li>
             </ul>
 
-            <a href="contact.html" class="btn-primary">Inquire for Architectural Design <i class="fa-solid fa-arrow-right"></i></a>
+            <div class="service-detail-actions">
+              <a href="contact.html" class="btn-primary">Inquire for Architectural Design <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
           </div>
 
-          <div>
-            <img src="assets/images/kanha_hero_facade_1791296928268.jpg" alt="Architectural Design" style="width: 100%; border-radius: 16px; border: 1px solid var(--border-light);" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
+          <div class="service-detail-img-wrap">
+            <img src="assets/images/kanha_hero_facade_1791296928268.jpg" alt="Architectural Design" class="service-detail-img" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
           </div>
         </div>
 
         <!-- Service 2: Structural Design -->
-        <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
-          <div style="order: 2;">
-            <div style="width: 54px; height: 54px; background: rgba(20, 184, 166, 0.15); color: var(--accent-teal); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 20px;">
+        <div class="service-detail-card is-reversed">
+          <div class="service-detail-content">
+            <div class="service-detail-icon-wrap icon-teal">
               <i class="fa-solid fa-cubes-stacked"></i>
             </div>
-            <h2 style="font-size: 2rem; color: #fff; margin-bottom: 14px;">Structural Design</h2>
-            <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">
+            <h2 class="service-detail-title">Structural Design</h2>
+            <p class="service-detail-desc">
               Rigorous structural engineering ensuring long-term load safety, seismic resilience, and material efficiency. We design heavy industrial plants, steel truss sheds, multi-story RCC framing, and foundation engineering.
             </p>
 
-            <ul style="list-style: none; color: var(--text-main); display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;">
-              <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-check" style="color: var(--accent-teal);"></i> RCC Frame & Foundation Load Analysis</li>
-              <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-check" style="color: var(--accent-teal);"></i> Industrial Steel Fabrication Structural Engineering</li>
-              <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-check" style="color: var(--accent-teal);"></i> Seismic Safety Compliance Standards</li>
+            <ul class="service-detail-highlights">
+              <li><i class="fa-solid fa-check"></i> <span>RCC Frame & Foundation Load Analysis</span></li>
+              <li><i class="fa-solid fa-check"></i> <span>Industrial Steel Fabrication Structural Engineering</span></li>
+              <li><i class="fa-solid fa-check"></i> <span>Seismic Safety Compliance Standards</span></li>
             </ul>
 
-            <a href="contact.html" class="btn-primary">Inquire for Structural Design <i class="fa-solid fa-arrow-right"></i></a>
+            <div class="service-detail-actions">
+              <a href="contact.html" class="btn-primary">Inquire for Structural Design <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
           </div>
 
-          <div style="order: 1;">
-            <img src="assets/images/raghuveer_gears_industrial_1791296960519.jpg" alt="Structural Design" style="width: 100%; border-radius: 16px; border: 1px solid var(--border-light);" onerror="this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1200&q=80'">
+          <div class="service-detail-img-wrap">
+            <img src="assets/images/raghuveer_gears_industrial_1791296960519.jpg" alt="Structural Design" class="service-detail-img" onerror="this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1200&q=80'">
           </div>
         </div>
 
         <!-- Service 3: Interior Design -->
-        <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
-          <div>
-            <div style="width: 54px; height: 54px; background: rgba(234, 179, 8, 0.15); color: var(--accent-gold); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 20px;">
+        <div class="service-detail-card">
+          <div class="service-detail-content">
+            <div class="service-detail-icon-wrap icon-gold">
               <i class="fa-solid fa-couch"></i>
             </div>
-            <h2 style="font-size: 2rem; color: #fff; margin-bottom: 14px;">Interior Design</h2>
-            <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">
+            <h2 class="service-detail-title">Interior Design</h2>
+            <p class="service-detail-desc">
               Luxury living rooms, modular kitchens, master suites, commercial corporate offices, and specialized hospital interior clinic layouts. We craft ambient cove lighting, marble accent walls, and custom furniture.
             </p>
 
-            <ul style="list-style: none; color: var(--text-main); display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;">
-              <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-check" style="color: var(--accent-gold);"></i> Bespoke Living & Bedroom Transformations</li>
-              <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-check" style="color: var(--accent-gold);"></i> Modular Island Kitchens & Italian Marble Feature Walls</li>
-              <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-check" style="color: var(--accent-gold);"></i> Specialized Healthcare & Rehab Clinic Interiors</li>
+            <ul class="service-detail-highlights">
+              <li><i class="fa-solid fa-check"></i> <span>Bespoke Living & Bedroom Transformations</span></li>
+              <li><i class="fa-solid fa-check"></i> <span>Modular Island Kitchens & Italian Marble Feature Walls</span></li>
+              <li><i class="fa-solid fa-check"></i> <span>Specialized Healthcare & Rehab Clinic Interiors</span></li>
             </ul>
 
-            <a href="contact.html" class="btn-primary">Inquire for Interior Design <i class="fa-solid fa-arrow-right"></i></a>
+            <div class="service-detail-actions">
+              <a href="contact.html" class="btn-primary">Inquire for Interior Design <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
           </div>
 
-          <div>
-            <img src="assets/images/kanha_interior_living_1791297029485.jpg" alt="Interior Design" style="width: 100%; border-radius: 16px; border: 1px solid var(--border-light);" onerror="this.src='https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80'">
+          <div class="service-detail-img-wrap">
+            <img src="assets/images/kanha_interior_living_1791297029485.jpg" alt="Interior Design" class="service-detail-img" onerror="this.src='https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80'">
           </div>
         </div>
 
         <!-- Service 4: Turnkey Projects -->
-        <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
-          <div style="order: 2;">
-            <div style="width: 54px; height: 54px; background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 20px;">
+        <div class="service-detail-card is-reversed">
+          <div class="service-detail-content">
+            <div class="service-detail-icon-wrap">
               <i class="fa-solid fa-key"></i>
             </div>
-            <h2 style="font-size: 2rem; color: #fff; margin-bottom: 14px;">Turnkey Projects</h2>
-            <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">
+            <h2 class="service-detail-title">Turnkey Projects</h2>
+            <p class="service-detail-desc">
               End-to-end hassle-free execution where we manage every aspect from raw land site development, civil construction, electrical & plumbing, interior styling, to final key handover.
             </p>
 
-            <ul style="list-style: none; color: var(--text-main); display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;">
-              <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-check" style="color: var(--accent-cyan);"></i> Complete Single-Point Project Accountability</li>
-              <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-check" style="color: var(--accent-cyan);"></i> On-Time Handover Guarantee</li>
-              <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-check" style="color: var(--accent-cyan);"></i> Full Material Quality & Civil Work Warranty</li>
+            <ul class="service-detail-highlights">
+              <li><i class="fa-solid fa-check"></i> <span>Complete Single-Point Project Accountability</span></li>
+              <li><i class="fa-solid fa-check"></i> <span>On-Time Handover Guarantee</span></li>
+              <li><i class="fa-solid fa-check"></i> <span>Full Material Quality & Civil Work Warranty</span></li>
             </ul>
 
-            <a href="contact.html" class="btn-primary">Request Turnkey Project Proposal <i class="fa-solid fa-arrow-right"></i></a>
+            <div class="service-detail-actions">
+              <a href="contact.html" class="btn-primary">Request Turnkey Project Proposal <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
           </div>
 
-          <div style="order: 1;">
-            <img src="assets/images/rajdeep_villa_residential_1791296998090.jpg" alt="Turnkey Projects" style="width: 100%; border-radius: 16px; border: 1px solid var(--border-light);" onerror="this.src='https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80'">
+          <div class="service-detail-img-wrap">
+            <img src="assets/images/rajdeep_villa_residential_1791296998090.jpg" alt="Turnkey Projects" class="service-detail-img" onerror="this.src='https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80'">
           </div>
         </div>
 

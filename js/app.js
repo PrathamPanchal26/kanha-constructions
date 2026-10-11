@@ -120,18 +120,27 @@ function setupMobileMenu() {
 
   function closeMenu() {
     navLinks.classList.remove('mobile-open');
-    menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+    menuBtn.classList.remove('active');
     menuBtn.setAttribute('aria-expanded', 'false');
+    const icon = menuBtn.querySelector('i');
+    if (icon) {
+      icon.className = 'fa-solid fa-bars';
+    }
   }
 
   function openMenu() {
     navLinks.classList.add('mobile-open');
-    menuBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+    menuBtn.classList.add('active');
     menuBtn.setAttribute('aria-expanded', 'true');
+    const icon = menuBtn.querySelector('i');
+    if (icon) {
+      icon.className = 'fa-solid fa-xmark';
+    }
   }
 
   menuBtn.addEventListener('click', (e) => {
     e.stopPropagation();
+    e.preventDefault();
     const isOpen = navLinks.classList.contains('mobile-open');
     if (isOpen) {
       closeMenu();
@@ -141,8 +150,10 @@ function setupMobileMenu() {
   });
 
   document.addEventListener('click', (e) => {
-    if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
-      closeMenu();
+    if (navLinks.classList.contains('mobile-open')) {
+      if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
+        closeMenu();
+      }
     }
   });
 
@@ -153,7 +164,7 @@ function setupMobileMenu() {
   });
 
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 860) {
+    if (window.innerWidth > 768) {
       closeMenu();
     }
   });
@@ -232,30 +243,35 @@ function renderDynamicServices() {
   // B. Services Page Detailed View Grid
   const detailedServicesContainer = document.getElementById('detailedServicesGrid');
   if (detailedServicesContainer) {
+    const isMustacheRoute = !window.location.pathname.includes('.html') && window.location.pathname !== '/';
+    const contactHref = isMustacheRoute ? '/contact' : 'contact.html';
+
     detailedServicesContainer.innerHTML = allServices.map((srv, idx) => {
       const isReversed = idx % 2 !== 0;
       const highlightsHtml = (srv.highlights || []).map(h => `
-        <li style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-check" style="color: var(--accent-cyan);"></i> ${h}</li>
+        <li><i class="fa-solid fa-check"></i> <span>${h}</span></li>
       `).join('');
 
       return `
-        <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
-          <div style="${isReversed ? 'order: 2;' : ''}">
-            <div style="width: 54px; height: 54px; background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 20px;">
+        <div class="service-detail-card ${isReversed ? 'is-reversed' : ''}">
+          <div class="service-detail-content">
+            <div class="service-detail-icon-wrap">
               <i class="${srv.icon || 'fa-solid fa-city'}"></i>
             </div>
-            <h2 style="font-size: 2rem; color: #fff; margin-bottom: 14px;">${srv.title}</h2>
-            <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">${srv.fullDesc || srv.shortDesc}</p>
+            <h2 class="service-detail-title">${srv.title}</h2>
+            <p class="service-detail-desc">${srv.fullDesc || srv.shortDesc || ''}</p>
 
-            <ul style="list-style: none; color: var(--text-main); display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;">
+            <ul class="service-detail-highlights">
               ${highlightsHtml}
             </ul>
 
-            <a href="contact.html" class="btn-primary">Inquire for ${srv.title} <i class="fa-solid fa-arrow-right"></i></a>
+            <div class="service-detail-actions">
+              <a href="${contactHref}" class="btn-primary">Inquire for ${srv.title} <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
           </div>
 
-          <div style="${isReversed ? 'order: 1;' : ''}">
-            <img src="${srv.image || 'assets/images/kanha_hero_facade_1791296928268.jpg'}" alt="${srv.title}" style="width: 100%; border-radius: 16px; border: 1px solid var(--border-light);" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
+          <div class="service-detail-img-wrap">
+            <img src="${srv.image || 'assets/images/kanha_hero_facade_1791296928268.jpg'}" alt="${srv.title}" class="service-detail-img" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
           </div>
         </div>
       `;
