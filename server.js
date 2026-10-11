@@ -326,6 +326,10 @@ app.post('/api/contact', async (req, res) => {
 });
 
 // Start Express Server
-app.listen(PORT, () => {
-  console.log(`Mustache-powered Server running at http://localhost:${PORT}`);
-});
+if (require.main === module || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Mustache-powered Server running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
