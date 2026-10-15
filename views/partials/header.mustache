@@ -22,7 +22,103 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{pageTitle}} | {{companyName}}</title>
   <meta name="description" content="{{metaDescription}}">
+  <meta name="keywords" content="best construction company in ahmedabad, top construction company in nikol, best interior designer in nikol ahmedabad, turnkey construction ahmedabad, turnkey building contractors ahmedabad, architectural design firm nikol, structural engineering services ahmedabad, industrial shed construction vatva gidc, residential villa construction ahmedabad, bungalow construction contractor, luxury interior designers ahmedabad, hospital interior design ahmedabad, civil contractors ahmedabad, house construction cost ahmedabad, kanha construction, kanha construction & interior, kanha interior nikol, home renovation contractors ahmedabad, 3d elevation design ahmedabad, rcc structure engineering ahmedabad, building contractors near me ahmedabad">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="author" content="KANHA Construction & Interior">
+  <link rel="canonical" href="{{#canonicalUrl}}{{canonicalUrl}}{{/canonicalUrl}}{{^canonicalUrl}}https://kanha-portfolio-eta.vercel.app/{{/canonicalUrl}}">
   <meta name="google-site-verification" content="48b2a719bbcfc04a">
+
+  <!-- Local SEO Geo Meta Tags -->
+  <meta name="geo.region" content="IN-GJ">
+  <meta name="geo.placename" content="Ahmedabad, Nikol">
+  <meta name="geo.position" content="23.0493;72.6738">
+  <meta name="ICBM" content="23.0493, 72.6738">
+
+  <!-- Open Graph / Facebook Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KANHA Construction & Interior">
+  <meta property="og:locale" content="en_IN">
+  <meta property="og:title" content="{{pageTitle}} | {{companyName}}">
+  <meta property="og:description" content="{{metaDescription}}">
+  <meta property="og:url" content="{{#canonicalUrl}}{{canonicalUrl}}{{/canonicalUrl}}{{^canonicalUrl}}https://kanha-portfolio-eta.vercel.app/{{/canonicalUrl}}">
+  <meta property="og:image" content="https://kanha-portfolio-eta.vercel.app/assets/images/kanha_hero_facade_1791296928268.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Kanha Construction and Interior Ahmedabad">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{pageTitle}} | {{companyName}}">
+  <meta name="twitter:description" content="{{metaDescription}}">
+  <meta name="twitter:image" content="https://kanha-portfolio-eta.vercel.app/assets/images/kanha_hero_facade_1791296928268.jpg">
+
+  <!-- Structured Data JSON-LD Schema (Google Top Ranking & Rich Snippets) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["GeneralContractor", "HomeAndConstructionBusiness", "LocalBusiness"],
+        "@id": "https://kanha-portfolio-eta.vercel.app/#business",
+        "name": "KANHA Construction & Interior",
+        "alternateName": [
+          "Kanha Construction",
+          "Kanha Interior Nikol",
+          "Kanha Construction and Interior Ahmedabad"
+        ],
+        "url": "https://kanha-portfolio-eta.vercel.app/",
+        "logo": "https://kanha-portfolio-eta.vercel.app/assets/images/kanha_hero_facade_1791296928268.jpg",
+        "image": "https://kanha-portfolio-eta.vercel.app/assets/images/kanha_hero_facade_1791296928268.jpg",
+        "description": "Premier construction company and interior design firm in Nikol, Ahmedabad, Gujarat. Delivering quality-driven turnkey residential villas, industrial plants, commercial offices, and luxury interior design.",
+        "telephone": "+91-9898749575",
+        "priceRange": "₹₹",
+        "currenciesAccepted": "INR",
+        "paymentAccepted": "Cash, Cheque, Bank Transfer, UPI",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Near Shreenath Party Plot, Nikol",
+          "addressLocality": "Ahmedabad",
+          "addressRegion": "Gujarat",
+          "postalCode": "382350",
+          "addressCountry": "IN"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "23.0493",
+          "longitude": "72.6738"
+        },
+        "hasMap": "https://maps.google.com/maps?q=Kanha+Construction+and+Interior+Nikol+Ahmedabad",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            "opens": "09:00",
+            "closes": "19:00"
+          }
+        ],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "bestRating": "5",
+          "ratingCount": "48"
+        },
+        "areaServed": [
+          {"@type": "Place", "name": "Nikol, Ahmedabad"},
+          {"@type": "Place", "name": "Naroda, Ahmedabad"},
+          {"@type": "Place", "name": "Vatva GIDC, Ahmedabad"},
+          {"@type": "Place", "name": "Bopal, Ahmedabad"},
+          {"@type": "Place", "name": "Vastral, Ahmedabad"},
+          {"@type": "Place", "name": "Chiloda, Gandhinagar"},
+          {"@type": "Place", "name": "Kuha, Ahmedabad"},
+          {"@type": "Place", "name": "Ahmedabad, Gujarat"}
+        ],
+        "sameAs": [
+          "https://www.instagram.com/kanha_construction_interiors?igsh=aGZ2YzN1anE4Z3N3"
+        ]
+      }
+    ]
+  }
+  </script>
   
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -46,7 +142,6 @@
           <span class="logo-sub">CONSTRUCTION & INTERIOR</span>
         </div>
       </a>
-
 
       <nav class="nav-menu">
         <ul class="nav-links" id="navLinks">
@@ -76,8 +171,13 @@
           </li>
           <li>
             <a href="/contact" class="nav-link {{#isContact}}active{{/isContact}}">
-              <i class="fa-solid fa-envelope"></i>
+              <i class="fa-solid fa-headset"></i>
               <span>Contact</span>
+            </a>
+          </li>
+          <li class="desktop-nav-whatsapp">
+            <a href="https://wa.me/919898749575?text=Hello%20Kanha%20Team,%20I%20am%20interested%20in%20your%20services." target="_blank" rel="noopener noreferrer" class="nav-wa-pill">
+              <i class="fa-brands fa-whatsapp"></i> <span>WhatsApp Us</span>
             </a>
           </li>
           <li class="mobile-nav-cta">

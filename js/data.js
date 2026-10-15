@@ -4,12 +4,13 @@ const DEFAULT_COMPANY = {
   name: "KANHA",
   subtitle: "CONSTRUCTION & INTERIOR",
   fullName: "KANHA Construction & Interior",
-  tagline: "Realising Your Dreams",
+  tagline: "Best Construction Company & Interior Designer in Ahmedabad",
   phone: "+91 9898749575",
-  email: "kanha.consinterio@gmail.com",
-  address: "Nikol, Ahmedabad, Gujarat, India",
-  workingHours: "Monday - Saturday: 9:00 AM - 7:00 PM IST",
-  estBadge: "Established Since 2021 • Ahmedabad",
+  whatsapp: "+91 9898749575",
+  whatsappLink: "https://wa.me/919898749575?text=Hello%20Kanha%20Team%2C%20I%20want%20to%20discuss%20a%20project!",
+  address: "Near Shreenath Party Plot, Nikol, Ahmedabad, Gujarat - 382350",
+  workingHours: "Monday - Saturday: 9:00 AM - 7:00 PM IST (WhatsApp 24/7)",
+  estBadge: "Established Since 2021 • Nikol, Ahmedabad",
   instagramUrl: "https://www.instagram.com/kanha_construction_interiors?igsh=aGZ2YzN1anE4Z3N3"
 };
 

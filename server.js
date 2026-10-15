@@ -69,14 +69,15 @@ app.use(express.static(path.join(__dirname, '/')));
 // Shared Global View Context Data
 const getGlobalContext = () => ({
   companyName: "KANHA Construction & Interior",
-  tagline: "Realising Your Dreams",
+  tagline: "Best Construction Company & Interior Designer in Ahmedabad",
   establishedYear: "2021",
   location: "Nikol, Ahmedabad, Gujarat, India",
   phone: "+91 9898749575",
-  email: "kanha.consinterio@gmail.com",
-  address: "Nikol, Ahmedabad, Gujarat, India",
+  whatsapp: "+91 9898749575",
+  whatsappLink: "https://wa.me/919898749575?text=Hello%20Kanha%20Team%2C%20I%20am%20interested%20in%20your%20services.",
+  address: "Near Shreenath Party Plot, Nikol, Ahmedabad, Gujarat - 382350",
   year: new Date().getFullYear(),
-  companyIntro: "Delivering quality-driven architectural, structural, and interior projects with a commitment to excellence, innovation, and reliability across residential, industrial, commercial, and healthcare spaces.",
+  companyIntro: "Delivering quality-driven architectural, structural, and interior projects with a commitment to excellence, innovation, and reliability across residential, industrial, commercial, and healthcare spaces in Ahmedabad.",
   stats: {
     projectsDelivered: "50+",
     largestSqFt: "15K+",
@@ -131,8 +132,9 @@ const getGlobalContext = () => ({
 app.get(['/', '/index', '/index.html'], (req, res) => {
   const context = {
     ...getGlobalContext(),
-    pageTitle: "Home",
-    metaDescription: "Kanha Construction & Interior - Premium architectural design, structural engineering, interior design, construction work and turnkey projects in Ahmedabad, India.",
+    pageTitle: "Best Construction Company & Interior Designer in Ahmedabad, Nikol",
+    metaDescription: "Kanha Construction & Interior is the premier turnkey construction company and interior designer in Nikol, Ahmedabad. We specialize in residential villas, industrial sheds, structural engineering, 3D architecture & bespoke interiors. Call/WhatsApp +91 9898749575.",
+    canonicalUrl: "https://kanha-portfolio-eta.vercel.app/",
     isHome: true
   };
   res.render('index', context);
@@ -142,8 +144,9 @@ app.get(['/', '/index', '/index.html'], (req, res) => {
 app.get(['/about', '/about.html'], (req, res) => {
   const context = {
     ...getGlobalContext(),
-    pageTitle: "About Us",
-    metaDescription: "Learn about Kanha Construction & Interior - trusted name in construction, architectural design, and turnkey solutions in Ahmedabad since 2021.",
+    pageTitle: "About Us | Top Architectural, Structural & Turnkey Builders Ahmedabad",
+    metaDescription: "Learn about Kanha Construction & Interior - premier architectural design, structural engineering, and turnkey builders established in 2021 in Nikol, Ahmedabad. 50+ successful projects delivered.",
+    canonicalUrl: "https://kanha-portfolio-eta.vercel.app/about",
     isAbout: true
   };
   res.render('about', context);
@@ -153,8 +156,9 @@ app.get(['/about', '/about.html'], (req, res) => {
 app.get(['/services', '/services.html'], (req, res) => {
   const context = {
     ...getGlobalContext(),
-    pageTitle: "Services",
-    metaDescription: "Explore turnkey architectural design, structural engineering, interior design, construction work, and turnkey projects offered by Kanha Construction & Interior.",
+    pageTitle: "Turnkey Construction, Architecture & Interior Services in Ahmedabad",
+    metaDescription: "Comprehensive construction and interior services in Ahmedabad: Architectural 3D Elevation, Structural RCC Design, Turnkey Villa Construction, Industrial Plants & Luxury Interiors.",
+    canonicalUrl: "https://kanha-portfolio-eta.vercel.app/services",
     isServices: true
   };
   res.render('services', context);
@@ -164,8 +168,9 @@ app.get(['/services', '/services.html'], (req, res) => {
 app.get(['/projects', '/projects.html'], (req, res) => {
   const context = {
     ...getGlobalContext(),
-    pageTitle: "Our Projects",
-    metaDescription: "Browse completed industrial, residential, hospital, and interior projects by Kanha Construction & Interior across Vatva, Kuha, Bopal, Chiloda, Naroda, and Ahmedabad.",
+    pageTitle: "Completed Projects Portfolio | Industrial, Residential & Interior Ahmedabad",
+    metaDescription: "Explore 50+ completed turnkey projects across Ahmedabad, Nikol, Vatva GIDC, Naroda, Bopal, Kuha & Chiloda by Kanha Construction & Interior. Browse photo galleries & floor plans.",
+    canonicalUrl: "https://kanha-portfolio-eta.vercel.app/projects",
     isProjects: true
   };
   res.render('projects', context);
@@ -175,7 +180,8 @@ app.get(['/projects', '/projects.html'], (req, res) => {
 app.get(['/project-detail', '/project-detail.html'], (req, res) => {
   const context = {
     ...getGlobalContext(),
-    pageTitle: "Project Details & Gallery",
+    pageTitle: "Project Details & Gallery | Kanha Construction Ahmedabad",
+    canonicalUrl: "https://kanha-portfolio-eta.vercel.app/project-detail",
     isProjects: true
   };
   res.render('project-detail', context);
@@ -185,8 +191,9 @@ app.get(['/project-detail', '/project-detail.html'], (req, res) => {
 app.get(['/contact', '/contact.html'], (req, res) => {
   const context = {
     ...getGlobalContext(),
-    pageTitle: "Contact Us",
-    metaDescription: "Get in touch with Kanha Construction & Interior in Nikol, Ahmedabad, Gujarat. Call +91 9898749575 or email kanha.consinterio@gmail.com.",
+    pageTitle: "Contact Kanha Construction Nikol Ahmedabad | WhatsApp & Phone",
+    metaDescription: "Connect with Kanha Construction & Interior in Nikol, Ahmedabad. Reach us directly on WhatsApp or Call at +91 9898749575 for instant quotations, site consultations & architectural plan reviews.",
+    canonicalUrl: "https://kanha-portfolio-eta.vercel.app/contact",
     isContact: true
   };
   res.render('contact', context);

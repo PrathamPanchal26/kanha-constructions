@@ -43,6 +43,9 @@ function initPortfolio() {
   renderDynamicStats();
   setupFilterTabs();
   setupModalEvents();
+  initCostEstimator();
+  initFaqAccordion();
+  initWhatsAppWidget();
 }
 
 // 1. Hydrate Header, Footer, Contact Info, and Branding across ALL pages
@@ -749,7 +752,7 @@ function setupModalEvents() {
   });
 }
 
-// Contact Form Submission (Sends FREE Email directly to kanha.consinterio@gmail.com inbox)
+// Contact Form Submission (Submits directly to WhatsApp + silent backend sync)
 function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
@@ -770,87 +773,183 @@ function initContactForm() {
     const message = messageInput ? messageInput.value.trim() : '';
 
     if (!name || !phone || !message) {
-      showToast('Please fill in all required fields.');
+      showToast('Please fill in your name, phone number, and project details.');
       return;
     }
 
-    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sending to kanha.consinterio@gmail.com...`;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Connecting to WhatsApp...`;
     btn.disabled = true;
 
-    const payload = {
-      name: name,
-      phone: phone,
-      requirement: category,
-      message: message,
-      _subject: `🚨 New Kanha Website Inquiry: ${name} (${category})`,
-      _template: 'table',
-      _captcha: 'false'
-    };
+    // Compile neat, professional WhatsApp message
+    const waText = `Hello Kanha Construction & Interior,\n\n*New Website Project Inquiry:*\n• *Name:* ${name}\n• *Phone:* ${phone}\n• *Requirement:* ${category}\n• *Details:* ${message}\n• *Location:* Ahmedabad, Gujarat\n\nPlease provide consultation and estimation.`;
+    const waUrl = `https://wa.me/919898749575?text=${encodeURIComponent(waText)}`;
 
-    let sentSuccessfully = false;
-
-    // 1. Primary Free Provider: FormSubmit AJAX API
+    // Asynchronously log inquiry to backend in background if server is running
     try {
-      const response = await fetch('https://formsubmit.co/ajax/kanha.consinterio@gmail.com', {
+      fetch('/api/contact', {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, category, message })
+      }).catch(() => {});
+    } catch (_) {}
 
-      const resData = await response.json();
-      if (resData.success === 'true' || resData.success === true || response.ok) {
-        sentSuccessfully = true;
-      }
-    } catch (err) {
-      console.warn("FormSubmit free API call failed, trying backup route...", err);
+    // Open WhatsApp
+    window.open(waUrl, '_blank');
+
+    btn.innerHTML = `<i class="fa-brands fa-whatsapp"></i> Inquiry Prepared!`;
+    btn.style.background = '#10b981';
+    showToast('Opening WhatsApp with your project inquiry details...');
+
+    setTimeout(() => {
+      form.reset();
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+      btn.style.background = '';
+    }, 4000);
+  });
+}
+
+// Construction & Interior Cost Estimator Logic
+function initCostEstimator() {
+  const typeSelect = document.getElementById('calcProjectType');
+  const areaSlider = document.getElementById('calcAreaSlider');
+  const areaValBadge = document.getElementById('calcAreaVal');
+  const packageChips = document.querySelectorAll('.package-chip');
+  const totalEstimateEl = document.getElementById('calcTotalEstimate');
+  const rateSubEl = document.getElementById('calcRateSub');
+  const civilSplitEl = document.getElementById('calcCivilSplit');
+  const finishSplitEl = document.getElementById('calcFinishSplit');
+  const archSplitEl = document.getElementById('calcArchSplit');
+  const timelineEl = document.getElementById('calcTimeline');
+  const shareBtn = document.getElementById('btnShareEstimateWA');
+
+  if (!typeSelect || !areaSlider || !totalEstimateEl) return;
+
+  let activeMultiplier = 1.2; // Default Premium package
+  let activePackageName = "Premium";
+
+  packageChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      packageChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeMultiplier = parseFloat(chip.getAttribute('data-multiplier')) || 1.0;
+      activePackageName = chip.querySelector('h5') ? chip.querySelector('h5').textContent.trim() : 'Standard';
+      calculateEstimate();
+    });
+  });
+
+  areaSlider.addEventListener('input', () => {
+    if (areaValBadge) {
+      areaValBadge.textContent = `${Number(areaSlider.value).toLocaleString('en-IN')} Sq. Ft.`;
     }
+    calculateEstimate();
+  });
 
-    // 2. Backup Provider: Local Node Server API
-    if (!sentSuccessfully) {
-      try {
-        const response = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, phone, category, message })
-        });
-        const resData = await response.json();
-        if (resData.success) {
-          sentSuccessfully = true;
-        }
-      } catch (err) {
-        console.warn("Backend API route call failed.", err);
-      }
-    }
+  typeSelect.addEventListener('change', calculateEstimate);
 
-    if (sentSuccessfully) {
-      btn.innerHTML = `<i class="fa-solid fa-check"></i> Delivered to kanha.consinterio@gmail.com!`;
-      btn.style.background = '#10b981';
-      showToast('Inquiry sent directly to kanha.consinterio@gmail.com inbox! We will get back to you shortly.');
+  function calculateEstimate() {
+    const selectedOption = typeSelect.options[typeSelect.selectedIndex];
+    const baseRate = parseFloat(selectedOption?.getAttribute('data-base')) || 1850;
+    const projectTypeName = selectedOption?.text || 'Residential Villa';
+    const sqft = parseInt(areaSlider.value, 10) || 1500;
 
-      setTimeout(() => {
-        form.reset();
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        btn.style.background = '';
-      }, 4000);
+    const effectiveRate = Math.round(baseRate * activeMultiplier);
+    const totalCost = effectiveRate * sqft;
+
+    // Format total in Lakhs or Crores
+    let totalFormatted = '';
+    if (totalCost >= 10000000) {
+      totalFormatted = `₹ ${(totalCost / 10000000).toFixed(2)} Crores`;
     } else {
-      console.warn("Utilizing direct mailto client fallback...");
-      const mailtoUrl = `mailto:kanha.consinterio@gmail.com?subject=New Inquiry from ${encodeURIComponent(name)}&body=Name: ${encodeURIComponent(name)}%0D%0APhone: ${encodeURIComponent(phone)}%0D%0ARequirement: ${encodeURIComponent(category)}%0D%0AMessage: ${encodeURIComponent(message)}`;
-      window.location.href = mailtoUrl;
+      totalFormatted = `₹ ${(totalCost / 100000).toFixed(2)} Lakhs`;
+    }
 
-      btn.innerHTML = `<i class="fa-solid fa-envelope"></i> Opening Mail Client...`;
-      btn.style.background = '#10b981';
-      showToast('Opening your email client to send to kanha.consinterio@gmail.com...');
+    const civilCost = Math.round(totalCost * 0.55);
+    const finishCost = Math.round(totalCost * 0.30);
+    const archCost = totalCost - civilCost - finishCost;
 
-      setTimeout(() => {
-        form.reset();
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        btn.style.background = '';
-      }, 4000);
+    const civilFormatted = civilCost >= 10000000 ? `₹ ${(civilCost / 10000000).toFixed(2)} Cr` : `₹ ${(civilCost / 100000).toFixed(2)} L`;
+    const finishFormatted = finishCost >= 10000000 ? `₹ ${(finishCost / 10000000).toFixed(2)} Cr` : `₹ ${(finishCost / 100000).toFixed(2)} L`;
+    const archFormatted = archCost >= 10000000 ? `₹ ${(archCost / 10000000).toFixed(2)} Cr` : `₹ ${(archCost / 100000).toFixed(2)} L`;
+
+    totalEstimateEl.textContent = totalFormatted;
+    if (rateSubEl) {
+      rateSubEl.textContent = `Estimated Rate: ₹ ${effectiveRate.toLocaleString('en-IN')} / Sq. Ft.`;
+    }
+    if (civilSplitEl) civilSplitEl.textContent = `~${civilFormatted}`;
+    if (finishSplitEl) finishSplitEl.textContent = `~${finishFormatted}`;
+    if (archSplitEl) archSplitEl.textContent = `~${archFormatted}`;
+
+    if (timelineEl) {
+      if (sqft <= 1500) timelineEl.textContent = "5 - 7 Months";
+      else if (sqft <= 3500) timelineEl.textContent = "7 - 10 Months";
+      else if (sqft <= 8000) timelineEl.textContent = "10 - 14 Months";
+      else timelineEl.textContent = "14 - 18 Months";
+    }
+
+    if (shareBtn) {
+      shareBtn.onclick = () => {
+        const msg = `Hello Kanha Construction & Interior,\n\n*Estimated Project from your Website Calculator:*\n• *Type:* ${projectTypeName}\n• *Area:* ${sqft.toLocaleString('en-IN')} Sq. Ft.\n• *Package:* ${activePackageName}\n• *Estimated Budget:* ${totalFormatted} (₹ ${effectiveRate}/sq.ft)\n• *City:* Ahmedabad, Gujarat\n\nPlease share detailed material specifications and book a site visit.`;
+        window.open(`https://wa.me/919898749575?text=${encodeURIComponent(msg)}`, '_blank');
+      };
+    }
+  }
+
+  // Initial run
+  calculateEstimate();
+}
+
+// FAQ Accordion Handler
+function initFaqAccordion() {
+  const faqButtons = document.querySelectorAll('.faq-question-btn');
+  faqButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const parentCard = btn.closest('.faq-card');
+      if (!parentCard) return;
+
+      const wasActive = parentCard.classList.contains('active');
+      // Collapse others in same list
+      const container = parentCard.closest('.faq-list');
+      if (container) {
+        container.querySelectorAll('.faq-card').forEach(c => {
+          c.classList.remove('active');
+          const pane = c.querySelector('.faq-answer-pane');
+          if (pane) pane.style.display = 'none';
+        });
+      }
+
+      if (!wasActive) {
+        parentCard.classList.add('active');
+        const pane = parentCard.querySelector('.faq-answer-pane');
+        if (pane) pane.style.display = 'block';
+      }
+    });
+  });
+}
+
+// Floating WhatsApp Interactive Widget Drawer
+function initWhatsAppWidget() {
+  const launcher = document.getElementById('waLauncherBtn');
+  const chatBox = document.getElementById('waChatBox');
+  const closeBtn = document.getElementById('waCloseBtn');
+
+  if (!launcher || !chatBox) return;
+
+  launcher.addEventListener('click', (e) => {
+    e.stopPropagation();
+    chatBox.classList.toggle('active');
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      chatBox.classList.remove('active');
+    });
+  }
+
+  document.addEventListener('click', (e) => {
+    if (!chatBox.contains(e.target) && !launcher.contains(e.target)) {
+      chatBox.classList.remove('active');
     }
   });
 }

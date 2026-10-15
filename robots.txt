@@ -1,10 +1,16 @@
-﻿User-agent: *
+User-agent: *
 Allow: /
 Allow: /about
 Allow: /services
 Allow: /projects
 Allow: /project-detail
 Allow: /contact
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /assets/
 
 # Restrict admin portal and backend APIs from search engine indexing
 Disallow: /admin

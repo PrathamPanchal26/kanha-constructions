@@ -20,9 +20,27 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project Gallery & Details | Kanha Construction & Interior</title>
-  <meta name="description" content="View detailed architectural design, structural engineering, interior execution, and project photo gallery by Kanha Construction & Interior.">
-  
+  <title>Project Details & Photo Gallery | Kanha Construction Ahmedabad</title>
+  <meta name="description" content="View detailed architectural design, structural engineering, interior execution, and project photo gallery by Kanha Construction & Interior in Ahmedabad.">
+  <meta name="keywords" content="kanha project gallery, ahmedabad construction photos, residential villa elevation drawings, industrial shed engineering photos, interior design photos ahmedabad">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="https://kanha-portfolio-eta.vercel.app/project-detail">
+  <meta name="google-site-verification" content="48b2a719bbcfc04a">
+
+  <!-- Local SEO Geo Meta Tags -->
+  <meta name="geo.region" content="IN-GJ">
+  <meta name="geo.placename" content="Ahmedabad, Nikol">
+  <meta name="geo.position" content="23.0493;72.6738">
+  <meta name="ICBM" content="23.0493, 72.6738">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="KANHA Construction & Interior">
+  <meta property="og:title" content="Project Details & Photo Gallery | Kanha Construction Ahmedabad">
+  <meta property="og:description" content="Explore architectural drawings, structural engineering specs, and interior photos in Ahmedabad.">
+  <meta property="og:url" content="https://kanha-portfolio-eta.vercel.app/project-detail">
+  <meta property="og:image" content="https://kanha-portfolio-eta.vercel.app/assets/images/kanha_hero_facade_1791296928268.jpg">
+
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
@@ -58,59 +76,33 @@
     }
     .detail-meta-grid {
       display: flex;
-      gap: 24px;
+      gap: 20px;
       flex-wrap: wrap;
-      background: rgba(7, 25, 34, 0.7);
-      padding: 16px 24px;
-      border-radius: 12px;
-      border: 1px solid var(--border-light);
-      margin-top: 20px;
+      margin-bottom: 24px;
     }
     .detail-meta-box {
+      background: rgba(7, 25, 34, 0.6);
+      border: 1px solid var(--border-light);
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 0.95rem;
-      color: var(--text-muted);
+      gap: 8px;
     }
     .detail-meta-box strong {
       color: #fff;
     }
-    .detail-gallery-tabs {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
-      justify-content: center;
-    }
-    .detail-tab-btn {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-light);
-      color: var(--text-muted);
-      padding: 10px 22px;
-      border-radius: 30px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: var(--transition-smooth);
-    }
-    .detail-tab-btn:hover, .detail-tab-btn.active {
-      background: var(--accent-cyan);
-      color: var(--bg-dark);
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
-    }
-    .detail-gallery-grid {
+    .project-detail-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 24px;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 40px;
+      align-items: center;
     }
   </style>
 </head>
-<body class="detail-page-body">
+<body>
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KM3NMDDG"
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -155,8 +147,13 @@
           </li>
           <li>
             <a href="contact.html" class="nav-link">
-              <i class="fa-solid fa-envelope"></i>
+              <i class="fa-solid fa-headset"></i>
               <span>Contact</span>
+            </a>
+          </li>
+          <li class="desktop-nav-whatsapp">
+            <a href="https://wa.me/919898749575?text=Hello%20Kanha%20Team,%20I%20am%20interested%20in%20your%20services." target="_blank" rel="noopener noreferrer" class="nav-wa-pill">
+              <i class="fa-brands fa-whatsapp"></i> <span>WhatsApp Us</span>
             </a>
           </li>
           <li class="mobile-nav-cta">
@@ -185,7 +182,7 @@
         <span id="detailBreadcrumbTitle" style="color: var(--text-main);">Project Details</span>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center;">
+      <div class="project-detail-grid">
         <div>
           <span class="detail-meta-pill" id="detailCategoryBadge">RESIDENTIAL</span>
           <h1 class="detail-hero-title" id="detailTitle">Project Title</h1>
@@ -209,8 +206,8 @@
           </div>
 
           <div style="margin-top: 30px; display: flex; gap: 16px; flex-wrap: wrap;">
-            <a href="contact.html" class="btn-primary" id="btnInquireProject">
-              Inquire Similar Project <i class="fa-solid fa-paper-plane"></i>
+            <a href="https://wa.me/919898749575?text=Hello%20Kanha%20Team%2C%20I%20am%20interested%20in%20a%20project%20similar%20to%20the%20one%20on%20your%20website." target="_blank" rel="noopener" class="btn-primary" id="btnInquireProject" style="background: #25d366; border-color: #25d366; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);">
+              Inquire on WhatsApp <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i>
             </a>
             <a href="projects.html" class="btn-secondary">
               Browse Portfolio <i class="fa-solid fa-grid-2"></i>
@@ -232,30 +229,31 @@
   <section style="padding: 80px 0; background: var(--bg-dark);">
     <div class="container">
       
-      <div class="section-header">
-        <span class="section-subtitle">Project Execution Photos</span>
-        <h2 class="section-title">Categorized Photo Gallery</h2>
-        <p class="section-desc">Explore interior finishes, structural engineering, and exterior elevation sections of this project.</p>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <h2 style="font-size: 2rem; color: #fff; margin-bottom: 4px;">Categorized Photo Gallery</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Filter by interior spaces, structural civil work, and facade elevation renders.</p>
+        </div>
+
+        <!-- Gallery Section Filter Tabs -->
+        <div class="modal-gallery-tabs" style="margin-top: 0; padding-top: 0; border-top: none;">
+          <button class="modal-tab-btn active" data-gallery-tab="all">
+            <i class="fa-solid fa-border-all"></i> All Gallery
+          </button>
+          <button class="modal-tab-btn" data-gallery-tab="interior">
+            <i class="fa-solid fa-couch"></i> Interior
+          </button>
+          <button class="modal-tab-btn" data-gallery-tab="construction">
+            <i class="fa-solid fa-helmet-safety"></i> Construction
+          </button>
+          <button class="modal-tab-btn" data-gallery-tab="elevation">
+            <i class="fa-solid fa-building"></i> Elevation
+          </button>
+        </div>
       </div>
 
-      <!-- Section Filter Tabs -->
-      <div class="detail-gallery-tabs">
-        <button class="detail-tab-btn active" data-detail-tab="all">
-          <i class="fa-solid fa-border-all"></i> All Project Photos
-        </button>
-        <button class="detail-tab-btn" data-detail-tab="interior">
-          <i class="fa-solid fa-couch"></i> Interior Section
-        </button>
-        <button class="detail-tab-btn" data-detail-tab="construction">
-          <i class="fa-solid fa-helmet-safety"></i> Construction & Structure
-        </button>
-        <button class="detail-tab-btn" data-detail-tab="elevation">
-          <i class="fa-solid fa-building"></i> Facade & Elevation
-        </button>
-      </div>
-
-      <!-- Gallery Grid View -->
-      <div class="detail-gallery-grid" id="detailGalleryGrid">
+      <!-- Gallery Grid -->
+      <div class="modal-gallery-grid" id="detailGalleryGrid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
         <!-- Rendered dynamically via app.js -->
       </div>
 
@@ -264,9 +262,9 @@
 
   <!-- Fullscreen Lightbox Image Viewer Overlay -->
   <div class="lightbox-overlay" id="lightboxOverlay">
-    <button class="lightbox-close-btn" id="lightboxCloseBtn" aria-label="Close Lightbox"><i class="fa-solid fa-xmark"></i></button>
-    <button class="lightbox-nav-btn prev" id="lightboxPrevBtn" aria-label="Previous Photo"><i class="fa-solid fa-chevron-left"></i></button>
-    <button class="lightbox-nav-btn next" id="lightboxNextBtn" aria-label="Next Photo"><i class="fa-solid fa-chevron-right"></i></button>
+    <button class="lightbox-close-btn" id="lightboxCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+    <button class="lightbox-nav-btn prev" id="lightboxPrevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="lightbox-nav-btn next" id="lightboxNextBtn"><i class="fa-solid fa-chevron-right"></i></button>
     
     <div class="lightbox-content">
       <img id="lightboxImg" src="" alt="Full Resolution View">
@@ -280,21 +278,138 @@
   <!-- Footer -->
   <footer>
     <div class="container">
-      <div class="footer-content">
-        <div class="logo-brand">
-          <div class="logo-icon">K</div>
-          <div class="logo-text" style="text-align: left;">
-            <span class="logo-name">KANHA</span>
-            <span class="logo-sub">CONSTRUCTION & INTERIOR</span>
+      <div class="footer-main-grid">
+        <div class="footer-brand-col">
+          <div class="logo-brand">
+            <div class="logo-icon">K</div>
+            <div class="logo-text" style="text-align: left;">
+              <span class="logo-name">KANHA</span>
+              <span class="logo-sub">CONSTRUCTION & INTERIOR</span>
+            </div>
+          </div>
+          <p class="footer-tagline-text" style="color: var(--text-muted); font-size: 0.9rem; margin: 16px 0 20px; max-width: 380px;">
+            Premier turnkey construction company and luxury interior designers based in Nikol, Ahmedabad. Delivering quality-tested architectural elevations, structural stability, and bespoke residential & industrial projects.
+          </p>
+          <div class="footer-social-actions" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <a href="https://wa.me/919898749575?text=Hello%20Kanha%20Team%2C%20I%20would%20like%20to%20inquire%20about%20a%20project!" target="_blank" rel="noopener" class="footer-wa-btn">
+              <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+            </a>
+            <a href="https://www.instagram.com/kanha_construction_interiors?igsh=aGZ2YzN1anE4Z3N3" target="_blank" rel="noopener" class="footer-ig-btn">
+              <i class="fa-brands fa-instagram"></i> Instagram
+            </a>
           </div>
         </div>
 
+        <div class="footer-col">
+          <h4 class="footer-col-title">Our Services</h4>
+          <ul class="footer-links-list">
+            <li><a href="services.html"><i class="fa-solid fa-angle-right"></i> Turnkey Construction</a></li>
+            <li><a href="services.html"><i class="fa-solid fa-angle-right"></i> Architectural 3D Elevation</a></li>
+            <li><a href="services.html"><i class="fa-solid fa-angle-right"></i> Structural Engineering (RCC)</a></li>
+            <li><a href="services.html"><i class="fa-solid fa-angle-right"></i> Luxury Residential Interiors</a></li>
+            <li><a href="services.html"><i class="fa-solid fa-angle-right"></i> Industrial Sheds & Plants</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Key Localities in Ahmedabad</h4>
+          <ul class="footer-links-list">
+            <li><a href="contact.html"><i class="fa-solid fa-location-dot"></i> Nikol & Naroda</a></li>
+            <li><a href="contact.html"><i class="fa-solid fa-location-dot"></i> Vatva GIDC & Kuha</a></li>
+            <li><a href="contact.html"><i class="fa-solid fa-location-dot"></i> Bopal & South Bopal</a></li>
+            <li><a href="contact.html"><i class="fa-solid fa-location-dot"></i> Vastral & Odhav</a></li>
+            <li><a href="contact.html"><i class="fa-solid fa-location-dot"></i> Chiloda & Gandhinagar</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Direct WhatsApp & Contact</h4>
+          <div class="footer-contact-item">
+            <i class="fa-brands fa-whatsapp" style="color: #25d366; font-size: 1.2rem;"></i>
+            <div>
+              <span style="font-size: 0.75rem; color: #25d366; font-weight: 700; text-transform: uppercase;">Direct WhatsApp Line</span>
+              <a href="https://wa.me/919898749575?text=Hello%20Kanha%20Team%2C%20I%20would%20like%20to%20discuss%20a%20new%20project!" target="_blank" rel="noopener" style="display: block; color: #fff; font-weight: 700; font-size: 1rem;">+91 9898749575</a>
+            </div>
+          </div>
+          <div class="footer-contact-item" style="margin-top: 12px;">
+            <i class="fa-solid fa-phone" style="color: var(--accent-cyan); font-size: 1.1rem;"></i>
+            <div>
+              <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Direct Phone Call</span>
+              <a href="tel:+919898749575" style="display: block; color: #fff; font-weight: 700;">+91 9898749575</a>
+            </div>
+          </div>
+          <div class="footer-contact-item" style="margin-top: 12px;">
+            <i class="fa-solid fa-location-dot" style="color: var(--accent-gold); font-size: 1.1rem;"></i>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">Near Shreenath Party Plot, Nikol, Ahmedabad, Gujarat</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
         <p class="footer-copy">
-          &copy; 2026 KANHA Construction & Interior. All rights reserved. • Nikol, Ahmedabad
+          &copy; <span id="curYear">2026</span> KANHA Construction & Interior. All rights reserved. • Best Construction Company & Interior Designer in Ahmedabad
         </p>
+        <div class="footer-legal-tags">
+          <span>100% Quality Assurance</span>
+          <span>•</span>
+          <span>Structural Safety Standard</span>
+          <span>•</span>
+          <span>On-Time Handover</span>
+        </div>
       </div>
     </div>
   </footer>
+
+  <!-- WhatsApp Interactive Floating Chat Widget with Quick Action Menu -->
+  <div class="whatsapp-floating-widget" id="waChatWidget">
+    <div class="wa-chat-box" id="waChatBox">
+      <div class="wa-chat-header">
+        <div class="wa-chat-avatar">
+          <div class="wa-avatar-img">K</div>
+          <span class="wa-online-dot"></span>
+        </div>
+        <div class="wa-chat-meta">
+          <h4>KANHA Construction & Interior</h4>
+          <p><span class="wa-badge-live">Online</span> Typically replies in 5 mins</p>
+        </div>
+        <button class="wa-close-btn" id="waCloseBtn" aria-label="Close WhatsApp Widget"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="wa-chat-body">
+        <div class="wa-msg-bubble">
+          <p>Hello! 👋 Welcome to <strong>Kanha Construction & Interior</strong>.</p>
+          <p style="margin-top: 6px;">Are you planning a construction or interior project in Ahmedabad? How can our engineering team assist you today?</p>
+          <span class="wa-msg-time">Just now</span>
+        </div>
+
+        <div class="wa-prompt-list">
+          <a href="https://wa.me/919898749575?text=Hello%20Kanha%20Team,%20I%20want%20an%20instant%20construction%20cost%20estimate." target="_blank" rel="noopener" class="wa-prompt-pill">
+            <i class="fa-solid fa-calculator"></i> <span>Get Construction Cost Estimate</span>
+          </a>
+          <a href="https://wa.me/919898749575?text=Hello%20Kanha%20Team,%20I%20would%20like%20to%20book%20a%20free%20site%20inspection%20in%20Ahmedabad." target="_blank" rel="noopener" class="wa-prompt-pill">
+            <i class="fa-solid fa-map-location-dot"></i> <span>Book Free Site Consultation</span>
+          </a>
+          <a href="https://wa.me/919898749575?text=Hello%20Kanha%20Team,%20I%20want%20to%20share%20architectural%20plans%20for%20review." target="_blank" rel="noopener" class="wa-prompt-pill">
+            <i class="fa-solid fa-compass-drafting"></i> <span>Share Architectural Plans</span>
+          </a>
+          <a href="https://wa.me/919898749575?text=Hello%20Kanha%20Team,%20I%20am%20interested%20in%20turnkey%20interior%20design." target="_blank" rel="noopener" class="wa-prompt-pill">
+            <i class="fa-solid fa-couch"></i> <span>Luxury Interior Inquiry</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="wa-chat-footer">
+        <a href="https://wa.me/919898749575?text=Hello%20Kanha%20Team%2C%20I%20would%20like%20to%20discuss%20a%20project!" target="_blank" rel="noopener" class="wa-start-chat-btn">
+          <span>Start Chat on WhatsApp</span> <i class="fa-brands fa-whatsapp"></i>
+        </a>
+      </div>
+    </div>
+
+    <button class="wa-launcher-btn" id="waLauncherBtn" aria-label="Open WhatsApp Chat">
+      <i class="fa-brands fa-whatsapp"></i>
+      <span class="wa-tooltip-preview">Chat on WhatsApp</span>
+    </button>
+  </div>
 
   <!-- Mobile Quick Action Floating Call & WhatsApp Buttons -->
   <div class="mobile-floating-actions">
@@ -316,7 +431,7 @@
       <i class="fa-solid fa-user-group"></i>
       <span>About</span>
     </a>
-    <a href="projects.html" class="dock-item" data-page="projects">
+    <a href="projects.html" class="dock-item active" data-page="projects">
       <i class="fa-solid fa-briefcase"></i>
       <span>Projects</span>
     </a>
@@ -325,7 +440,7 @@
       <span>Services</span>
     </a>
     <a href="contact.html" class="dock-item" data-page="contact">
-      <i class="fa-solid fa-paper-plane"></i>
+      <i class="fa-solid fa-headset"></i>
       <span>Contact</span>
     </a>
   </div>
