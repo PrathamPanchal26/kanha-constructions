@@ -151,6 +151,7 @@ function setupMobileMenu() {
     navLinks.classList.remove('mobile-open');
     menuBtn.classList.remove('active');
     menuBtn.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('mobile-menu-active');
     const icon = menuBtn.querySelector('i');
     if (icon) {
       icon.className = 'fa-solid fa-bars';
@@ -161,6 +162,7 @@ function setupMobileMenu() {
     navLinks.classList.add('mobile-open');
     menuBtn.classList.add('active');
     menuBtn.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('mobile-menu-active');
     const icon = menuBtn.querySelector('i');
     if (icon) {
       icon.className = 'fa-solid fa-xmark';
@@ -186,6 +188,12 @@ function setupMobileMenu() {
     }
   });
 
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navLinks.classList.contains('mobile-open')) {
+      closeMenu();
+    }
+  });
+
   navLinks.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       closeMenu();
@@ -193,7 +201,7 @@ function setupMobileMenu() {
   });
 
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
+    if (window.innerWidth > 992) {
       closeMenu();
     }
   });

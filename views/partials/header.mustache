@@ -151,32 +151,56 @@
         <ul class="nav-links" id="navLinks">
           <li>
             <a href="/" class="nav-link {{#isHome}}active{{/isHome}}">
-              <i class="fa-solid fa-house"></i>
-              <span>Home</span>
+              <span class="nav-link-content">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+              </span>
+              <i class="fa-solid fa-chevron-right menu-chevron"></i>
             </a>
           </li>
           <li>
             <a href="/about" class="nav-link {{#isAbout}}active{{/isAbout}}">
-              <i class="fa-solid fa-circle-info"></i>
-              <span>About Us</span>
+              <span class="nav-link-content">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>About Us</span>
+              </span>
+              <i class="fa-solid fa-chevron-right menu-chevron"></i>
             </a>
           </li>
           <li>
             <a href="/services" class="nav-link {{#isServices}}active{{/isServices}}">
-              <i class="fa-solid fa-screwdriver-wrench"></i>
-              <span>Services</span>
+              <span class="nav-link-content">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <span>Services</span>
+              </span>
+              <i class="fa-solid fa-chevron-right menu-chevron"></i>
             </a>
           </li>
           <li>
             <a href="/projects" class="nav-link {{#isProjects}}active{{/isProjects}}">
-              <i class="fa-solid fa-city"></i>
-              <span>Our Projects</span>
+              <span class="nav-link-content">
+                <i class="fa-solid fa-city"></i>
+                <span>Our Projects</span>
+              </span>
+              <i class="fa-solid fa-chevron-right menu-chevron"></i>
+            </a>
+          </li>
+          <li>
+            <a href="/#costCalculator" class="nav-link">
+              <span class="nav-link-content">
+                <i class="fa-solid fa-calculator"></i>
+                <span>Cost Estimator</span>
+              </span>
+              <i class="fa-solid fa-chevron-right menu-chevron"></i>
             </a>
           </li>
           <li>
             <a href="/contact" class="nav-link {{#isContact}}active{{/isContact}}">
-              <i class="fa-solid fa-headset"></i>
-              <span>Contact</span>
+              <span class="nav-link-content">
+                <i class="fa-solid fa-headset"></i>
+                <span>Contact Us</span>
+              </span>
+              <i class="fa-solid fa-chevron-right menu-chevron"></i>
             </a>
           </li>
           <li class="desktop-nav-whatsapp">
@@ -186,10 +210,10 @@
           </li>
           <li class="mobile-nav-cta">
             <a href="tel:+919898749575" class="mobile-cta-btn call-btn">
-              <i class="fa-solid fa-phone"></i> Call Direct
+              <i class="fa-solid fa-phone"></i> <span>Call Direct</span>
             </a>
             <a href="https://wa.me/919898749575?text=Hello%20Kanha%20Team,%20I%20am%20interested%20in%20your%20services." target="_blank" rel="noopener noreferrer" class="mobile-cta-btn wa-btn">
-              <i class="fa-brands fa-whatsapp"></i> WhatsApp
+              <i class="fa-brands fa-whatsapp"></i> <span>WhatsApp</span>
             </a>
           </li>
         </ul>
