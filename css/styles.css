@@ -4853,7 +4853,7 @@ footer {
 /* WhatsApp Floating Interactive Widget */
 .whatsapp-floating-widget {
   position: fixed;
-  bottom: 95px;
+  bottom: 24px;
   right: 24px;
   z-index: 999;
 }
@@ -5208,7 +5208,7 @@ footer {
     gap: 24px;
   }
   .whatsapp-floating-widget {
-    bottom: 85px;
+    bottom: 20px;
     right: 16px;
   }
   .wa-chat-box {
