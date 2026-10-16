@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "typecheck": "tsc --noEmit",
+    "typecheck:ci": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
@@ -21,5 +23,9 @@
     "multer": "^2.4.0",
     "mustache-express": "^1.3.2",
     "nodemailer": "^10.0.15"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2"
   }
 }
