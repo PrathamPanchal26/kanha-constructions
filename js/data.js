@@ -465,7 +465,12 @@ function getStoredCompany() {
 }
 
 function saveCompanyToStorage(company) {
-  localStorage.setItem(KEY_COMPANY, JSON.stringify(company));
+  try {
+    localStorage.setItem(KEY_COMPANY, JSON.stringify(company));
+  } catch (e) {}
+  if (typeof apiSaveContent === 'function') {
+    apiSaveContent('company', company);
+  }
 }
 
 // 2. Hero Section Data Manager
@@ -483,7 +488,12 @@ function getStoredHero() {
 }
 
 function saveHeroToStorage(hero) {
-  localStorage.setItem(KEY_HERO, JSON.stringify(hero));
+  try {
+    localStorage.setItem(KEY_HERO, JSON.stringify(hero));
+  } catch (e) {}
+  if (typeof apiSaveContent === 'function') {
+    apiSaveContent('hero', hero);
+  }
 }
 
 // 3. About Section Data Manager
@@ -501,7 +511,12 @@ function getStoredAbout() {
 }
 
 function saveAboutToStorage(about) {
-  localStorage.setItem(KEY_ABOUT, JSON.stringify(about));
+  try {
+    localStorage.setItem(KEY_ABOUT, JSON.stringify(about));
+  } catch (e) {}
+  if (typeof apiSaveContent === 'function') {
+    apiSaveContent('about', about);
+  }
 }
 
 // 4. Services Data Manager
@@ -519,7 +534,12 @@ function getStoredServices() {
 }
 
 function saveServicesToStorage(services) {
-  localStorage.setItem(KEY_SERVICES, JSON.stringify(services));
+  try {
+    localStorage.setItem(KEY_SERVICES, JSON.stringify(services));
+  } catch (e) {}
+  if (typeof apiSaveContent === 'function') {
+    apiSaveContent('services', services);
+  }
 }
 
 // 5. Projects Data Manager
@@ -555,8 +575,21 @@ function getStoredProjects() {
   }
 }
 
+let _saveProjectsTimeout = null;
 function saveProjectsToStorage(projects) {
-  localStorage.setItem(KEY_PROJECTS, JSON.stringify(projects));
+  try {
+    localStorage.setItem(KEY_PROJECTS, JSON.stringify(projects));
+  } catch (e) {
+    console.warn('[Storage] LocalStorage quota reached, persisting directly to server DB.');
+  }
+
+  // Debounced server DB synchronization
+  if (_saveProjectsTimeout) clearTimeout(_saveProjectsTimeout);
+  _saveProjectsTimeout = setTimeout(() => {
+    if (typeof apiSaveProjectsBulk === 'function') {
+      apiSaveProjectsBulk(projects);
+    }
+  }, 300);
 }
 
 // 6. Stats Counter Data Manager
@@ -574,7 +607,12 @@ function getStoredStats() {
 }
 
 function saveStatsToStorage(stats) {
-  localStorage.setItem(KEY_STATS, JSON.stringify(stats));
+  try {
+    localStorage.setItem(KEY_STATS, JSON.stringify(stats));
+  } catch (e) {}
+  if (typeof apiSaveContent === 'function') {
+    apiSaveContent('stats', stats);
+  }
 }
 
 // Master Reset All Website Data back to PDF Defaults
@@ -585,6 +623,11 @@ function resetEntireWebsiteToDefaults() {
   localStorage.setItem(KEY_SERVICES, JSON.stringify(DEFAULT_SERVICES));
   localStorage.setItem(KEY_PROJECTS, JSON.stringify(DEFAULT_PROJECTS));
   localStorage.setItem(KEY_STATS, JSON.stringify(DEFAULT_STATS));
+
+  if (typeof apiResetDatabase === 'function') {
+    apiResetDatabase();
+  }
+
   return {
     company: DEFAULT_COMPANY,
     hero: DEFAULT_HERO,
@@ -594,3 +637,241 @@ function resetEntireWebsiteToDefaults() {
     stats: DEFAULT_STATS
   };
 }
+
+// ==========================================
+// Centralized Server REST Database Client
+// ==========================================
+
+function getAdminAuthHeaders() {
+  const token = sessionStorage.getItem('kanha_admin_token') || localStorage.getItem('kanha_admin_token');
+  const headers = {};
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+    headers['x-admin-token'] = token;
+  }
+  return headers;
+}
+
+// Fetch all projects from Server Database
+async function apiFetchProjects() {
+  try {
+    const res = await fetch('/api/projects', { credentials: 'same-origin' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (Array.isArray(data)) {
+      localStorage.setItem(KEY_PROJECTS, JSON.stringify(data));
+      return data;
+    }
+  } catch (err) {
+    console.warn('[Sync] Using cached local projects:', err.message);
+  }
+  return getStoredProjects();
+}
+
+// Fetch website content from Server Database
+async function apiFetchContent() {
+  try {
+    const res = await fetch('/api/content', { credentials: 'same-origin' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const content = await res.json();
+    if (content.company) localStorage.setItem(KEY_COMPANY, JSON.stringify(content.company));
+    if (content.hero) localStorage.setItem(KEY_HERO, JSON.stringify(content.hero));
+    if (content.about) localStorage.setItem(KEY_ABOUT, JSON.stringify(content.about));
+    if (content.services) localStorage.setItem(KEY_SERVICES, JSON.stringify(content.services));
+    if (content.stats) localStorage.setItem(KEY_STATS, JSON.stringify(content.stats));
+    return content;
+  } catch (err) {
+    console.warn('[Sync] Using cached website content:', err.message);
+  }
+  return {
+    company: getStoredCompany(),
+    hero: getStoredHero(),
+    about: getStoredAbout(),
+    services: getStoredServices(),
+    stats: getStoredStats()
+  };
+}
+
+// Synchronize all data with Server Database and notify listeners
+async function syncDataWithServer() {
+  const [projects, content] = await Promise.all([
+    apiFetchProjects(),
+    apiFetchContent()
+  ]);
+
+  document.dispatchEvent(new CustomEvent('kanha-data-synced', {
+    detail: { projects, content }
+  }));
+
+  return { projects, content };
+}
+
+// Save or Update Single Project in Database
+async function apiSaveProject(project) {
+  try {
+    const res = await fetch('/api/projects', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...getAdminAuthHeaders()
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify(project)
+    });
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.message || 'Failed saving project to database');
+    return result;
+  } catch (err) {
+    console.error('[API] apiSaveProject failed, writing to localStorage cache:', err);
+    return { success: false, fallback: true, error: err.message };
+  }
+}
+
+// Delete Project from Database
+async function apiDeleteProject(id) {
+  try {
+    const res = await fetch(`/api/projects/${encodeURIComponent(id)}`, {
+      method: 'DELETE',
+      headers: {
+        ...getAdminAuthHeaders()
+      },
+      credentials: 'same-origin'
+    });
+    return await res.json();
+  } catch (err) {
+    console.error('[API] apiDeleteProject failed:', err);
+    return { success: false, error: err.message };
+  }
+}
+
+// Save Content Section to Database
+async function apiSaveContent(section, data) {
+  try {
+    const res = await fetch('/api/content', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...getAdminAuthHeaders()
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify({ section, data })
+    });
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.message || 'Failed updating content in database');
+    return result;
+  } catch (err) {
+    console.error(`[API] apiSaveContent for ${section} failed:`, err);
+    return { success: false, error: err.message };
+  }
+}
+
+// Upload Single File to Server / Cloud Storage (Returns Permanent URL)
+async function apiUploadImage(file) {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  try {
+    const res = await fetch('/api/upload', {
+      method: 'POST',
+      headers: {
+        ...getAdminAuthHeaders()
+      },
+      credentials: 'same-origin',
+      body: formData
+    });
+
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.message || 'Image upload failed');
+    }
+    return data;
+  } catch (err) {
+    console.error('[API] apiUploadImage error:', err);
+    throw err;
+  }
+}
+
+// Batch Upload Multiple Images to Server / Cloud Storage (Returns Array of Permanent URLs)
+async function apiUploadImages(files) {
+  const formData = new FormData();
+  const fileArray = Array.from(files);
+  fileArray.forEach(file => {
+    formData.append('images', file);
+  });
+
+  try {
+    const res = await fetch('/api/upload', {
+      method: 'POST',
+      headers: {
+        ...getAdminAuthHeaders()
+      },
+      credentials: 'same-origin',
+      body: formData
+    });
+
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.message || 'Batch upload failed');
+    }
+    return data;
+  } catch (err) {
+    console.error('[API] apiUploadImages error:', err);
+    throw err;
+  }
+}
+
+// Reset Entire Database on Server back to Defaults
+async function apiResetDatabase() {
+  try {
+    const res = await fetch('/api/reset', {
+      method: 'POST',
+      headers: {
+        ...getAdminAuthHeaders()
+      },
+      credentials: 'same-origin'
+    });
+    return await res.json();
+  } catch (err) {
+    console.error('[API] apiResetDatabase error:', err);
+    throw err;
+  }
+}
+
+// Bulk Save All Projects to Server Database
+async function apiSaveProjectsBulk(projects) {
+  try {
+    const res = await fetch('/api/projects/bulk', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...getAdminAuthHeaders()
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify({ projects })
+    });
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.message || 'Failed saving projects bulk');
+    return result;
+  } catch (err) {
+    console.warn('[API] apiSaveProjectsBulk fallback error:', err.message);
+    return { success: false, fallback: true, error: err.message };
+  }
+}
+
+// Query Server Database and Storage health
+async function checkDatabaseStatus() {
+  try {
+    const res = await fetch('/api/status', { credentials: 'same-origin' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    console.warn('[Status] Database status check offline:', err.message);
+    return {
+      status: "offline",
+      database: { databaseType: "Local Storage (Offline)", isMongoConnected: false },
+      storage: { storageType: "Disk / Local" }
+    };
+  }
+}
+
+

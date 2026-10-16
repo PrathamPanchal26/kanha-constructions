@@ -3,6 +3,31 @@
 document.addEventListener('DOMContentLoaded', () => {
   initPortfolio();
   initContactForm();
+  if (typeof syncDataWithServer === 'function') {
+    syncDataWithServer();
+  }
+});
+
+// Listen for background server database sync updates
+document.addEventListener('kanha-data-synced', (e) => {
+  const { projects, content } = e.detail || {};
+  if (Array.isArray(projects)) allProjects = projects;
+  if (content) {
+    if (content.company) companyData = content.company;
+    if (content.hero) heroData = content.hero;
+    if (content.about) aboutData = content.about;
+    if (content.services) allServices = content.services;
+    if (content.stats) statsConfig = content.stats;
+  }
+
+  hydrateGlobalElements();
+  hydrateHeroSection();
+  hydrateAboutSection();
+  renderDynamicServices();
+  populateProjectNameDropdown();
+  renderProjects();
+  renderDynamicStats();
+  initProjectDetailPage();
 });
 
 let currentCategory = 'all';
@@ -43,6 +68,7 @@ function initPortfolio() {
   renderDynamicStats();
   setupFilterTabs();
   setupModalEvents();
+  initProjectDetailPage();
   initCostEstimator();
   initFaqAccordion();
   initWhatsAppWidget();

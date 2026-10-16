@@ -86,6 +86,52 @@ let currentModalGallerySection = 'all';
 
 document.addEventListener('DOMContentLoaded', () => {
   initAdminDashboard();
+  if (typeof syncDataWithServer === 'function') {
+    syncDataWithServer();
+  }
+  updateAdminDbStatus();
+});
+
+// Real-time Database Status Indicator in Topbar
+async function updateAdminDbStatus() {
+  const badge = document.getElementById('dbStatusBadge');
+  const text = document.getElementById('dbStatusText');
+  if (!badge || !text) return;
+
+  if (typeof checkDatabaseStatus === 'function') {
+    try {
+      const status = await checkDatabaseStatus();
+      if (status && status.database) {
+        const isMongo = Boolean(status.database.isMongoConnected);
+        badge.style.color = '#10b981';
+        badge.style.background = 'rgba(16, 185, 129, 0.12)';
+        badge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+        text.textContent = isMongo ? 'MongoDB Atlas (Connected)' : 'Persistent Database (Synced)';
+        badge.title = `${status.database.databaseType} • Storage: ${status.storage ? status.storage.storageType : 'Local Disk'}`;
+      }
+    } catch (e) {
+      badge.style.color = '#f59e0b';
+      text.textContent = 'Local Cache (Offline)';
+    }
+  }
+}
+
+// Background sync updates
+document.addEventListener('kanha-data-synced', (e) => {
+  const { projects, content } = e.detail || {};
+  if (Array.isArray(projects)) {
+    projectsList = projects;
+    renderAdminProjects();
+    updateProjectsSummary();
+  }
+  if (content) {
+    if (content.company) { companyData = content.company; loadCompanyForm(); }
+    if (content.hero) { heroData = content.hero; loadHeroForm(); }
+    if (content.about) { aboutData = content.about; loadAboutForm(); }
+    if (content.services) { servicesList = content.services; loadServicesTable(); }
+    if (content.stats) { loadStatsForm(); }
+  }
+  updateAdminDbStatus();
 });
 
 // Master Dashboard Initialization
@@ -922,11 +968,37 @@ function setupAdminHandlers() {
   const newGalleryFileInput = document.getElementById('newGalleryFileInput');
 
   if (newGalleryFileInput) {
-    newGalleryFileInput.addEventListener('change', (e) => {
-      if (e.target.files.length > 0) {
-        handleFileSelect(e.target.files[0], (data) => {
+    newGalleryFileInput.addEventListener('change', async (e) => {
+      const files = Array.from(e.target.files);
+      if (files.length === 0) return;
+
+      if (files.length === 1) {
+        handleFileSelect(files[0], (data) => {
           if (newGalleryUrl) newGalleryUrl.value = data;
           showToast("Photo processed for gallery!");
+        });
+      } else {
+        showToast(`Uploading ${files.length} photos in batch...`);
+        const section = newGallerySection ? newGallerySection.value : 'interior';
+        const baseTitle = (newGalleryTitle ? newGalleryTitle.value.trim() : '') || 'Gallery Photo';
+        try {
+          if (typeof apiUploadImages === 'function') {
+            const res = await apiUploadImages(files);
+            if (res && res.urls && res.urls.length > 0) {
+              res.urls.forEach((url, idx) => {
+                editingProjectGallery.push({ section, title: `${baseTitle} #${editingProjectGallery.length + 1}`, image: url });
+              });
+              renderFormGallery();
+              newGalleryFileInput.value = '';
+              showToast(`Added ${res.urls.length} photos to project gallery!`);
+              return;
+            }
+          }
+        } catch (err) {
+          console.warn('Batch upload failed, falling back:', err);
+        }
+        handleFileSelect(files[0], (data) => {
+          if (newGalleryUrl) newGalleryUrl.value = data;
         });
       }
     });
@@ -1129,13 +1201,22 @@ function setupAdminHandlers() {
   // Master Reset Button
   const resetBtn = document.getElementById('btnMasterReset');
   if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
+    resetBtn.addEventListener('click', async () => {
       if (confirm("Are you sure you want to reset ALL website data back to original defaults?")) {
+        showToast("Resetting website database to defaults...");
         if (typeof resetEntireWebsiteToDefaults === 'function') {
           resetEntireWebsiteToDefaults();
-          initAdminDashboard();
-          showToast("Reset entire website data back to defaults!");
         }
+        if (typeof apiResetDatabase === 'function') {
+          try {
+            await apiResetDatabase();
+          } catch (e) {}
+        }
+        if (typeof syncDataWithServer === 'function') {
+          await syncDataWithServer();
+        }
+        initAdminDashboard();
+        showToast("Reset entire website data back to defaults!");
       }
     });
   }
@@ -1193,9 +1274,53 @@ function setupGalleryModal() {
   });
 
   if (modalAddPhotoFileInput) {
-    modalAddPhotoFileInput.addEventListener('change', (e) => {
-      if (e.target.files.length > 0) {
-        handleFileSelect(e.target.files[0], (data) => {
+    modalAddPhotoFileInput.addEventListener('change', async (e) => {
+      const files = Array.from(e.target.files);
+      if (files.length === 0) return;
+
+      if (files.length === 1) {
+        handleFileSelect(files[0], (data) => {
+          modalNewImageData = data;
+          if (modalAddPhotoPreviewImg) modalAddPhotoPreviewImg.src = data;
+          if (modalAddPhotoPreviewHolder) modalAddPhotoPreviewHolder.style.display = 'block';
+        });
+      } else {
+        if (!activeModalProjectId) return;
+        const project = projectsList.find(p => p.id === activeModalProjectId);
+        if (!project) return;
+        if (!project.gallery) project.gallery = [];
+
+        showToast(`Uploading ${files.length} photos in batch...`);
+        const sectionInput = document.getElementById('modalAddPhotoSection');
+        const section = sectionInput ? sectionInput.value : 'construction';
+        const titleInput = document.getElementById('modalAddPhotoTitle');
+        const baseTitle = (titleInput ? titleInput.value.trim() : '') || project.title;
+
+        try {
+          if (typeof apiUploadImages === 'function') {
+            const res = await apiUploadImages(files);
+            if (res && res.urls && res.urls.length > 0) {
+              res.urls.forEach((url, idx) => {
+                project.gallery.push({
+                  title: `${baseTitle} Photo ${project.gallery.length + 1}`,
+                  section,
+                  image: url
+                });
+              });
+              saveProjectsToStorage(projectsList);
+              renderModalGalleryGrid(project);
+              renderAdminProjects();
+              updateProjectsSummary();
+              showToast(`Added ${res.urls.length} photos to "${project.title}"!`);
+              modalAddPhotoFileInput.value = '';
+              return;
+            }
+          }
+        } catch (err) {
+          console.warn('Batch modal upload failed, falling back:', err);
+        }
+
+        handleFileSelect(files[0], (data) => {
           modalNewImageData = data;
           if (modalAddPhotoPreviewImg) modalAddPhotoPreviewImg.src = data;
           if (modalAddPhotoPreviewHolder) modalAddPhotoPreviewHolder.style.display = 'block';
@@ -1451,9 +1576,62 @@ function setupGlobalGalleryStudio() {
   const submitBtn = document.getElementById('btnSubmitGalleryPhoto');
 
   if (fileInput) {
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files.length > 0) {
-        handleFileSelect(e.target.files[0], (data) => {
+    fileInput.addEventListener('change', async (e) => {
+      const files = Array.from(e.target.files);
+      if (files.length === 0) return;
+
+      if (files.length === 1) {
+        handleFileSelect(files[0], (data) => {
+          galleryNewUploadData = data;
+          if (previewImg) previewImg.src = data;
+          if (previewHolder) previewHolder.style.display = 'block';
+        });
+      } else {
+        const projSelect = document.getElementById('galUploadProjectSelect');
+        const targetProjId = projSelect ? projSelect.value : '';
+        if (!targetProjId) {
+          alert("Please select a target project first before choosing batch photos.");
+          return;
+        }
+
+        const project = projectsList.find(p => p.id === targetProjId);
+        if (!project) return;
+        if (!project.gallery) project.gallery = [];
+
+        showToast(`Uploading ${files.length} photos in batch...`);
+        const secSelect = document.getElementById('galUploadSectionSelect');
+        const section = secSelect ? secSelect.value : 'construction';
+        const titleInput = document.getElementById('galUploadTitleInput');
+        const baseTitle = (titleInput ? titleInput.value.trim() : '') || project.title;
+
+        try {
+          if (typeof apiUploadImages === 'function') {
+            const res = await apiUploadImages(files);
+            if (res && res.urls && res.urls.length > 0) {
+              res.urls.forEach((url, idx) => {
+                project.gallery.push({
+                  title: `${baseTitle} #${project.gallery.length + 1}`,
+                  section,
+                  image: url
+                });
+              });
+              saveProjectsToStorage(projectsList);
+              fileInput.value = '';
+              if (previewHolder) previewHolder.style.display = 'none';
+              if (uploadPanel) uploadPanel.style.display = 'none';
+
+              renderGlobalGalleryStudio();
+              renderAdminProjects();
+              updateProjectsSummary();
+              showToast(`Uploaded and added ${res.urls.length} photos to "${project.title}"!`);
+              return;
+            }
+          }
+        } catch (err) {
+          console.warn('Batch gallery upload failed, falling back:', err);
+        }
+
+        handleFileSelect(files[0], (data) => {
           galleryNewUploadData = data;
           if (previewImg) previewImg.src = data;
           if (previewHolder) previewHolder.style.display = 'block';
@@ -1792,14 +1970,29 @@ function deleteGlobalGalleryPhoto(projectId, photoIndex) {
   }
 }
 
-// Image File to Base64
-function handleFileSelect(file, callback) {
+// Image File Upload Helper (Uploads directly to Server Disk / Cloudinary, fallback to Canvas base64)
+async function handleFileSelect(file, callback) {
   if (!file.type.startsWith('image/')) {
-    alert('Please select a valid image file (JPG, PNG, WEBP).');
+    alert('Please select a valid image file (JPG, PNG, WEBP, AVIF, SVG).');
     return;
   }
 
-  showToast('Processing & optimizing image...');
+  showToast('Uploading & optimizing image...');
+
+  if (typeof apiUploadImage === 'function') {
+    try {
+      const uploadRes = await apiUploadImage(file);
+      if (uploadRes && uploadRes.success && uploadRes.url) {
+        if (typeof callback === 'function') callback(uploadRes.url);
+        showToast('Photo uploaded & stored permanently!');
+        return;
+      }
+    } catch (err) {
+      console.warn('[Upload] Server upload fallback to client normalization:', err.message);
+    }
+  }
+
+  // Fallback to client-side canvas normalization
   resizeAndNormalizeImage(file, (normalizedBase64) => {
     if (typeof callback === 'function') callback(normalizedBase64);
     showToast('Photo ready!');

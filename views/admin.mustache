@@ -127,7 +127,10 @@
           </div>
         </div>
 
-        <div class="admin-topbar-actions">
+        <div class="admin-topbar-actions" style="display: flex; align-items: center; gap: 10px;">
+          <span id="dbStatusBadge" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #10b981; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); padding: 5px 12px; border-radius: 20px; font-weight: 600;">
+            <i class="fa-solid fa-database"></i> <span id="dbStatusText">Database Synced</span>
+          </span>
           <button type="button" class="btn-primary" id="btnOpenAddProjectModal" style="padding: 10px 18px; font-size: 0.85rem; white-space: nowrap;">
             <i class="fa-solid fa-plus"></i> <span class="hide-mobile-sm">Add Project</span>
           </button>
@@ -362,9 +365,9 @@
 
             <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 12px;">
               <input type="url" id="galUploadUrlInput" class="form-control" placeholder="Paste image URL (https://...) OR choose file from device" style="flex-grow: 1;">
-              <label class="btn-secondary" style="margin: 0; padding: 10px 18px; font-size: 0.85rem; cursor: pointer;">
-                <i class="fa-solid fa-folder-open"></i> Browse Device Image
-                <input type="file" id="galUploadFileInput" accept="image/*" style="display: none;">
+              <label class="btn-secondary" style="margin: 0; padding: 10px 18px; font-size: 0.85rem; cursor: pointer;" title="Select single or multiple photos to upload in batch">
+                <i class="fa-solid fa-folder-open"></i> Browse Device Image(s)
+                <input type="file" id="galUploadFileInput" accept="image/*" multiple style="display: none;">
               </label>
               <button type="button" id="btnSubmitGalleryPhoto" class="btn-primary" style="padding: 10px 24px;">
                 <i class="fa-solid fa-plus"></i> Save Photo to Section
@@ -797,9 +800,9 @@
                   </div>
                   <div style="display: flex; gap: 6px;">
                     <input type="url" id="newGalleryUrl" class="form-control" placeholder="Photo URL" style="font-size: 0.8rem; padding: 6px; flex-grow: 1;">
-                    <label class="btn-secondary" style="margin: 0; padding: 6px 10px; font-size: 0.75rem; cursor: pointer;">
+                    <label class="btn-secondary" style="margin: 0; padding: 6px 10px; font-size: 0.75rem; cursor: pointer;" title="Select single or multiple photos">
                       <i class="fa-solid fa-folder"></i>
-                      <input type="file" id="newGalleryFileInput" accept="image/*" style="display: none;">
+                      <input type="file" id="newGalleryFileInput" accept="image/*" multiple style="display: none;">
                     </label>
                     <button type="button" id="btnConfirmAddPhoto" class="btn-primary" style="padding: 6px 12px; font-size: 0.75rem;">Add</button>
                   </div>
@@ -867,9 +870,9 @@
 
           <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
             <input type="url" id="modalAddPhotoUrl" class="form-control" placeholder="Enter photo URL or choose a file from device" style="flex-grow: 1;">
-            <label class="btn-secondary" style="margin: 0; padding: 10px 18px; font-size: 0.85rem; cursor: pointer;">
-              <i class="fa-solid fa-folder-open"></i> Browse Image File
-              <input type="file" id="modalAddPhotoFileInput" accept="image/*" style="display: none;">
+            <label class="btn-secondary" style="margin: 0; padding: 10px 18px; font-size: 0.85rem; cursor: pointer;" title="Select one or multiple photos to upload in batch">
+              <i class="fa-solid fa-folder-open"></i> Browse Image File(s)
+              <input type="file" id="modalAddPhotoFileInput" accept="image/*" multiple style="display: none;">
             </label>
             <button type="button" id="modalBtnAddPhoto" class="btn-primary" style="padding: 10px 22px;">
               <i class="fa-solid fa-plus"></i> Add Photo to Gallery

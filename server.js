@@ -1,14 +1,40 @@
+require('dotenv').config();
 const express = require('express');
 const mustacheExpress = require('mustache-express');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const db = require('./database/db');
+const upload = require('./database/upload');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// In-Memory Server-Side Admin Sessions Store (Restricts admin site to admin only)
+// Server-Side Admin Sessions Store with HMAC verification for Serverless & Restarts
 const activeAdminSessions = new Set();
+const SESSION_SECRET = process.env.SESSION_SECRET || 'kanha_admin_secret_key_2026_secured';
+
+function createAdminToken() {
+  const payload = `${Date.now()}_${crypto.randomBytes(16).toString('hex')}`;
+  const sig = crypto.createHmac('sha256', SESSION_SECRET).update(payload).digest('hex');
+  return `${payload}.${sig}`;
+}
+
+function verifyAdminToken(token) {
+  if (!token || typeof token !== 'string') return false;
+  if (activeAdminSessions.has(token)) return true;
+  const parts = token.split('.');
+  if (parts.length !== 2) return false;
+  const [payload, sig] = parts;
+  const expectedSig = crypto.createHmac('sha256', SESSION_SECRET).update(payload).digest('hex');
+  if (sig !== expectedSig) return false;
+  const timestamp = parseInt(payload.split('_')[0], 10);
+  if (isNaN(timestamp)) return false;
+  // Token valid for 7 days
+  const maxAgeMs = 7 * 24 * 60 * 60 * 1000;
+  if (Date.now() - timestamp > maxAgeMs) return false;
+  return true;
+}
 
 // Helper to parse HTTP Cookie Header securely
 const parseCookies = (req) => {
@@ -26,8 +52,30 @@ const parseCookies = (req) => {
 // Check if incoming request is from authenticated Admin
 const isAuthenticatedAdmin = (req) => {
   const cookies = parseCookies(req);
-  const token = cookies['kanha_admin_token'];
-  return Boolean(token && activeAdminSessions.has(token));
+  const cookieToken = cookies['kanha_admin_token'];
+  if (cookieToken && verifyAdminToken(cookieToken)) return true;
+
+  const customHeader = req.headers['x-admin-token'];
+  if (customHeader && verifyAdminToken(customHeader)) return true;
+
+  const authHeader = req.headers['authorization'];
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const bearerToken = authHeader.substring(7).trim();
+    if (verifyAdminToken(bearerToken)) return true;
+  }
+
+  return false;
+};
+
+// Admin authentication middleware for API routes
+const requireAdmin = (req, res, next) => {
+  if (!isAuthenticatedAdmin(req)) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized: Active administrator session or token required."
+    });
+  }
+  next();
 };
 
 // Register .mustache extension with Mustache Express Engine
@@ -35,7 +83,7 @@ app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', path.join(__dirname, 'views'));
 
-// Body Parser Middleware
+// Body Parser Middleware with generous limits for image/photo data
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
@@ -60,78 +108,93 @@ app.get('/google48b2a719bbcfc04a.html', (req, res) => {
   res.sendFile(require('path').join(__dirname, 'google48b2a719bbcfc04a.html'));
 });
 
-// Serve Static Assets (CSS, JS, Images)
+// Serve Static Assets (CSS, JS, Images, Uploads)
 app.use('/css', express.static(path.join(__dirname, 'css')));
 app.use('/js', express.static(path.join(__dirname, 'js')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/uploads', express.static(upload.UPLOADS_DIR, { maxAge: '7d' }));
 app.use(express.static(path.join(__dirname, '/')));
 
-// Shared Global View Context Data
-const getGlobalContext = () => ({
-  companyName: "KANHA Construction & Interior",
-  tagline: "Best Construction Company & Interior Designer in Ahmedabad",
-  establishedYear: "2021",
-  location: "Nikol, Ahmedabad, Gujarat, India",
-  phone: "+91 9898749575",
-  whatsapp: "+91 9898749575",
-  whatsappLink: "https://wa.me/919898749575?text=Hello%20Kanha%20Team%2C%20I%20am%20interested%20in%20your%20services.",
-  address: "Near Shreenath Party Plot, Nikol, Ahmedabad, Gujarat - 382350",
-  year: new Date().getFullYear(),
-  companyIntro: "Delivering quality-driven architectural, structural, and interior projects with a commitment to excellence, innovation, and reliability across residential, industrial, commercial, and healthcare spaces in Ahmedabad.",
-  stats: {
-    projectsDelivered: "50+",
-    largestSqFt: "15K+",
-    onTimeExecution: "100%",
-    specializations: "5"
-  },
-  services: [
-    { title: "Architectural Design", icon: "fa-solid fa-city", description: "Conceptualizing modern, functional, and aesthetically striking elevations and floor layouts." },
-    { title: "Structural Design", icon: "fa-solid fa-cubes-stacked", description: "Rigorous structural engineering ensuring long-term load safety, seismic resilience, and material efficiency." },
-    { title: "Interior Design", icon: "fa-solid fa-couch", description: "Bespoke residential, office, and hospital interior transformations with customized lighting." },
-    { title: "Turnkey Projects", icon: "fa-solid fa-key", description: "End-to-end hassle-free execution from initial blueprint design to final key handover." }
-  ],
-  servicesList: [
-    {
-      title: "Architectural Design",
-      icon: "fa-solid fa-city",
-      fullDescription: "We conceptualize modern, functional, and visually captivating elevations and 2D/3D floor layouts tailored to contemporary living. Our architectural team focuses on optimizing spatial flow, natural daylighting, and passive energy efficiency.",
-      highlights: ["3D Elevation Modeling & Photorealistic Renders", "Residential Villa & Commercial Building Layouts", "Municipal & Sanction Floor Plan Preparation"],
-      image: "/assets/images/kanha_hero_facade_1791296928268.jpg",
-      isReversed: false
-    },
-    {
-      title: "Structural Design",
-      icon: "fa-solid fa-cubes-stacked",
-      fullDescription: "Rigorous structural engineering ensuring long-term load safety, seismic resilience, and material efficiency. We design heavy industrial plants, steel truss sheds, multi-story RCC framing, and foundation engineering.",
-      highlights: ["RCC Frame & Foundation Load Analysis", "Industrial Steel Fabrication Structural Engineering", "Seismic Safety Compliance Standards"],
-      image: "/assets/images/raghuveer_gears_industrial_1791296960519.jpg",
-      isReversed: true
-    },
-    {
-      title: "Interior Design",
-      icon: "fa-solid fa-couch",
-      fullDescription: "Luxury living rooms, modular kitchens, master suites, commercial corporate offices, and specialized hospital interior clinic layouts. We craft ambient cove lighting, marble accent walls, and custom furniture.",
-      highlights: ["Bespoke Living & Bedroom Transformations", "Modular Island Kitchens & Italian Marble Feature Walls", "Specialized Healthcare & Rehab Clinic Interiors"],
-      image: "/assets/images/kanha_interior_living_1791297029485.jpg",
-      isReversed: false
-    },
-    {
-      title: "Turnkey Projects",
-      icon: "fa-solid fa-key",
-      fullDescription: "End-to-end hassle-free execution where we manage every aspect from raw land site development, civil construction, electrical & plumbing, interior styling, to final key handover.",
-      highlights: ["Complete Single-Point Project Accountability", "On-Time Handover Guarantee", "Full Material Quality & Civil Work Warranty"],
-      image: "/assets/images/rajdeep_villa_residential_1791296998090.jpg",
-      isReversed: true
-    }
-  ]
-});
+// Shared Global View Context Data Builder
+const getGlobalContext = (contentData = null) => {
+  const company = (contentData && contentData.company) || {};
+  const stats = (contentData && contentData.stats) || {};
+  const servicesList = (contentData && contentData.services) || [];
 
-// Routes
+  return {
+    companyName: company.fullName || "KANHA Construction & Interior",
+    tagline: company.tagline || "Best Construction Company & Interior Designer in Ahmedabad",
+    establishedYear: "2021",
+    location: company.address || "Nikol, Ahmedabad, Gujarat, India",
+    phone: company.phone || "+91 9898749575",
+    whatsapp: company.whatsapp || "+91 9898749575",
+    whatsappLink: company.whatsappLink || "https://wa.me/919898749575?text=Hello%20Kanha%20Team%2C%20I%20am%20interested%20in%20your%20services.",
+    address: company.address || "Near Shreenath Party Plot, Nikol, Ahmedabad, Gujarat - 382350",
+    year: new Date().getFullYear(),
+    companyIntro: (contentData && contentData.hero && contentData.hero.description) || "Delivering quality-driven architectural, structural, and interior projects with a commitment to excellence, innovation, and reliability across residential, industrial, commercial, and healthcare spaces in Ahmedabad.",
+    stats: {
+      projectsDelivered: stats.customProjectsText || "50+",
+      largestSqFt: stats.customLargestSqFt || "15K+",
+      onTimeExecution: stats.customOnTimeRate || "100%",
+      specializations: stats.customSpecializations || "5"
+    },
+    services: [
+      { title: "Architectural Design", icon: "fa-solid fa-city", description: "Conceptualizing modern, functional, and aesthetically striking elevations and floor layouts." },
+      { title: "Structural Design", icon: "fa-solid fa-cubes-stacked", description: "Rigorous structural engineering ensuring long-term load safety, seismic resilience, and material efficiency." },
+      { title: "Interior Design", icon: "fa-solid fa-couch", description: "Bespoke residential, office, and hospital interior transformations with customized lighting." },
+      { title: "Turnkey Projects", icon: "fa-solid fa-key", description: "End-to-end hassle-free execution from initial blueprint design to final key handover." }
+    ],
+    servicesList: servicesList.length > 0 ? servicesList.map((s, idx) => ({
+      title: s.title,
+      icon: s.icon,
+      fullDescription: s.fullDesc || s.shortDesc,
+      highlights: s.highlights || [],
+      image: s.image,
+      isReversed: idx % 2 === 1
+    })) : [
+      {
+        title: "Architectural Design",
+        icon: "fa-solid fa-city",
+        fullDescription: "We conceptualize modern, functional, and visually captivating elevations and 2D/3D floor layouts tailored to contemporary living. Our architectural team focuses on optimizing spatial flow, natural daylighting, and passive energy efficiency.",
+        highlights: ["3D Elevation Modeling & Photorealistic Renders", "Residential Villa & Commercial Building Layouts", "Municipal & Sanction Floor Plan Preparation"],
+        image: "/assets/images/kanha_hero_facade_1791296928268.jpg",
+        isReversed: false
+      },
+      {
+        title: "Structural Design",
+        icon: "fa-solid fa-cubes-stacked",
+        fullDescription: "Rigorous structural engineering ensuring long-term load safety, seismic resilience, and material efficiency. We design heavy industrial plants, steel truss sheds, multi-story RCC framing, and foundation engineering.",
+        highlights: ["RCC Frame & Foundation Load Analysis", "Industrial Steel Fabrication Structural Engineering", "Seismic Safety Compliance Standards"],
+        image: "/assets/images/raghuveer_gears_industrial_1791296960519.jpg",
+        isReversed: true
+      },
+      {
+        title: "Interior Design",
+        icon: "fa-solid fa-couch",
+        fullDescription: "Luxury living rooms, modular kitchens, master suites, commercial corporate offices, and specialized hospital interior clinic layouts. We craft ambient cove lighting, marble accent walls, and custom furniture.",
+        highlights: ["Bespoke Living & Bedroom Transformations", "Modular Island Kitchens & Italian Marble Feature Walls", "Specialized Healthcare & Rehab Clinic Interiors"],
+        image: "/assets/images/kanha_interior_living_1791297029485.jpg",
+        isReversed: false
+      },
+      {
+        title: "Turnkey Projects",
+        icon: "fa-solid fa-key",
+        fullDescription: "End-to-end hassle-free execution where we manage every aspect from raw land site development, civil construction, electrical & plumbing, interior styling, to final key handover.",
+        highlights: ["Complete Single-Point Project Accountability", "On-Time Handover Guarantee", "Full Material Quality & Civil Work Warranty"],
+        image: "/assets/images/rajdeep_villa_residential_1791296998090.jpg",
+        isReversed: true
+      }
+    ]
+  };
+};
+
+// --- Page Routes ---
 
 // Home Route
-app.get(['/', '/index', '/index.html'], (req, res) => {
+app.get(['/', '/index', '/index.html'], async (req, res) => {
+  const content = await db.getContent();
   const context = {
-    ...getGlobalContext(),
+    ...getGlobalContext(content),
     pageTitle: "Best Construction Company & Interior Designer in Ahmedabad, Nikol",
     metaDescription: "Kanha Construction & Interior is the premier turnkey construction company and interior designer in Nikol, Ahmedabad. We specialize in residential villas, industrial sheds, structural engineering, 3D architecture & bespoke interiors. Call/WhatsApp +91 9898749575.",
     canonicalUrl: "https://kanha-portfolio-eta.vercel.app/",
@@ -141,9 +204,10 @@ app.get(['/', '/index', '/index.html'], (req, res) => {
 });
 
 // About Route
-app.get(['/about', '/about.html'], (req, res) => {
+app.get(['/about', '/about.html'], async (req, res) => {
+  const content = await db.getContent();
   const context = {
-    ...getGlobalContext(),
+    ...getGlobalContext(content),
     pageTitle: "About Us | Top Architectural, Structural & Turnkey Builders Ahmedabad",
     metaDescription: "Learn about Kanha Construction & Interior - premier architectural design, structural engineering, and turnkey builders established in 2021 in Nikol, Ahmedabad. 50+ successful projects delivered.",
     canonicalUrl: "https://kanha-portfolio-eta.vercel.app/about",
@@ -153,9 +217,10 @@ app.get(['/about', '/about.html'], (req, res) => {
 });
 
 // Services Route
-app.get(['/services', '/services.html'], (req, res) => {
+app.get(['/services', '/services.html'], async (req, res) => {
+  const content = await db.getContent();
   const context = {
-    ...getGlobalContext(),
+    ...getGlobalContext(content),
     pageTitle: "Turnkey Construction, Architecture & Interior Services in Ahmedabad",
     metaDescription: "Comprehensive construction and interior services in Ahmedabad: Architectural 3D Elevation, Structural RCC Design, Turnkey Villa Construction, Industrial Plants & Luxury Interiors.",
     canonicalUrl: "https://kanha-portfolio-eta.vercel.app/services",
@@ -165,9 +230,10 @@ app.get(['/services', '/services.html'], (req, res) => {
 });
 
 // Projects Route
-app.get(['/projects', '/projects.html'], (req, res) => {
+app.get(['/projects', '/projects.html'], async (req, res) => {
+  const content = await db.getContent();
   const context = {
-    ...getGlobalContext(),
+    ...getGlobalContext(content),
     pageTitle: "Completed Projects Portfolio | Industrial, Residential & Interior Ahmedabad",
     metaDescription: "Explore 50+ completed turnkey projects across Ahmedabad, Nikol, Vatva GIDC, Naroda, Bopal, Kuha & Chiloda by Kanha Construction & Interior. Browse photo galleries & floor plans.",
     canonicalUrl: "https://kanha-portfolio-eta.vercel.app/projects",
@@ -177,9 +243,10 @@ app.get(['/projects', '/projects.html'], (req, res) => {
 });
 
 // Project Detail Route
-app.get(['/project-detail', '/project-detail.html'], (req, res) => {
+app.get(['/project-detail', '/project-detail.html'], async (req, res) => {
+  const content = await db.getContent();
   const context = {
-    ...getGlobalContext(),
+    ...getGlobalContext(content),
     pageTitle: "Project Details & Gallery | Kanha Construction Ahmedabad",
     canonicalUrl: "https://kanha-portfolio-eta.vercel.app/project-detail",
     isProjects: true
@@ -188,9 +255,10 @@ app.get(['/project-detail', '/project-detail.html'], (req, res) => {
 });
 
 // Contact Route
-app.get(['/contact', '/contact.html'], (req, res) => {
+app.get(['/contact', '/contact.html'], async (req, res) => {
+  const content = await db.getContent();
   const context = {
-    ...getGlobalContext(),
+    ...getGlobalContext(content),
     pageTitle: "Contact Kanha Construction Nikol Ahmedabad | WhatsApp & Phone",
     metaDescription: "Connect with Kanha Construction & Interior in Nikol, Ahmedabad. Reach us directly on WhatsApp or Call at +91 9898749575 for instant quotations, site consultations & architectural plan reviews.",
     canonicalUrl: "https://kanha-portfolio-eta.vercel.app/contact",
@@ -199,46 +267,43 @@ app.get(['/contact', '/contact.html'], (req, res) => {
   res.render('contact', context);
 });
 
-// Admin Route - Strictly Protected: Only Authenticated Admin Can View Dashboard
-app.get('/admin', (req, res) => {
+// Admin Route - Strictly Protected
+app.get('/admin', async (req, res) => {
+  const content = await db.getContent();
   if (!isAuthenticatedAdmin(req)) {
-    // Unauthenticated visitors (customers) ONLY receive the secure login gate
-    // No admin dashboard HTML or CMS controls are delivered
     return res.render('admin-login', {
-      ...getGlobalContext(),
+      ...getGlobalContext(content),
       pageTitle: "Admin Restricted Access Gate",
       isAdminLogin: true
     });
   }
 
-  // Authenticated Admin receives the full Admin Studio
   const context = {
-    ...getGlobalContext(),
+    ...getGlobalContext(content),
     pageTitle: "Admin Studio Dashboard",
     isAdmin: true
   };
   res.render('admin', context);
 });
 
-// Admin Authentication API - Validates Credentials Server-Side
+// --- Admin Authentication API ---
+
 app.post('/api/admin/login', (req, res) => {
   const { username, password, pin } = req.body;
   const adminUser = (username || '').trim().toLowerCase();
   const adminPass = (password || pin || '').trim();
 
-  // Valid administrator credentials:
-  // Username: 'admin' (or case-insensitive)
-  // Password / PIN: 'kanha@admin2026' or '1234' (or process.env.ADMIN_PASSWORD)
   const isUserValid = adminUser === 'admin' || !username;
   const isPassValid = adminPass === '1234' || adminPass === 'kanha@admin2026' || (process.env.ADMIN_PASSWORD && adminPass === process.env.ADMIN_PASSWORD);
 
   if (isUserValid && isPassValid) {
-    const sessionToken = crypto.randomBytes(32).toString('hex');
+    const sessionToken = createAdminToken();
     activeAdminSessions.add(sessionToken);
 
     res.setHeader('Set-Cookie', `kanha_admin_token=${sessionToken}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400`);
     return res.json({
       success: true,
+      token: sessionToken,
       message: "Admin authentication successful!"
     });
   }
@@ -250,7 +315,6 @@ app.post('/api/admin/login', (req, res) => {
   });
 });
 
-// Admin Logout API - Clears Server Session and Cookie
 app.all(['/api/admin/logout', '/admin/logout'], (req, res) => {
   const cookies = parseCookies(req);
   const token = cookies['kanha_admin_token'];
@@ -264,7 +328,218 @@ app.all(['/api/admin/logout', '/admin/logout'], (req, res) => {
   return res.json({ success: true, message: "Logged out successfully" });
 });
 
-// API Endpoint for Contact Form Submission (Sends FREE Email to kanha.consinterio@gmail.com)
+// --- RESTful Database API Endpoints ---
+
+// System & Storage Status
+app.get('/api/status', (req, res) => {
+  res.json({
+    status: "ok",
+    database: db.getStatus(),
+    storage: upload.getUploadStatus(),
+    timestamp: new Date().toISOString()
+  });
+});
+
+// 1. Projects API
+app.get('/api/projects', async (req, res) => {
+  try {
+    const projects = await db.getProjects();
+    res.json(projects);
+  } catch (err) {
+    console.error("Error fetching projects:", err);
+    res.status(500).json({ error: "Failed to fetch projects" });
+  }
+});
+
+app.get('/api/projects/:id', async (req, res) => {
+  try {
+    const project = await db.getProjectById(req.params.id);
+    if (!project) {
+      return res.status(404).json({ error: "Project not found" });
+    }
+    res.json(project);
+  } catch (err) {
+    console.error("Error fetching project:", err);
+    res.status(500).json({ error: "Failed to fetch project" });
+  }
+});
+
+app.post('/api/projects', requireAdmin, async (req, res) => {
+  try {
+    const projectData = req.body;
+    if (!projectData || !projectData.title) {
+      return res.status(400).json({ success: false, message: "Project title is required." });
+    }
+
+    // Convert Base64 cover photo to disk/cloud file URL to prevent DB bloat
+    if (projectData.image && projectData.image.startsWith('data:')) {
+      projectData.image = await upload.processBase64Image(projectData.image, 'cover');
+    }
+
+    // Convert Base64 gallery photos to disk/cloud file URLs
+    if (Array.isArray(projectData.gallery)) {
+      for (const item of projectData.gallery) {
+        if (item.image && item.image.startsWith('data:')) {
+          item.image = await upload.processBase64Image(item.image, 'gallery');
+        }
+      }
+    }
+
+    const saved = await db.saveProject(projectData);
+    res.json({ success: true, project: saved });
+  } catch (err) {
+    console.error("Error saving project:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+app.post('/api/projects/bulk', requireAdmin, async (req, res) => {
+  try {
+    const { projects } = req.body;
+    if (!Array.isArray(projects)) {
+      return res.status(400).json({ success: false, message: "Projects must be an array." });
+    }
+
+    // Convert any Base64 images across projects to disk/cloud URLs
+    for (const proj of projects) {
+      if (proj.image && proj.image.startsWith('data:')) {
+        proj.image = await upload.processBase64Image(proj.image, 'cover');
+      }
+      if (Array.isArray(proj.gallery)) {
+        for (const item of proj.gallery) {
+          if (item.image && item.image.startsWith('data:')) {
+            item.image = await upload.processBase64Image(item.image, 'gallery');
+          }
+        }
+      }
+    }
+
+    const saved = await db.saveAllProjects(projects);
+    res.json({ success: true, count: saved.length, projects: saved });
+  } catch (err) {
+    console.error("Error saving bulk projects:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+app.delete('/api/projects/:id', requireAdmin, async (req, res) => {
+  try {
+    const success = await db.deleteProject(req.params.id);
+    res.json({ success, message: success ? "Project deleted." : "Project not found." });
+  } catch (err) {
+    console.error("Error deleting project:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// 2. Website Content API (Company, Hero, About, Services, Stats)
+app.get('/api/content', async (req, res) => {
+  try {
+    const content = await db.getContent();
+    res.json(content);
+  } catch (err) {
+    console.error("Error fetching content:", err);
+    res.status(500).json({ error: "Failed to fetch website content" });
+  }
+});
+
+app.post('/api/content', requireAdmin, async (req, res) => {
+  try {
+    const { section, data } = req.body;
+    if (!section || !data) {
+      return res.status(400).json({ success: false, message: "Section and data are required." });
+    }
+
+    // Convert Base64 images to permanent disk/cloud URLs
+    if (section === 'hero' && data.image && data.image.startsWith('data:')) {
+      data.image = await upload.processBase64Image(data.image, 'hero');
+    } else if (section === 'about' && data.image && data.image.startsWith('data:')) {
+      data.image = await upload.processBase64Image(data.image, 'about');
+    } else if (section === 'services' && Array.isArray(data)) {
+      for (const srv of data) {
+        if (srv.image && srv.image.startsWith('data:')) {
+          srv.image = await upload.processBase64Image(srv.image, 'service');
+        }
+      }
+    }
+
+    const updated = await db.updateContent(section, data);
+    res.json({ success: true, section, data: updated });
+  } catch (err) {
+    console.error("Error updating content:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+app.post('/api/reset', requireAdmin, async (req, res) => {
+  try {
+    const resetData = await db.resetDatabase();
+    res.json({ success: true, message: "Website reset to defaults", data: resetData });
+  } catch (err) {
+    console.error("Error resetting database:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// 3. High-Capacity Image Upload API (Single or Batch up to 50 Images)
+app.post('/api/upload', requireAdmin, (req, res, next) => {
+  const contentType = req.headers['content-type'] || '';
+  if (contentType.includes('multipart/form-data')) {
+    upload.uploadMiddleware.any()(req, res, (err) => {
+      if (err) {
+        console.error("Multer file upload error:", err);
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      next();
+    });
+  } else {
+    next();
+  }
+}, async (req, res) => {
+  try {
+    const urls = [];
+
+    // Process multipart uploaded files
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
+        const url = await upload.processUploadedFile(file);
+        if (url) urls.push(url);
+      }
+    } else if (req.file) {
+      const url = await upload.processUploadedFile(req.file);
+      if (url) urls.push(url);
+    }
+
+    // Process Base64 payload if sent via JSON
+    if (req.body && req.body.base64) {
+      const url = await upload.processBase64Image(req.body.base64, req.body.name || 'photo');
+      if (url) urls.push(url);
+    } else if (req.body && Array.isArray(req.body.images)) {
+      for (const item of req.body.images) {
+        const base64Str = typeof item === 'string' ? item : item.base64;
+        const name = typeof item === 'object' ? item.name : 'photo';
+        const url = await upload.processBase64Image(base64Str, name);
+        if (url) urls.push(url);
+      }
+    }
+
+    if (urls.length === 0) {
+      return res.status(400).json({ success: false, message: "No valid image files received." });
+    }
+
+    return res.json({
+      success: true,
+      url: urls[0],
+      urls: urls,
+      count: urls.length
+    });
+  } catch (err) {
+    console.error("Upload handler error:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// Contact Form Submission (Email to kanha.consinterio@gmail.com)
 app.post('/api/contact', async (req, res) => {
   const { name, phone, category, message } = req.body;
   const targetEmail = "kanha.consinterio@gmail.com";
@@ -348,11 +623,18 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// Start Express Server
-if (require.main === module || !process.env.VERCEL) {
-  app.listen(PORT, () => {
-    console.log(`Mustache-powered Server running at http://localhost:${PORT}`);
-  });
+// Server Initialization
+async function startServer() {
+  await db.initDB();
+  upload.initCloudinary();
+
+  if (require.main === module || !process.env.VERCEL) {
+    app.listen(PORT, () => {
+      console.log(`🚀 Kanha Portfolio Server running at http://localhost:${PORT}`);
+    });
+  }
 }
+
+startServer();
 
 module.exports = app;

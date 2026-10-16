@@ -1,0 +1,439 @@
+{
+  "company": {
+    "name": "KANHA",
+    "subtitle": "CONSTRUCTION & INTERIOR",
+    "fullName": "KANHA Construction & Interior",
+    "tagline": "Best Construction Company & Interior Designer in Ahmedabad",
+    "phone": "+91 9898749575",
+    "whatsapp": "+91 9898749575",
+    "whatsappLink": "https://wa.me/919898749575?text=Hello%20Kanha%20Team%2C%20I%20want%20to%20discuss%20a%20project!",
+    "address": "Near Shreenath Party Plot, Nikol, Ahmedabad, Gujarat - 382350",
+    "workingHours": "Monday - Saturday: 9:00 AM - 7:00 PM IST (WhatsApp 24/7)",
+    "estBadge": "Established Since 2021 • Nikol, Ahmedabad",
+    "instagramUrl": "https://www.instagram.com/kanha_construction_interiors?igsh=aGZ2YzN1anE4Z3N3"
+  },
+  "hero": {
+    "title": "KANHA",
+    "titleHighlight": "CONSTRUCTION",
+    "titleSuffix": "& INTERIOR",
+    "tagline": "Realising Your Dreams",
+    "description": "Delivering quality-driven architectural, structural, and interior projects with a commitment to excellence, innovation, and reliability across residential, industrial, commercial, and healthcare spaces.",
+    "image": "assets/images/kanha_hero_facade_1791296928268.jpg",
+    "badgeTitle": "Turnkey Excellence",
+    "badgeSub": "End-to-End Handover Guarantee"
+  },
+  "about": {
+    "title": "About Our Company",
+    "subtitle": "Combining Functionality, Aesthetics, and Durability",
+    "story1": "Kanha Construction and Interior is a trusted name in the field of construction and interior solutions. Founded in 2021 in Nikol, Ahmedabad, we specialize in residential, commercial, industrial, hospital, and interior works, offering end-to-end solutions that combine functionality, aesthetics, and durability.",
+    "story2": "Our team of structural engineers, architects, interior designers, and project managers work cohesively to deliver seamless turnkey solutions from raw site development to move-in ready handovers.",
+    "image": "assets/images/rajdeep_villa_residential_1791296998090.jpg",
+    "safetyTitle": "Safety Standards",
+    "safetyDesc": "Strict structural safety compliance and load calculations.",
+    "timeTitle": "On-Time Handover",
+    "timeDesc": "Structured project timelines with milestone updates."
+  },
+  "services": [
+    {
+      "id": "srv_1",
+      "title": "Architectural Design",
+      "icon": "fa-solid fa-city",
+      "shortDesc": "Conceptualizing modern, functional, and aesthetically striking elevations and floor layouts.",
+      "fullDesc": "We conceptualize modern, functional, and visually captivating elevations and 2D/3D floor layouts tailored to contemporary living. Our architectural team focuses on optimizing spatial flow, natural daylighting, and passive energy efficiency.",
+      "highlights": [
+        "3D Elevation Modeling & Photorealistic Renders",
+        "Residential Villa & Commercial Building Layouts",
+        "Municipal & Sanction Floor Plan Preparation"
+      ],
+      "image": "assets/images/kanha_hero_facade_1791296928268.jpg"
+    },
+    {
+      "id": "srv_2",
+      "title": "Structural Design",
+      "icon": "fa-solid fa-cubes-stacked",
+      "shortDesc": "Rigorous structural engineering ensuring long-term load safety, seismic resilience, and material efficiency.",
+      "fullDesc": "Rigorous structural engineering ensuring long-term load safety, seismic resilience, and material efficiency. We design heavy industrial plants, steel truss sheds, multi-story RCC framing, and foundation engineering.",
+      "highlights": [
+        "RCC Frame & Foundation Load Analysis",
+        "Industrial Steel Fabrication Structural Engineering",
+        "Seismic Safety Compliance Standards"
+      ],
+      "image": "assets/images/raghuveer_gears_industrial_179129660519.jpg"
+    },
+    {
+      "id": "srv_3",
+      "title": "Interior Design",
+      "icon": "fa-solid fa-couch",
+      "shortDesc": "Bespoke residential, office, and hospital interior transformations with customized cove lighting.",
+      "fullDesc": "Luxury living rooms, modular kitchens, master suites, commercial corporate offices, and specialized hospital interior clinic layouts. We craft ambient cove lighting, marble accent walls, and custom furniture.",
+      "highlights": [
+        "Bespoke Living & Bedroom Transformations",
+        "Modular Island Kitchens & Italian Marble Feature Walls",
+        "Specialized Healthcare & Rehab Clinic Interiors"
+      ],
+      "image": "assets/images/kanha_interior_living_1791297029485.jpg"
+    },
+    {
+      "id": "srv_4",
+      "title": "Turnkey Projects",
+      "icon": "fa-solid fa-key",
+      "shortDesc": "End-to-end hassle-free execution from initial blueprint design to final key handover.",
+      "fullDesc": "End-to-end hassle-free execution where we manage every aspect from raw land site development, civil construction, electrical & plumbing, interior styling, to final key handover.",
+      "highlights": [
+        "Complete Single-Point Project Accountability",
+        "On-Time Handover Guarantee",
+        "Full Material Quality & Civil Work Warranty"
+      ],
+      "image": "assets/images/rajdeep_villa_residential_1791296998090.jpg"
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj_1",
+      "title": "Raghuveer Gears Pvt. Ltd.",
+      "category": "industrial",
+      "location": "VATVA, GIDC",
+      "area": "8000 SQ. FT.",
+      "projectType": "Turnkey Project",
+      "image": "assets/images/raghuveer_gears_industrial_179129660519.jpg",
+      "fallbackImage": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1200&q=80",
+      "description": "Full turnkey industrial execution featuring modern structural engineering, corporate entrance, administrative block, and heavy manufacturing layout for Raghuveer Gears in Vatva GIDC.",
+      "featured": true,
+      "createdAt": "2024-01-15",
+      "gallery": [
+        {
+          "section": "industrial",
+          "title": "Heavy Structural Steel Truss Fabrication",
+          "image": "assets/images/raghuveer_gears_industrial_179129660519.jpg"
+        },
+        {
+          "section": "construction",
+          "title": "Factory Floor Foundation & Reinforcement",
+          "image": "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "interior",
+          "title": "Corporate Administrative Office Suite",
+          "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "elevation",
+          "title": "Industrial Complex Front Facade",
+          "image": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "planning",
+          "title": "GIDC Industrial Master Zoning & 3D Blueprint",
+          "image": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "proj_2",
+      "title": "Multi Tech Industrial Unit",
+      "category": "industrial",
+      "location": "KUHA",
+      "area": "5000 SQ. FT.",
+      "projectType": "Turnkey Project",
+      "image": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80",
+      "description": "Modern industrial warehouse and facility design with timber facade accents, automated shutters, and heavy-duty structural framework in Kuha.",
+      "featured": true,
+      "createdAt": "2024-02-10",
+      "gallery": [
+        {
+          "section": "industrial",
+          "title": "Steel Beam Framework & Roofing Structure",
+          "image": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "construction",
+          "title": "Industrial Slab Concrete Casting",
+          "image": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "interior",
+          "title": "Control Room & Equipment Bay Interior",
+          "image": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "elevation",
+          "title": "Warehouse Exterior & Loading Dock",
+          "image": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "proj_3",
+      "title": "Veer Leaser Feb Plant",
+      "category": "industrial",
+      "location": "KUHA",
+      "area": "15,000 SQ. FT.",
+      "projectType": "Turnkey Project",
+      "image": "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1200&q=80",
+      "description": "Large-scale 15,000 sq. ft. fabrication facility with steel truss structure, high bay lighting, and double-height administrative wing.",
+      "featured": false,
+      "createdAt": "2024-03-05",
+      "gallery": [
+        {
+          "section": "construction",
+          "title": "15,000 Sq. Ft. Steel Superstructure Erection",
+          "image": "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "construction",
+          "title": "Heavy Crane Gantry Beam Installation",
+          "image": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "interior",
+          "title": "Laser Cutting Plant Floor & Safety Pathways",
+          "image": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "interior",
+          "title": "Mezzanine Floor Office Layout",
+          "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "proj_4",
+      "title": "Rajdeep Villa",
+      "category": "residential",
+      "location": "JASHODA",
+      "area": "5000 SQ. FT.",
+      "projectType": "Turnkey Project",
+      "image": "assets/images/rajdeep_villa_residential_1791296998090.jpg",
+      "fallbackImage": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "description": "Stunning 3-story luxury residential villa with custom wooden louvers, cantilevered glass balconies, landscaped courtyard, and infinity pool integration in Jashoda.",
+      "featured": true,
+      "createdAt": "2024-04-20",
+      "gallery": [
+        {
+          "section": "elevation",
+          "title": "Luxury Modern Facade & Cantilevered Balconies",
+          "image": "assets/images/rajdeep_villa_residential_1791296998090.jpg"
+        },
+        {
+          "section": "construction",
+          "title": "RCC Framed Structure & Slab Execution",
+          "image": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "interior",
+          "title": "Double-Height Living Hall with Marble Flooring",
+          "image": "assets/images/kanha_interior_living_1791297029485.jpg"
+        },
+        {
+          "section": "interior",
+          "title": "Bespoke Italian Kitchen & Island Lounge",
+          "image": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "planning",
+          "title": "3D Villa Architectural Layout & Floor Zoning",
+          "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "proj_5",
+      "title": "Hitachi Bunglow",
+      "category": "residential",
+      "location": "BOPAL",
+      "area": "4000 SQ. FT.",
+      "projectType": "Turnkey Project",
+      "image": "assets/images/kanha_hero_facade_1791296928268.jpg",
+      "fallbackImage": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "description": "Contemporary 4,000 sq. ft. bungalow in Bopal showcasing clean geometric facade lines, dark charcoal paneling, ambient exterior cove lighting, and spacious open plan living.",
+      "featured": true,
+      "createdAt": "2024-05-12",
+      "gallery": [
+        {
+          "section": "elevation",
+          "title": "Geometric Facade & Architectural Lighting",
+          "image": "assets/images/kanha_hero_facade_1791296928268.jpg"
+        },
+        {
+          "section": "construction",
+          "title": "Civil Construction & Brickwork Phasing",
+          "image": "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "interior",
+          "title": "Open Plan Living & Floating Wood Staircase",
+          "image": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "interior",
+          "title": "Minimalist Dining & Warm Accent Lighting",
+          "image": "https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "proj_6",
+      "title": "Sharma Villa",
+      "category": "residential",
+      "location": "CHILODA",
+      "area": "2500 SQ. FT.",
+      "projectType": "Turnkey Project",
+      "image": "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80",
+      "description": "Bespoke 2,500 sq. ft. residence in Chiloda featuring terracotta jali screening, open terrace garden, and modern eco-friendly passive cooling design.",
+      "featured": false,
+      "createdAt": "2024-06-18",
+      "gallery": [
+        {
+          "section": "elevation",
+          "title": "Terracotta Jali Screen & Exterior Garden",
+          "image": "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "construction",
+          "title": "Structural Columns & Plinth Beam Layout",
+          "image": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "interior",
+          "title": "Sunlit Courtyard & Living Room Interior",
+          "image": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "proj_7",
+      "title": "Ozon Farm House",
+      "category": "residential",
+      "location": "NAL SAROVAR",
+      "area": "8000 SQ. FT.",
+      "projectType": "Turnkey Project",
+      "image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      "description": "Sprawling 8,000 sq. ft. resort-style luxury getaway home near Nal Sarovar, featuring rustic stone cladding, tile roofing, private swimming deck, and lush botanical surroundings.",
+      "featured": true,
+      "createdAt": "2024-07-02",
+      "gallery": [
+        {
+          "section": "elevation",
+          "title": "Rustic Stone Elevation & Swimming Deck",
+          "image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "construction",
+          "title": "Landscape Earthwork & Deck Construction",
+          "image": "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "interior",
+          "title": "Exposed Wooden Rafter Living Ceiling",
+          "image": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "interior",
+          "title": "Verandah Lounge & Outdoor Patio Setup",
+          "image": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "proj_8",
+      "title": "Rehabex Hospital",
+      "category": "hospital",
+      "location": "NARODA",
+      "area": "2000 SQ. FT.",
+      "projectType": "Interior Project",
+      "image": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80",
+      "description": "Specialized hospital interior execution in Naroda, meeting strict medical airflow, hygiene, ergonomic reception counters, and patient recovery bay standards.",
+      "featured": true,
+      "createdAt": "2024-08-14",
+      "gallery": [
+        {
+          "section": "hospital",
+          "title": "Medical Reception & Patient Waiting Lounge",
+          "image": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "hospital",
+          "title": "Cleanroom Partition & Modular Ceiling Installation",
+          "image": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "hospital",
+          "title": "Consultation Chamber & Anti-Bacterial Flooring",
+          "image": "https://images.unsplash.com/photo-1504813184591-01572f98c85f?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "proj_9",
+      "title": "Luxury Living & Kitchen Suite",
+      "category": "interior",
+      "location": "NIKOL, AHMEDABAD",
+      "area": "1800 SQ. FT.",
+      "projectType": "Interior Project",
+      "image": "assets/images/kanha_interior_living_1791297029485.jpg",
+      "fallbackImage": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+      "description": "High-end interior design featuring custom Italian marble accent walls, warm LED cove lighting, floating TV units, modular island kitchen, and custom velvet upholstery.",
+      "featured": true,
+      "createdAt": "2024-09-01",
+      "gallery": [
+        {
+          "section": "interior",
+          "title": "Italian Marble Accent Wall & Cove Lighting",
+          "image": "assets/images/kanha_interior_living_1791297029485.jpg"
+        },
+        {
+          "section": "interior",
+          "title": "Modular Island Kitchen & Acrylic Shutters",
+          "image": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "construction",
+          "title": "Gypsum False Ceiling Grid & Wiring Setup",
+          "image": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "interior",
+          "title": "Custom Velvet Sofa & Dining Corner",
+          "image": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    {
+      "id": "proj_10",
+      "title": "Master Suite & Vanity Lounge",
+      "category": "interior",
+      "location": "AHMEDABAD",
+      "area": "1200 SQ. FT.",
+      "projectType": "Interior Project",
+      "image": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80",
+      "description": "Sophisticated master bedroom interior with arched vanity mirror, upholstered headboard accent wall, integrated wardrobe paneling, and warm mood lighting.",
+      "featured": false,
+      "createdAt": "2024-09-20",
+      "gallery": [
+        {
+          "section": "interior",
+          "title": "Upholstered Headboard & Vanity Lounge",
+          "image": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "interior",
+          "title": "Walk-in Glass Wardrobes & LED Profiling",
+          "image": "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "section": "construction",
+          "title": "Custom Wooden Paneling Frame Substructure",
+          "image": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "baseProjectsOffset": 40,
+    "customProjectsText": "",
+    "customLargestSqFt": "",
+    "customOnTimeRate": "100%",
+    "customSpecializations": ""
+  },
+  "lastUpdated": "2026-10-16T08:51:38.278Z"
+}

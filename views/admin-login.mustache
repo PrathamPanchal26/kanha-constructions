@@ -167,6 +167,10 @@
         const data = await response.json();
 
         if (data.success) {
+          if (data.token) {
+            sessionStorage.setItem('kanha_admin_token', data.token);
+            localStorage.setItem('kanha_admin_token', data.token);
+          }
           btnSubmit.innerHTML = `<i class="fa-solid fa-check"></i> Access Granted! Entering...`;
           btnSubmit.style.background = '#10b981';
           setTimeout(() => {
