@@ -463,7 +463,7 @@ function renderProjects() {
     return `
       <div class="project-card" data-id="${project.id}">
         <div class="project-img-wrapper" onclick="handleProjectClick('${project.id}')" style="cursor: pointer;">
-          <img src="${imgSrc}" alt="${project.title}" style="aspect-ratio: 16/9; object-fit: cover; width: 100%; height: 240px;" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
+          <img src="${imgSrc}" alt="${project.title}" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
           <span class="project-badge-cat">${catUpper}</span>
         </div>
         

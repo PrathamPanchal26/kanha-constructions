@@ -404,16 +404,20 @@ h1, h2, h3, h4, h5, h6, .brand-font {
 
 .hero-img-frame {
   position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 11;
   border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
   border: 2px solid var(--border-light);
+  background: var(--bg-dark);
 }
 
 .hero-img-frame img {
   width: 100%;
-  height: 480px;
+  height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
   transition: transform 0.6s ease;
 }
@@ -687,18 +691,19 @@ h1, h2, h3, h4, h5, h6, .brand-font {
 .about-image-wrapper {
   position: relative;
   width: 100%;
+  aspect-ratio: 16 / 11;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--border-light);
   box-shadow: var(--shadow-main);
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--bg-dark);
 }
 
 .about-img {
   width: 100%;
   height: 100%;
-  max-height: 460px;
   object-fit: cover;
+  object-position: center;
   display: block;
   transition: transform 0.5s ease;
 }
@@ -990,19 +995,21 @@ h1, h2, h3, h4, h5, h6, .brand-font {
 }
 
 .service-detail-img-wrap {
+  position: relative;
   width: 100%;
+  aspect-ratio: 16 / 10;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--border-light);
   box-shadow: var(--shadow-main);
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--bg-dark);
 }
 
 .service-detail-img {
   width: 100%;
   height: 100%;
-  max-height: 420px;
   object-fit: cover;
+  object-position: center;
   display: block;
   transition: transform 0.5s ease;
 }
@@ -1071,7 +1078,8 @@ h1, h2, h3, h4, h5, h6, .brand-font {
 
 .project-img-wrapper {
   position: relative;
-  height: 240px;
+  width: 100%;
+  aspect-ratio: 16 / 10;
   overflow: hidden;
   background: #0f2733;
 }
@@ -1080,6 +1088,8 @@ h1, h2, h3, h4, h5, h6, .brand-font {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+  display: block;
   transition: transform 0.6s ease;
 }
 
@@ -1388,7 +1398,8 @@ h1, h2, h3, h4, h5, h6, .brand-font {
 
 .gallery-img-wrapper {
   position: relative;
-  height: 180px;
+  width: 100%;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   background: #000;
 }
@@ -1397,6 +1408,8 @@ h1, h2, h3, h4, h5, h6, .brand-font {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+  display: block;
   transition: transform 0.5s ease;
 }
 
@@ -2320,6 +2333,7 @@ footer {
 /* Modern Photo Preview & Red Delete Button */
 .preview-box {
   width: 100%;
+  max-width: 480px;
   border-radius: 12px;
   overflow: hidden;
   margin-top: 14px;
@@ -2331,8 +2345,10 @@ footer {
 
 .preview-box img {
   width: 100%;
-  height: 200px;
+  aspect-ratio: 16 / 10;
+  max-height: 260px;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
@@ -3852,6 +3868,30 @@ footer {
   align-items: center;
 }
 
+.project-detail-cover-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 2px solid var(--border-light);
+  box-shadow: var(--shadow-main);
+  background: var(--bg-dark);
+}
+
+.project-detail-cover-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.project-detail-cover-frame:hover img {
+  transform: scale(1.03);
+}
+
 /* Tablet & Mobile Breakpoint (≤ 992px) */
 @media (max-width: 992px) {
   /* Admin Shell switches to full-width mobile viewport */
@@ -4302,9 +4342,9 @@ footer {
     gap: 22px !important;
   }
 
-  #detailCoverImg {
-    height: 240px !important;
+  .project-detail-cover-frame {
     border-radius: 14px !important;
+    aspect-ratio: 16 / 10;
   }
 
   .detail-hero-title {

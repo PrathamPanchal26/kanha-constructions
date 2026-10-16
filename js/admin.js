@@ -2004,32 +2004,26 @@ function resizeAndNormalizeImage(file, callback) {
   reader.onload = (e) => {
     const img = new Image();
     img.onload = () => {
-      const targetWidth = 1200;
-      const targetHeight = 675;
-      const canvas = document.createElement('canvas');
-      canvas.width = targetWidth;
-      canvas.height = targetHeight;
-      const ctx = canvas.getContext('2d');
+      // Preserve natural aspect ratio with max dimension bounds
+      const maxDim = 1600;
+      let width = img.width;
+      let height = img.height;
 
-      const imgAspect = img.width / img.height;
-      const targetAspect = targetWidth / targetHeight;
-      let renderableWidth, renderableHeight, xStart, yStart;
-
-      if (imgAspect < targetAspect) {
-        renderableWidth = targetWidth;
-        renderableHeight = img.height * (targetWidth / img.width);
-        xStart = 0;
-        yStart = (targetHeight - renderableHeight) / 2;
-      } else {
-        renderableHeight = targetHeight;
-        renderableWidth = img.width * (targetHeight / img.height);
-        xStart = (targetWidth - renderableWidth) / 2;
-        yStart = 0;
+      if (width > maxDim || height > maxDim) {
+        if (width > height) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
+        } else {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
+        }
       }
 
-      ctx.fillStyle = "#06161f";
-      ctx.fillRect(0, 0, targetWidth, targetHeight);
-      ctx.drawImage(img, xStart, yStart, renderableWidth, renderableHeight);
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
 
       const normalizedBase64 = canvas.toDataURL('image/jpeg', 0.88);
       callback(normalizedBase64);
