@@ -50,7 +50,11 @@
         </div>
 
         <div class="about-image-wrapper">
-          <img src="/assets/images/kanha_hero_facade_1791296928268.jpg" alt="Kanha Architecture Facade" class="dyn-about-img about-img" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
+          <picture>
+            <source srcset="/assets/images/kanha_hero_facade_1791296928268-768w.webp 768w, /assets/images/kanha_hero_facade_1791296928268.webp 1376w" sizes="(max-width: 768px) 100vw, 600px" type="image/webp">
+            <source srcset="/assets/images/kanha_hero_facade_1791296928268-768w.jpg 768w, /assets/images/kanha_hero_facade_1791296928268.jpg 1376w" sizes="(max-width: 768px) 100vw, 600px" type="image/jpeg">
+            <img src="/assets/images/kanha_hero_facade_1791296928268.jpg" alt="Kanha Architecture Facade" class="dyn-about-img about-img" width="1376" height="768" loading="lazy" decoding="async" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
+          </picture>
         </div>
       </div>
 

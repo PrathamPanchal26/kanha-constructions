@@ -234,7 +234,11 @@ function hydrateHeroSection() {
   }
 
   if (heroImgElem && heroData.image) {
-    heroImgElem.src = heroData.image;
+    if (!heroData.image.includes('kanha_hero_facade')) {
+      const pic = heroImgElem.closest('picture');
+      if (pic) pic.querySelectorAll('source').forEach(s => s.remove());
+      heroImgElem.src = heroData.image;
+    }
   }
 
   if (heroCardTitleElem && heroData.badgeTitle) {
@@ -259,7 +263,11 @@ function hydrateAboutSection() {
   aboutStory1Elems.forEach(el => el.textContent = aboutData.story1 || "");
   aboutStory2Elems.forEach(el => el.textContent = aboutData.story2 || "");
   aboutImgElems.forEach(el => {
-    if (aboutData.image) el.src = aboutData.image;
+    if (aboutData.image && !aboutData.image.includes('rajdeep_villa')) {
+      const pic = el.closest('picture');
+      if (pic) pic.querySelectorAll('source').forEach(s => s.remove());
+      el.src = aboutData.image;
+    }
   });
 }
 
@@ -308,7 +316,7 @@ function renderDynamicServices() {
           </div>
 
           <div class="service-detail-img-wrap">
-            <img src="${srv.image || 'assets/images/kanha_hero_facade_1791296928268.jpg'}" alt="${srv.title}" class="service-detail-img" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
+            <img src="${srv.image || 'assets/images/kanha_hero_facade_1791296928268.jpg'}" alt="${srv.title}" class="service-detail-img" loading="lazy" decoding="async" width="1376" height="768" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
           </div>
         </div>
       `;
@@ -471,7 +479,7 @@ function renderProjects() {
     return `
       <div class="project-card" data-id="${project.id}">
         <div class="project-img-wrapper" onclick="handleProjectClick('${project.id}')" style="cursor: pointer;">
-          <img src="${imgSrc}" alt="${project.title}" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
+          <img src="${imgSrc}" alt="${project.title}" loading="lazy" decoding="async" width="600" height="400" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
           <span class="project-badge-cat">${catUpper}</span>
         </div>
         
@@ -608,7 +616,7 @@ function renderDetailPageGalleryGrid() {
     return `
       <div class="gallery-card" onclick="openLightboxViewer(${index})">
         <div class="gallery-img-wrapper">
-          <img src="${imgSrc}" alt="${item.title || activeProjectForModal.title}" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
+          <img src="${imgSrc}" alt="${item.title || activeProjectForModal.title}" loading="lazy" decoding="async" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
           <span class="gallery-sec-badge">${secTag}</span>
           <div class="gallery-overlay-icon">
             <i class="fa-solid fa-magnifying-glass-plus"></i>

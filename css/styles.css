@@ -565,6 +565,13 @@ h1, h2, h3, h4, h5, h6, .brand-font {
   background: var(--bg-dark);
 }
 
+.hero-img-frame picture,
+.about-image-wrapper picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .hero-img-frame img {
   width: 100%;
   height: 100%;

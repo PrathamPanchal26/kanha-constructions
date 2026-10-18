@@ -132,8 +132,8 @@ const staticCacheConfig = {
 app.use('/css', express.static(path.join(__dirname, 'css'), staticCacheConfig));
 app.use('/js', express.static(path.join(__dirname, 'js'), staticCacheConfig));
 app.use('/assets', express.static(path.join(__dirname, 'assets'), staticCacheConfig));
-app.use('/uploads', express.static(upload.UPLOADS_DIR, { maxAge: '7d' }));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { maxAge: '7d' }));
+app.use('/uploads', express.static(upload.UPLOADS_DIR, staticCacheConfig));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), staticCacheConfig));
 app.use(express.static(path.join(__dirname, '/'), { index: false }));
 
 // Shared Global View Context Data Builder
