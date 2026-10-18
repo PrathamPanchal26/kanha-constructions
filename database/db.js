@@ -1,14 +1,51 @@
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const mongoose = require('mongoose');
 const defaults = require('./defaults');
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
-const DB_FILE = path.join(DATA_DIR, 'portfolio-db.json');
+// Detect serverless environment (Vercel, AWS Lambda, etc.)
+const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+
+// Bundled read-only project paths
+const BUNDLED_DATA_DIR = path.join(__dirname, '..', 'data');
+const BUNDLED_DB_FILE = path.join(BUNDLED_DATA_DIR, 'portfolio-db.json');
+
+// Resilient writable database path determination
+function getWritableDBPath() {
+  if (isServerless) {
+    const tmpDir = path.join(os.tmpdir(), 'kanha-data');
+    try {
+      if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
+    } catch (e) {}
+    return path.join(tmpDir, 'portfolio-db.json');
+  }
+
+  try {
+    if (!fs.existsSync(BUNDLED_DATA_DIR)) {
+      fs.mkdirSync(BUNDLED_DATA_DIR, { recursive: true });
+    }
+    const testFile = path.join(BUNDLED_DATA_DIR, `.write_test_${Date.now()}`);
+    fs.writeFileSync(testFile, 'ok', 'utf8');
+    fs.unlinkSync(testFile);
+    return BUNDLED_DB_FILE;
+  } catch (err) {
+    const tmpDir = path.join(os.tmpdir(), 'kanha-data');
+    try {
+      if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
+    } catch (e) {}
+    return path.join(tmpDir, 'portfolio-db.json');
+  }
+}
+
+const DB_FILE = getWritableDBPath();
+const DATA_DIR = path.dirname(DB_FILE);
 
 let isMongoActive = false;
 let ProjectModel = null;
 let ContentModel = null;
+let initPromise = null;
+let memoryDB = null;
 
 // MongoDB Mongoose Schemas (Used when MONGODB_URI is provided in .env)
 const projectSchema = new mongoose.Schema({
@@ -41,32 +78,47 @@ const contentSchema = new mongoose.Schema({
 
 // Ensure local storage directory exists
 function ensureDataDir() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+  } catch (err) {
+    // Ignore error if filesystem is read-only
   }
 }
 
-// Read local JSON database
+// Read local JSON database with memory cache fallback
 function readLocalDB() {
+  if (memoryDB) {
+    return memoryDB;
+  }
+
   ensureDataDir();
-  if (!fs.existsSync(DB_FILE)) {
-    const initialData = {
-      company: defaults.DEFAULT_COMPANY,
-      hero: defaults.DEFAULT_HERO,
-      about: defaults.DEFAULT_ABOUT,
-      services: defaults.DEFAULT_SERVICES,
-      projects: defaults.DEFAULT_PROJECTS,
-      stats: defaults.DEFAULT_STATS,
-      lastUpdated: new Date().toISOString()
-    };
-    writeLocalDB(initialData);
-    return initialData;
+
+  let targetFile = DB_FILE;
+  if (!fs.existsSync(targetFile)) {
+    if (fs.existsSync(BUNDLED_DB_FILE)) {
+      targetFile = BUNDLED_DB_FILE;
+    } else {
+      const initialData = {
+        company: defaults.DEFAULT_COMPANY,
+        hero: defaults.DEFAULT_HERO,
+        about: defaults.DEFAULT_ABOUT,
+        services: defaults.DEFAULT_SERVICES,
+        projects: defaults.DEFAULT_PROJECTS,
+        stats: defaults.DEFAULT_STATS,
+        lastUpdated: new Date().toISOString()
+      };
+      memoryDB = initialData;
+      writeLocalDB(initialData);
+      return initialData;
+    }
   }
 
   try {
-    const raw = fs.readFileSync(DB_FILE, 'utf8');
+    const raw = fs.readFileSync(targetFile, 'utf8');
     const parsed = JSON.parse(raw);
-    return {
+    const data = {
       company: parsed.company || defaults.DEFAULT_COMPANY,
       hero: parsed.hero || defaults.DEFAULT_HERO,
       about: parsed.about || defaults.DEFAULT_ABOUT,
@@ -75,9 +127,15 @@ function readLocalDB() {
       stats: parsed.stats || defaults.DEFAULT_STATS,
       lastUpdated: parsed.lastUpdated || new Date().toISOString()
     };
+    memoryDB = data;
+    // If we read from the bundled file and our writable DB_FILE is in /tmp, copy it over
+    if (targetFile !== DB_FILE && !fs.existsSync(DB_FILE)) {
+      writeLocalDB(data);
+    }
+    return data;
   } catch (err) {
     console.error('[DB] Failed reading local JSON database, restoring default:', err);
-    return {
+    const fallback = {
       company: defaults.DEFAULT_COMPANY,
       hero: defaults.DEFAULT_HERO,
       about: defaults.DEFAULT_ABOUT,
@@ -86,16 +144,25 @@ function readLocalDB() {
       stats: defaults.DEFAULT_STATS,
       lastUpdated: new Date().toISOString()
     };
+    memoryDB = fallback;
+    return fallback;
   }
 }
 
-// Atomic local JSON write to prevent any data loss
+// Resilient local JSON write: maintains memory state and writes safely to disk
 function writeLocalDB(data) {
-  ensureDataDir();
-  const tempFile = `${DB_FILE}.tmp.${Date.now()}`;
   data.lastUpdated = new Date().toISOString();
-  fs.writeFileSync(tempFile, JSON.stringify(data, null, 2), 'utf8');
-  fs.renameSync(tempFile, DB_FILE);
+  memoryDB = data;
+
+  try {
+    ensureDataDir();
+    const tempFile = `${DB_FILE}.tmp.${Date.now()}`;
+    fs.writeFileSync(tempFile, JSON.stringify(data, null, 2), 'utf8');
+    fs.renameSync(tempFile, DB_FILE);
+  } catch (err) {
+    console.warn('[DB] Persistent disk write notice (memory state updated):', err.message);
+  }
+
   return data;
 }
 
@@ -146,9 +213,18 @@ async function initDB() {
   console.log(`✅ [DB] Using Local Persistent Database (${local.projects.length} projects loaded from ${DB_FILE})`);
 }
 
+// Ensure database initialization promise is awaited before query execution
+function ensureInit() {
+  if (!initPromise) {
+    initPromise = initDB();
+  }
+  return initPromise;
+}
+
 // --- Projects CRUD Operations ---
 
 async function getProjects() {
+  await ensureInit();
   if (isMongoActive && ProjectModel) {
     try {
       const docs = await ProjectModel.find({}).sort({ createdAt: -1, _id: -1 }).lean();
@@ -164,6 +240,7 @@ async function getProjects() {
 
 async function getProjectById(id) {
   if (!id) return null;
+  await ensureInit();
   if (isMongoActive && ProjectModel) {
     try {
       const doc = await ProjectModel.findOne({ id }).lean();
@@ -178,6 +255,7 @@ async function getProjectById(id) {
 }
 
 async function saveProject(projectData) {
+  await ensureInit();
   if (!projectData.id) {
     projectData.id = 'proj_' + Date.now();
   }
@@ -217,6 +295,7 @@ async function saveProject(projectData) {
 
 async function deleteProject(id) {
   if (!id) return false;
+  await ensureInit();
 
   if (isMongoActive && ProjectModel) {
     try {
@@ -238,6 +317,7 @@ async function saveAllProjects(projectsArray) {
   if (!Array.isArray(projectsArray)) {
     throw new Error('Projects must be an array.');
   }
+  await ensureInit();
 
   if (isMongoActive && ProjectModel) {
     try {
@@ -259,6 +339,7 @@ async function saveAllProjects(projectsArray) {
 // --- Website Content Operations (Company, Hero, About, Services, Stats) ---
 
 async function getContent() {
+  await ensureInit();
   if (isMongoActive && ContentModel) {
     try {
       const doc = await ContentModel.findOne({ key: 'global_site_content' }).lean();
@@ -291,6 +372,7 @@ async function updateContent(section, data) {
   if (!validSections.includes(section)) {
     throw new Error(`Invalid content section: ${section}`);
   }
+  await ensureInit();
 
   if (isMongoActive && ContentModel) {
     try {
@@ -315,6 +397,7 @@ async function updateContent(section, data) {
 
 // Master Reset Database back to defaults
 async function resetDatabase() {
+  await ensureInit();
   if (isMongoActive && ProjectModel && ContentModel) {
     try {
       await ProjectModel.deleteMany({});
@@ -360,6 +443,7 @@ function getStatus() {
 
 module.exports = {
   initDB,
+  ensureInit,
   getProjects,
   getProjectById,
   saveProject,

@@ -87,6 +87,16 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
+// Ensure database connection is ready before handling any request (prevents serverless cold-start race conditions)
+app.use(async (req, res, next) => {
+  try {
+    await db.ensureInit();
+  } catch (err) {
+    console.error('[DB] Database initialization middleware notice:', err.message);
+  }
+  next();
+});
+
 // Intercept /admin.html to prevent static bypass
 app.get('/admin.html', (req, res) => {
   res.redirect('/admin');
@@ -113,7 +123,8 @@ app.use('/css', express.static(path.join(__dirname, 'css')));
 app.use('/js', express.static(path.join(__dirname, 'js')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/uploads', express.static(upload.UPLOADS_DIR, { maxAge: '7d' }));
-app.use(express.static(path.join(__dirname, '/')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { maxAge: '7d' }));
+app.use(express.static(path.join(__dirname, '/'), { index: false }));
 
 // Shared Global View Context Data Builder
 const getGlobalContext = (contentData = null) => {

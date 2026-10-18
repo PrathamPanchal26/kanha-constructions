@@ -62,7 +62,7 @@ const DEFAULT_SERVICES = [
       "Industrial Steel Fabrication Structural Engineering",
       "Seismic Safety Compliance Standards"
     ],
-    image: "assets/images/raghuveer_gears_industrial_179129660519.jpg"
+    image: "assets/images/raghuveer_gears_industrial_1791296960519.jpg"
   },
   {
     id: "srv_3",
@@ -100,7 +100,7 @@ const DEFAULT_PROJECTS = [
     location: "VATVA, GIDC",
     area: "8000 SQ. FT.",
     projectType: "Turnkey Project",
-    image: "assets/images/raghuveer_gears_industrial_179129660519.jpg",
+    image: "assets/images/raghuveer_gears_industrial_1791296960519.jpg",
     fallbackImage: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1200&q=80",
     description: "Full turnkey industrial execution featuring modern structural engineering, corporate entrance, administrative block, and heavy manufacturing layout for Raghuveer Gears in Vatva GIDC.",
     featured: true,
@@ -109,7 +109,7 @@ const DEFAULT_PROJECTS = [
       {
         section: "industrial",
         title: "Heavy Structural Steel Truss Fabrication",
-        image: "assets/images/raghuveer_gears_industrial_179129660519.jpg"
+        image: "assets/images/raghuveer_gears_industrial_1791296960519.jpg"
       },
       {
         section: "construction",

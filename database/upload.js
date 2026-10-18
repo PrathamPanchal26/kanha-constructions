@@ -1,12 +1,41 @@
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const multer = require('multer');
 
-// Setup uploads directory
-const UPLOADS_DIR = path.join(__dirname, '..', 'uploads');
-if (!fs.existsSync(UPLOADS_DIR)) {
-  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+// Detect serverless environment
+const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+
+// Setup uploads directory (resilient for both local server and serverless read-only runtime)
+const BUNDLED_UPLOADS_DIR = path.join(__dirname, '..', 'uploads');
+
+function getWritableUploadsDir() {
+  if (isServerless) {
+    const tmpUploads = path.join(os.tmpdir(), 'kanha-uploads');
+    try {
+      if (!fs.existsSync(tmpUploads)) fs.mkdirSync(tmpUploads, { recursive: true });
+    } catch (e) {}
+    return tmpUploads;
+  }
+
+  try {
+    if (!fs.existsSync(BUNDLED_UPLOADS_DIR)) {
+      fs.mkdirSync(BUNDLED_UPLOADS_DIR, { recursive: true });
+    }
+    const testFile = path.join(BUNDLED_UPLOADS_DIR, `.write_test_${Date.now()}`);
+    fs.writeFileSync(testFile, 'ok', 'utf8');
+    fs.unlinkSync(testFile);
+    return BUNDLED_UPLOADS_DIR;
+  } catch (err) {
+    const tmpUploads = path.join(os.tmpdir(), 'kanha-uploads');
+    try {
+      if (!fs.existsSync(tmpUploads)) fs.mkdirSync(tmpUploads, { recursive: true });
+    } catch (e) {}
+    return tmpUploads;
+  }
 }
+
+const UPLOADS_DIR = getWritableUploadsDir();
 
 // Optional Cloudinary Configuration
 let cloudinary = null;
@@ -39,17 +68,20 @@ function initCloudinary() {
     }
   } else {
     isCloudinaryActive = false;
-    console.log('📁 [Upload] Using Local Server Disk Storage (/uploads/)');
+    console.log(`📁 [Upload] Using Local Server Disk Storage (${UPLOADS_DIR})`);
   }
 }
 
 // Multer Disk Storage Configuration
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    if (!fs.existsSync(UPLOADS_DIR)) {
-      fs.mkdirSync(UPLOADS_DIR, { recursive: true });
-    }
-    cb(null, UPLOADS_DIR);
+    const targetDir = getWritableUploadsDir();
+    try {
+      if (!fs.existsSync(targetDir)) {
+        fs.mkdirSync(targetDir, { recursive: true });
+      }
+    } catch (e) {}
+    cb(null, targetDir);
   },
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname).toLowerCase() || '.jpg';
@@ -139,12 +171,16 @@ async function processBase64Image(dataUri, filenamePrefix = 'image') {
     }
   }
 
-  // Save to local disk
-  const filename = `kanha_${filenamePrefix}_${Date.now()}_${Math.round(Math.random() * 1E6)}${ext}`;
-  const filePath = path.join(UPLOADS_DIR, filename);
-  fs.writeFileSync(filePath, Buffer.from(base64Data, 'base64'));
-
-  return `/uploads/${filename}`;
+  // Save to local disk (or fallback to data URI if disk write is not permitted)
+  try {
+    const filename = `kanha_${filenamePrefix}_${Date.now()}_${Math.round(Math.random() * 1E6)}${ext}`;
+    const filePath = path.join(UPLOADS_DIR, filename);
+    fs.writeFileSync(filePath, Buffer.from(base64Data, 'base64'));
+    return `/uploads/${filename}`;
+  } catch (err) {
+    console.warn('[Upload] Disk write failed, retaining Base64 Data URI:', err.message);
+    return dataUri;
+  }
 }
 
 function getUploadStatus() {
