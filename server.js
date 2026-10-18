@@ -7,7 +7,9 @@ const crypto = require('crypto');
 const db = require('./database/db');
 const upload = require('./database/upload');
 
+const compression = require('compression');
 const app = express();
+app.use(compression());
 const PORT = process.env.PORT || 3000;
 
 // Server-Side Admin Sessions Store with HMAC verification for Serverless & Restarts
@@ -119,9 +121,17 @@ app.get('/google48b2a719bbcfc04a.html', (req, res) => {
 });
 
 // Serve Static Assets (CSS, JS, Images, Uploads)
-app.use('/css', express.static(path.join(__dirname, 'css')));
-app.use('/js', express.static(path.join(__dirname, 'js')));
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+const staticCacheConfig = {
+  maxAge: '30d',
+  immutable: true,
+  etag: true,
+  setHeaders: (res, path) => {
+    res.setHeader('Cache-Control', 'public, max-age=2592000, immutable');
+  }
+};
+app.use('/css', express.static(path.join(__dirname, 'css'), staticCacheConfig));
+app.use('/js', express.static(path.join(__dirname, 'js'), staticCacheConfig));
+app.use('/assets', express.static(path.join(__dirname, 'assets'), staticCacheConfig));
 app.use('/uploads', express.static(upload.UPLOADS_DIR, { maxAge: '7d' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { maxAge: '7d' }));
 app.use(express.static(path.join(__dirname, '/'), { index: false }));
