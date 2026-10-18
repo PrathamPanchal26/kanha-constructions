@@ -26,9 +26,6 @@
             <a href="/projects" class="btn-primary">
               Explore Portfolio <i class="fa-solid fa-arrow-right"></i>
             </a>
-            <a href="#costCalculator" class="btn-secondary">
-              <i class="fa-solid fa-calculator" style="color: var(--accent-cyan);"></i> Cost Calculator
-            </a>
           </div>
         </div>
 
@@ -85,99 +82,6 @@
 
         <div class="about-image-wrapper">
           <img src="/assets/images/rajdeep_villa_residential_1791296998090.jpg" alt="Kanha Villa Project Nikol Ahmedabad" class="dyn-about-img about-img" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Interactive Construction & Interior Cost Calculator Feature -->
-  <section class="calculator-section" id="costCalculator">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-subtitle">Instant Budget Planner</span>
-        <h2 class="section-title">Construction & Interior Cost Estimator</h2>
-        <p class="section-desc">Get an instant ballpark estimate for your residential villa, commercial building, industrial shed, or interior fit-out in Ahmedabad.</p>
-      </div>
-
-      <div class="calc-grid">
-        <div class="calc-controls-card">
-          <div class="calc-row">
-            <label class="calc-label" for="calcProjectType">
-              <span>Select Project Type:</span>
-            </label>
-            <select id="calcProjectType" class="form-control" style="background: var(--bg-dark); color: #fff;">
-              <option value="residential" data-base="1850">Residential Villa / Bungalow Construction</option>
-              <option value="turnkey" data-base="2400">Turnkey Civil + Complete Luxury Interior</option>
-              <option value="industrial" data-base="1350">Industrial Shed / Manufacturing Plant</option>
-              <option value="interior" data-base="1100">Luxury Residential Interior Design</option>
-              <option value="commercial" data-base="1650">Commercial Office / Clinic Fit-Out</option>
-            </select>
-          </div>
-
-          <div class="calc-row">
-            <div class="calc-label">
-              <span>Built-up Area:</span>
-              <span class="calc-value-badge" id="calcAreaVal">1,500 Sq. Ft.</span>
-            </div>
-            <input type="range" id="calcAreaSlider" class="calc-range-slider" min="500" max="15000" step="50" value="1500">
-            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-dim); margin-top: 6px;">
-              <span>500 Sq. Ft.</span>
-              <span>7,500 Sq. Ft.</span>
-              <span>15,000+ Sq. Ft.</span>
-            </div>
-          </div>
-
-          <div class="calc-row">
-            <label class="calc-label">
-              <span>Specification Package:</span>
-            </label>
-            <div class="package-chips">
-              <div class="package-chip" data-pkg="standard" data-multiplier="1.0">
-                <h5>Standard</h5>
-                <span>Quality Tested</span>
-              </div>
-              <div class="package-chip active" data-pkg="premium" data-multiplier="1.2">
-                <h5>Premium</h5>
-                <span>Most Popular</span>
-              </div>
-              <div class="package-chip" data-pkg="luxury" data-multiplier="1.45">
-                <h5>Ultra Luxury</h5>
-                <span>Top Italian / Imported</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Calculated Live Output -->
-        <div class="calc-results-card">
-          <div>
-            <span class="calc-est-title">Estimated Budget Range</span>
-            <div class="calc-price-big" id="calcTotalEstimate">₹ 33.30 Lakhs</div>
-            <p class="calc-rate-sub" id="calcRateSub">Estimated Rate: ₹ 2,220 / Sq. Ft.</p>
-
-            <div class="calc-breakdown-box">
-              <div class="calc-item-line">
-                <span>Civil & Structural Frame:</span>
-                <strong id="calcCivilSplit">~₹ 18.31 Lakhs</strong>
-              </div>
-              <div class="calc-item-line">
-                <span>Finishing, Plumbing & Electrical:</span>
-                <strong id="calcFinishSplit">~₹ 9.99 Lakhs</strong>
-              </div>
-              <div class="calc-item-line">
-                <span>Design, Elevation & Oversight:</span>
-                <strong id="calcArchSplit">~₹ 5.00 Lakhs</strong>
-              </div>
-              <div class="calc-item-line">
-                <span>Estimated Timeline:</span>
-                <strong id="calcTimeline">6 - 8 Months</strong>
-              </div>
-            </div>
-          </div>
-
-          <button id="btnShareEstimateWA" class="btn-calc-whatsapp">
-            <i class="fa-brands fa-whatsapp" style="font-size: 1.3rem;"></i> Share Estimate on WhatsApp
-          </button>
         </div>
       </div>
     </div>
