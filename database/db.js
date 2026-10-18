@@ -17,7 +17,7 @@ function getWritableDBPath() {
     const tmpDir = path.join(os.tmpdir(), 'kanha-data');
     try {
       if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
-    } catch (e) {}
+    } catch (e) { }
     return path.join(tmpDir, 'portfolio-db.json');
   }
 
@@ -33,7 +33,7 @@ function getWritableDBPath() {
     const tmpDir = path.join(os.tmpdir(), 'kanha-data');
     try {
       if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
-    } catch (e) {}
+    } catch (e) { }
     return path.join(tmpDir, 'portfolio-db.json');
   }
 }
